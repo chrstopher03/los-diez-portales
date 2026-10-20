@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><title>Genesy y Chris · Los Diez Portales</title>
+        <link rel="icon" href="1.jpeg">
+
+<style>
+:root{--bg:#080a15;--panel:#0d1122e8;--line:#c7a4ff42;--violet:#9c78ff;--pink:#ff83c9;--gold:#ffd88a;--text:#f6f2ff;--muted:#a8b0cc}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,sans-serif}button{font:inherit;color:inherit;cursor:pointer}#game{position:fixed;inset:0}#game canvas{display:block;width:100%;height:100%}.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse,transparent 45%,#03050c80)}
+.top{position:fixed;z-index:3;top:12px;left:14px;right:14px;display:flex;align-items:center;gap:12px;padding:10px 13px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(110deg,#090e1ce8,#1a1231d9);backdrop-filter:blur(15px);box-shadow:0 12px 36px #0005}.brand{font-size:12px;font-weight:1000;letter-spacing:1px;white-space:nowrap}.brand em{color:var(--pink);font-style:normal}.brand small{display:block;font-size:8px;color:#a1adce;letter-spacing:2px;margin-top:4px}.stats{display:flex;gap:6px;flex:1;justify-content:flex-end;flex-wrap:wrap}.stat{padding:7px 9px;border:1px solid #ffffff12;background:#070b18d9;border-radius:9px;font-size:10px;color:#c2cbe3;white-space:nowrap}.stat b{color:white}.gold{color:var(--gold)}.pink{color:var(--pink)}.icon{border:1px solid var(--line);border-radius:9px;background:#24203b;width:36px;height:36px}
+.left{position:fixed;z-index:3;left:14px;top:94px;width:235px;display:grid;gap:9px}.glass{background:var(--panel);border:1px solid var(--line);border-radius:14px;backdrop-filter:blur(13px);box-shadow:0 12px 30px #0004}.quest{padding:13px}.eyebrow{font-size:9px;font-weight:900;letter-spacing:2px;color:#c0a7ff}.quest h3{font-size:13px;margin:8px 0 5px}.quest p{font-size:10px;color:var(--muted);line-height:1.5;margin:0}.progress{height:5px;background:#262a43;border-radius:8px;overflow:hidden;margin-top:11px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--violet));transition:width .25s}.actions{padding:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px}.action{background:linear-gradient(140deg,#292343,#151a30);border:1px solid #c4a5ff2a;border-radius:10px;padding:9px 6px;font-size:9px;font-weight:900;transition:.2s}.action:hover{transform:translateY(-2px);border-color:var(--pink)}.action span{display:block;font-size:17px;margin-bottom:4px}
+.help{position:fixed;z-index:3;bottom:15px;left:50%;transform:translateX(-50%);background:#090d1cbd;border:1px solid #c5b4ff28;border-radius:99px;padding:9px 15px;color:#c3cce2;font-size:10px;white-space:nowrap}.key{display:inline-grid;place-items:center;min-width:19px;height:19px;padding:0 4px;border:1px solid #ffffff2a;border-radius:5px;background:#ffffff0b;margin:0 2px;color:white;font-weight:800}.prompt{display:none;position:fixed;z-index:5;bottom:62px;left:50%;transform:translateX(-50%);background:#211632ed;border:1px solid #f8a6df7a;border-radius:10px;padding:10px 14px;font-size:12px;white-space:nowrap}
+#toast{position:fixed;z-index:30;top:82px;left:50%;transform:translate(-50%,-8px);opacity:0;transition:.2s;background:#f5c0e4;color:#27152d;border-radius:10px;padding:11px 15px;font-size:12px;font-weight:900;pointer-events:none}#toast.show{opacity:1;transform:translate(-50%,0)}
+.overlay{position:fixed;z-index:20;inset:0;display:none;place-items:center;padding:18px;background:#03040cc9;backdrop-filter:blur(17px)}.overlay.open{display:grid}.modal{width:min(650px,100%);max-height:85vh;overflow:auto;position:relative;padding:clamp(18px,4vw,30px);border:1px solid #d3b2ff48;border-radius:22px;background:linear-gradient(145deg,#171a32f7,#0a0d1bf8 72%);box-shadow:0 30px 100px #000b}.modal h1{font-size:clamp(24px,5vw,40px);letter-spacing:-1.4px;margin:8px 0}.modal p{color:var(--muted);font-size:13px;line-height:1.7}.close{position:absolute;right:13px;top:13px;width:35px;height:35px;border:1px solid #ffffff1c;border-radius:10px;background:#ffffff0b;font-size:20px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}.choice{min-height:94px;text-align:left;padding:12px;border:1px solid #ffffff1c;border-radius:12px;background:linear-gradient(145deg,#20223e,#111526)}.choice.selected,.choice:hover{border-color:var(--pink);background:linear-gradient(145deg,#462849,#211b38)}.choice .emoji{font-size:24px}.choice strong{display:block;font-size:12px;margin:6px 0 3px}.choice small{font-size:10px;line-height:1.45;color:#a8b3d0}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:17px;justify-content:center}.primary,.secondary{border-radius:11px;padding:12px 17px;font-weight:900}.primary{border:0;background:linear-gradient(110deg,#f07ac4,#9c78ff);color:#160e27}.secondary{border:1px solid #ffffff1b;background:#ffffff09}.hero{text-align:center;width:min(760px,100%);padding:clamp(22px,5vw,46px)}.heroart{font-size:clamp(35px,7vw,60px);letter-spacing:9px;margin:16px}.logo{font-size:clamp(38px,8vw,77px);font-weight:1000;letter-spacing:-4px;line-height:.95;text-shadow:0 8px 50px #a36cff55}.gradient{background:linear-gradient(110deg,#fff1fc,#ff8ed1 44%,#b6a2ff 85%);color:transparent;background-clip:text}.subtitle{font-size:9px;letter-spacing:4px;color:#b5c0df;margin:18px}.dialogbody{color:#f4e9ff!important;font-size:15px!important}
+#mobile{display:none;position:fixed;z-index:5;bottom:65px;left:12px;right:12px;justify-content:space-between;align-items:end;pointer-events:none}.dpad,.mobact{pointer-events:auto;display:grid;gap:5px}.dpad{grid-template-columns:43px 43px 43px;grid-template-rows:43px 43px}.dpad button,.mobact button{border:1px solid #ffffff2c;background:#11172ddc;border-radius:12px;font-size:16px}.dpad .up{grid-column:2}.dpad .left{grid-column:1;grid-row:2}.dpad .down{grid-column:2;grid-row:2}.dpad .right{grid-column:3;grid-row:2}.mobact{grid-template-columns:52px 52px}.mobact button{height:52px;background:linear-gradient(145deg,#bd72d9e8,#715eeae8);font-size:9px;font-weight:900}
+@media(max-width:760px){.top{top:6px;left:6px;right:6px;padding:7px;gap:6px}.brand{font-size:9px}.brand small{font-size:6px;letter-spacing:1px}.stats{gap:3px}.stat{font-size:8px;padding:5px}.stat.hide{display:none}.icon{width:30px;height:30px}.left{left:6px;top:81px;width:178px;gap:6px}.quest{padding:9px}.quest h3{font-size:11px}.quest p{font-size:9px}.actions{padding:6px;gap:4px}.action{font-size:8px;padding:7px 3px}.action span{font-size:14px}.help{display:none}#mobile{display:flex}.prompt{bottom:133px}.grid{gap:6px}.choice{padding:9px;min-height:86px}.heroart{letter-spacing:2px}.logo{letter-spacing:-2px}}
+@media(max-width:400px){.left{width:153px}.quest p{line-height:1.35}.stat:nth-child(3){display:none}.grid{grid-template-columns:1fr 1fr}}
+
+/* === HORIZON CINEMATIC UPGRADE === */
+:root{--line:#d9c4ff55;--panel:#090d1ee8}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E")}
+.top{border-color:#e4d0ff55;box-shadow:0 12px 40px #0008, inset 0 1px #fff1}
+.brand{font-size:13px;text-shadow:0 0 20px #ff83c955}
+.stat{border-color:#ffffff1c;box-shadow:inset 0 1px #ffffff09}
+.left{width:248px}
+.quest{position:relative;overflow:hidden}
+.quest:before{content:"";position:absolute;right:-24px;top:-30px;width:90px;height:90px;border-radius:50%;background:radial-gradient(circle,#b98aff35,transparent 70%)}
+.eyebrow{color:#e1c6ff}
+.action{min-height:65px;position:relative;overflow:hidden}
+.action:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent,#fff0,transparent);transform:translateX(-120%);transition:transform .45s}
+.action:hover:after{transform:translateX(120%)}
+.action span{filter:drop-shadow(0 3px 8px #c77bff77)}
+.modal{border-color:#e2c5ff70;background:radial-gradient(ellipse at top right,#38224c99,transparent 48%),linear-gradient(145deg,#171a32f7,#080b19fc 72%);box-shadow:0 30px 100px #000d,0 0 50px #b47aff0b}
+.primary{box-shadow:0 8px 24px #b878ff25;transition:transform .2s,filter .2s}
+.primary:hover{transform:translateY(-2px);filter:brightness(1.12)}
+.choice{transition:transform .18s,border-color .18s,background .18s;box-shadow:inset 0 1px #ffffff08}
+.choice:hover{transform:translateY(-2px)}
+#worldLabel{position:fixed;z-index:3;top:88px;left:50%;transform:translateX(-50%);padding:8px 16px;border-radius:99px;border:1px solid #ffffff25;background:#070a16a8;color:#f5eaff;font-size:10px;letter-spacing:2px;text-transform:uppercase;backdrop-filter:blur(10px);pointer-events:none;box-shadow:0 8px 24px #0003;transition:opacity .6s}
+#miniMap{position:fixed;z-index:3;right:15px;bottom:15px;width:126px;height:126px;border-radius:50%;border:2px solid #d6baff80;background:#0a0d1dcc;box-shadow:0 0 28px #a17bff20,inset 0 0 20px #0008;overflow:hidden;pointer-events:none}
+#miniMap canvas{width:100%;height:100%;display:block}
+#levelBanner{position:fixed;z-index:15;left:50%;top:25%;transform:translate(-50%,-15px);opacity:0;pointer-events:none;text-align:center;transition:all .65s}
+#levelBanner.show{opacity:1;transform:translate(-50%,0)}
+#levelBanner strong{display:block;font-size:clamp(23px,5vw,44px);letter-spacing:3px;text-shadow:0 0 30px #c58bff}
+#levelBanner span{font-size:10px;letter-spacing:4px;color:#ffd9f0}
+#screenFlash{position:fixed;inset:0;z-index:14;pointer-events:none;background:#fff;opacity:0}
+#screenFlash.flash{animation:screenflash .7s ease-out}
+@keyframes screenflash{0%{opacity:.35}100%{opacity:0}}
+#ambientBadge{position:fixed;z-index:3;right:15px;top:92px;color:#e9dfff;background:#090d1cb8;border:1px solid #ffffff20;border-radius:10px;padding:8px 10px;font-size:9px;letter-spacing:1px;backdrop-filter:blur(10px)}
+#ambientBadge i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#9cffd4;box-shadow:0 0 9px #9cffd4;margin-right:6px}
+#objectivePin{position:fixed;z-index:3;left:50%;top:45%;transform:translate(-50%,-50%);font-size:22px;filter:drop-shadow(0 0 12px #ff8fdf);pointer-events:none;opacity:.8;animation:pinfloat 2s ease-in-out infinite}
+@keyframes pinfloat{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,-65%)}}
+@media(max-width:760px){.left{width:174px}#miniMap{width:88px;height:88px;right:8px;bottom:12px}#ambientBadge{display:none}#worldLabel{top:72px;font-size:8px;max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.action{min-height:54px}}
+@media(max-width:400px){.left{width:148px}#miniMap{width:72px;height:72px}.quest h3{font-size:10px}}
+
+
+/* Deluxe battle interface */
+#battleHud{display:none;position:fixed;z-index:4;right:18px;top:145px;width:min(270px,34vw);padding:13px 14px;border:1px solid #ff7d9c66;border-radius:14px;background:linear-gradient(135deg,#160d20eF,#26122be8);box-shadow:0 12px 35px #0007;backdrop-filter:blur(14px)}
+#battleHud .bh-top{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:10px;letter-spacing:1px;color:#ffdce6;font-weight:900}
+#battleHud .bh-sub{font-size:9px;color:#bba8c6;margin-top:5px}
+#battleHud .bh-track{height:8px;background:#4b263d;border-radius:9px;overflow:hidden;margin-top:10px;border:1px solid #ffffff12}
+#bhBar{height:100%;width:100%;background:linear-gradient(90deg,#ff466d,#ffad75);transition:width .18s}
+#combatText{position:fixed;z-index:7;left:50%;top:27%;transform:translate(-50%,10px);opacity:0;pointer-events:none;padding:10px 16px;border-radius:12px;border:1px solid #ffc7e777;background:#160b23d9;color:#fff1f7;font-weight:1000;letter-spacing:1px;text-shadow:0 2px 12px #ff4d89;transition:opacity .12s,transform .12s}
+#combatText.show{opacity:1;transform:translate(-50%,0)}
+#combatFlash{position:fixed;inset:0;z-index:6;pointer-events:none;opacity:0;border:0 solid #ff426b;box-shadow:inset 0 0 100px 18px #ff164b00}
+#combatFlash.hit{animation:combatHit .28s ease-out}
+@keyframes combatHit{0%{opacity:1;box-shadow:inset 0 0 100px 18px #ff164b99}100%{opacity:0;box-shadow:inset 0 0 100px 18px #ff164b00}}
+#attackMobile{display:none;position:fixed;right:18px;bottom:25px;z-index:8;border:1px solid #ffb5d488;border-radius:50%;width:72px;height:72px;background:linear-gradient(145deg,#782d55,#211832);font-weight:1000;font-size:11px;box-shadow:0 0 28px #ff527944;color:#fff}
+#prompt{max-width:min(430px,88vw)}
+@media(max-width:760px){#battleHud{top:145px;right:8px;width:155px;padding:10px}#battleHud .bh-top{font-size:8px}#battleHud .bh-sub{font-size:8px}#attackMobile{display:block;right:14px;bottom:100px;width:64px;height:64px}#combatText{top:35%;font-size:11px;white-space:nowrap}}
+
+
+#survivalHud{position:fixed;z-index:4;right:14px;top:132px;width:235px;padding:11px 12px;border:1px solid #ff657866;border-radius:12px;background:linear-gradient(135deg,#160d18eF,#111322e8);box-shadow:0 10px 30px #0005;backdrop-filter:blur(12px)}
+.survivalHead{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:9px;letter-spacing:1.2px;font-weight:900;color:#ffc7d2}.survivalHead b{font-size:13px;color:#fff}.infectionTrack{height:8px;border-radius:10px;background:#392432;overflow:hidden;margin-top:8px;border:1px solid #ffffff15}.infectionTrack span{display:block;width:0;height:100%;background:linear-gradient(90deg,#9eea9b,#ffd25e,#ff405e);transition:width .2s,filter .2s}.infectionTrack span.danger{filter:drop-shadow(0 0 7px #ff315b);animation:infectPulse .55s infinite alternate}#survivalHint{font-size:9px;color:#b8bfd4;margin-top:7px;line-height:1.35}@keyframes infectPulse{to{filter:drop-shadow(0 0 12px #ff315b)}}
+#infectionOver{z-index:30;background:#070811ed}#infectionOver .modal{border-color:#ff657866;box-shadow:0 0 70px #d51b3a2e}
+@media(max-width:760px){#survivalHud{top:auto;bottom:188px;left:10px;right:auto;width:174px;padding:8px}.survivalHead{font-size:8px}.survivalHead b{font-size:11px}#survivalHint{font-size:8px}}
+@media(max-width:400px){#survivalHud{width:150px;bottom:108px}}
+
+
+/* Immersive mobile landscape, companion command, and readable collectible cards */
+#petOrder,#fullScreen{position:fixed;z-index:6;right:14px;border:1px solid #e4d0ff55;border-radius:12px;background:linear-gradient(145deg,#182b3c,#34234b);color:#fff;padding:10px 13px;font-size:10px;font-weight:900;box-shadow:0 8px 25px #0008}
+#petOrder{bottom:78px}#fullScreen{bottom:18px}#petOrderDesktop{bottom:78px}#fullScreenDesktop{bottom:18px}
+.letter-glow{filter:drop-shadow(0 0 12px #ffd66b)}
+@media(max-width:760px){#petOrderDesktop,#fullScreenDesktop{display:none}#petOrder,#fullScreen{display:none}.mobact{grid-template-columns:repeat(2,52px)}.mobact #petOrder,.mobact #fullScreen{display:block;position:static;padding:3px;font-size:8px;box-shadow:none}}
+@media (orientation:landscape) and (max-width:950px){.left{top:70px;width:150px}.quest{padding:7px}.quest p{font-size:8px}.actions{grid-template-columns:repeat(3,1fr)}#mobile{bottom:8px}.dpad{grid-template-columns:39px 39px 39px;grid-template-rows:39px 39px}.dpad button{font-size:14px}.mobact{grid-template-columns:repeat(2,48px)}.mobact button{height:45px}.prompt{bottom:62px}.top{padding:5px}.brand{font-size:8px}.stat{padding:4px;font-size:7px}}
+@media (orientation:portrait) and (max-width:760px){body.mobile-landscape-hint:before{content:'GIRA TU TELÉFONO PARA JUGAR EN HORIZONTAL';position:fixed;z-index:100;left:12%;right:12%;top:42%;padding:16px;border-radius:14px;text-align:center;font-weight:900;color:#fff;background:#10172eee;border:1px solid #c6a0ff;pointer-events:none}}
+
+/* === EDICION VISUAL: CELESTIAL REALM === */
+:root{--line:#8de7ff5c;--violet:#8e7bff;--pink:#ff9fda;--gold:#ffe7a0;--panel:#071326eF}
+#game canvas{filter:saturate(1.13) contrast(1.035)}
+.vignette{background:radial-gradient(ellipse at 50% 45%,transparent 28%,#02071142 72%,#02040bd9 120%),linear-gradient(180deg,#142a4630,transparent 24%,transparent 75%,#03071175)}
+.top{top:14px;left:16px;right:16px;padding:11px 15px;border-radius:17px;border-color:#8de7ff50;background:linear-gradient(100deg,#071326eF,#17112feF 58%,#0a2032eF);box-shadow:0 12px 45px #0008,0 0 24px #62d8ff0a,inset 0 1px #ffffff19}
+.brand{font-size:14px;letter-spacing:1.5px}.brand em{color:#82e9ff}.brand small{color:#a9cce5}.stat{border-radius:10px;background:linear-gradient(145deg,#101c31eF,#080d1beF);border-color:#90dcff25}.stat b{font-variant-numeric:tabular-nums}.icon{background:linear-gradient(145deg,#263f60,#34204c);border-color:#8de7ff70;box-shadow:0 0 18px #67d9ff18}
+.left{top:102px;left:16px;width:252px;gap:11px}.glass{border-color:#80dcff35;background:linear-gradient(145deg,#09182beF,#080c1beF);box-shadow:0 14px 35px #0005,inset 0 1px #ffffff0c}.quest{padding:15px}.eyebrow{color:#91e9ff;text-shadow:0 0 18px #57d9ff22}.quest h3{font-size:14px;letter-spacing:.15px}.quest p{font-size:11px}.progress{height:6px;background:#1c3048}.progress span{background:linear-gradient(90deg,#5ee7ff,#a58bff,#ff9fda);box-shadow:0 0 12px #78dcff77}
+.actions{padding:9px;gap:7px}.action{min-height:72px;border-radius:12px;border-color:#8bdfff30;background:linear-gradient(145deg,#142d46,#17122e);font-size:9px;letter-spacing:.5px;box-shadow:inset 0 1px #ffffff0e,0 5px 14px #0002}.action:hover{border-color:#8de7ff;box-shadow:0 0 22px #62d8ff1c;transform:translateY(-3px)}.action span{filter:drop-shadow(0 0 9px #73ddff55)}
+.help{bottom:17px;border-color:#8de7ff35;background:linear-gradient(90deg,#071326e8,#12142ae8);box-shadow:0 10px 30px #0005;color:#d4e9fa}.key{border-color:#8de7ff42;background:#9aeaff10;color:#a6f1ff}
+#worldLabel{top:96px;border-color:#8de7ff45;background:#061426c9;letter-spacing:2.3px;box-shadow:0 0 25px #5bdfff16,0 8px 24px #0004;color:#bdf5ff}
+#miniMap{border-color:#8de7ff99;box-shadow:0 0 0 4px #08132699,0 0 34px #59dfff35,inset 0 0 20px #0008}
+#ambientBadge{border-color:#7ee8ff45;background:#071426dd;color:#c4f6ff;box-shadow:0 0 25px #5be0ff13}
+.modal{border:1px solid #8de7ff55;background:radial-gradient(ellipse at 15% 0%,#1b58704a,transparent 42%),radial-gradient(ellipse at 100% 100%,#5b28664a,transparent 45%),linear-gradient(145deg,#0d1a30f9,#080b1afc 75%);box-shadow:0 35px 120px #000d,0 0 60px #4ccfff0d,inset 0 1px #ffffff17;border-radius:25px}
+.hero{overflow:hidden}.hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,#83edff07 45%,transparent 70%);background-size:220% 100%;animation:heroSweep 8s linear infinite}.heroart{filter:drop-shadow(0 0 18px #77dfff48);animation:floatEmblems 4s ease-in-out infinite}.logo{font-size:clamp(40px,8vw,82px);text-shadow:0 0 40px #65dfff20,0 8px 50px #a36cff55}.gradient{background-image:linear-gradient(100deg,#f9ffff,#8ceaff 35%,#f8a5df 65%,#b4a2ff);background-size:200% auto;animation:logoShimmer 7s linear infinite}.subtitle{color:#a7e9f7}.primary{background:linear-gradient(110deg,#8cecff,#c4a0ff 58%,#ff9fd8);color:#071326;box-shadow:0 8px 28px #5bcfff26}.secondary{border-color:#83dfff45;background:#7cddff0a}.primary:hover,.secondary:hover{filter:brightness(1.12);box-shadow:0 0 25px #74ddff2b}
+#battleHud{border-color:#ff8fbd65;background:linear-gradient(145deg,#200f25ed,#0a1020ed);box-shadow:0 0 30px #ff457a1a,0 12px 30px #0005}#bhBar{background:linear-gradient(90deg,#ff4677,#ffad77,#ffe29a);box-shadow:0 0 12px #ff628577}
+#survivalHud{border-color:#ff9aaf50;box-shadow:0 10px 35px #0005,0 0 20px #ff436c0b}#powerBar button{border-color:#8de7ff55;background:linear-gradient(145deg,#12324aef,#24173aef);box-shadow:0 8px 24px #0005, inset 0 1px #ffffff15}#powerBar button:hover{border-color:#8de7ff;transform:translateY(-2px)}
+#petOrderDesktop,#fullScreenDesktop,#petOrder,#fullScreen{border-color:#8de7ff55;background:linear-gradient(145deg,#12324a,#291a43);box-shadow:0 8px 24px #0007,0 0 18px #62d8ff12}#toast{background:linear-gradient(110deg,#9bf0ff,#e6c3ff);color:#0b1627;box-shadow:0 8px 30px #0005}
+@keyframes heroSweep{0%{background-position:180% 0}100%{background-position:-80% 0}}@keyframes floatEmblems{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}@keyframes logoShimmer{to{background-position:200% center}}
+@media(max-width:760px){.left{top:85px;width:174px}.quest{padding:10px}.actions{grid-template-columns:repeat(3,minmax(0,1fr))}.action{min-height:57px;font-size:7px}.action span{font-size:16px}.top{left:7px;right:7px;top:7px}.brand{font-size:9px}.brand small{font-size:6px}.stat{padding:5px 6px}.help{display:none}#worldLabel{top:73px;font-size:8px}.hero{padding:23px 16px}.hero .modal p{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+
+</style></head>
+<body><div id="game"></div><div class="vignette"></div>
+<header class="top"><div class="brand">♡ NUESTRO <em>PEQUEÑO MUNDO</em><small>GENESY Y CHRIS · LOS DIEZ PORTALES</small></div><div class="stats"><div class="stat">♥ <b id="healthText">100</b>%</div><div class="stat">✦ <b id="coins">40</b> <span class="gold">MONEDAS</span></div><div class="stat">☘ <b id="lives">3</b> <span class="pink">VIDAS</span></div><div class="stat">★ NIVEL <b id="level">1</b>/10</div><div class="stat hide" id="time">☼ 08:00</div></div><button class="icon" id="pause">Ⅱ</button></header>
+<aside class="left"><section class="glass quest"><div class="eyebrow">✧ OBJETIVO ACTUAL</div><h3 id="questTitle">Los recuerdos perdidos</h3><p id="questDesc">Encuentra los cristales brillantes y habla con Genesy.</p><div class="progress"><span id="questProgress"></span></div><p id="questCount" style="margin-top:7px">Recuerdos: 0 / 5</p></section><section class="glass actions"><button class="action" data-panel="character"><span>🧑‍🚀</span>PERSONAJE</button><button class="action" data-panel="outfit"><span>👗</span>VESTIDOR</button><button class="action" data-panel="pets"><span>🐾</span>MASCOTAS</button><button class="action" data-panel="quests"><span>📜</span>MISIONES</button><button class="action" data-panel="map"><span>🗺️</span>REGIONES</button><button class="action" data-panel="inventory"><span>🎒</span>INVENTARIO</button></section></aside>
+<div id="battleHud"><div class="bh-top"><span id="bhName">GUARDIÁN</span><span>NIVEL <b id="bhLevel">1</b></span></div><div class="bh-sub">ENERGÍA DEL ENEMIGO · <b id="bhHealth">100%</b></div><div class="bh-track"><div id="bhBar"></div></div></div><div id="combatText"></div><div id="combatFlash"></div>
+<div class="prompt" id="prompt">Pulsa <b>E</b> para interactuar</div><div class="help"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> moverse · <span class="key">ESPACIO</span> saltar · <span class="key">E</span> interactuar · <span class="key">SHIFT</span> correr · <span class="key">R</span> ordenar ataque mascota · rueda zoom · clic derecho cámara</div>
+<div id="mobile"><div class="dpad"><button class="up" data-move="w">▲</button><button class="left" data-move="a">◀</button><button class="down" data-move="s">▼</button><button class="right" data-move="d">▶</button></div><div class="mobact"><button id="jump">SALTAR</button><button id="talk">HABLAR<br>/ USAR</button><button id="petOrder">MASCOTA<br>ATACA</button><button id="fullScreen">⛶<br>PANTALLA</button></div></div><button id="petOrderDesktop">🐾 ORDENAR ATAQUE</button><button id="fullScreenDesktop">⛶ PANTALLA COMPLETA</button><div id="toast"></div><div id="worldLabel">Pradera del Encuentro</div><div id="ambientBadge"><i></i> MUNDO VIVO</div><div id="miniMap"><canvas id="miniCanvas" width="180" height="180"></canvas></div><div id="levelBanner"><span>REGIÓN DESCUBIERTA</span><strong id="bannerTitle">PRADERA</strong></div><div id="screenFlash"></div>
+<div class="overlay open" id="start"><div class="modal hero"><div class="eyebrow">UNA AVENTURA HECHA DE RECUERDOS</div><div class="heroart">🌙 ✨ 🌲 💜</div><div class="logo">NUESTRO<br><span class="gradient">PEQUEÑO MUNDO</span></div><div class="subtitle">CHRISTOPHER ♡ GENESY · AVENTURA 3D</div><p>Un mundo creado para dos corazones. Recorre bosques luminosos, encuentra recuerdos, conoce criaturas mágicas y desbloquea diez regiones hasta llegar a nuestro para siempre.</p><div class="row"><button class="primary" id="play">COMENZAR AVENTURA →</button><button class="secondary" id="continue">CONTINUAR</button></div><p style="font-size:10px;margin-top:15px">PC y móvil · Guardado local en este dispositivo</p></div></div>
+<div class="overlay" id="panel"><div class="modal"><button class="close" id="close">×</button><div class="eyebrow" id="panelEyebrow">PERSONALIZACIÓN</div><h1 id="panelTitle">Escoge tu aventurero</h1><p id="panelDesc">Tu aventura, tu estilo.</p><div class="grid" id="choices"></div><div class="row"><button class="primary" id="equip">EQUIPAR / COMPRAR</button><button class="secondary" id="back">VOLVER AL JUEGO</button></div></div></div>
+<div class="overlay" id="dialogue"><div class="modal" style="width:min(520px,100%)"><button class="close" id="dialogClose">×</button><div class="eyebrow">CONVERSACIÓN</div><h1 id="dialogTitle">Genesy ♡</h1><p class="dialogbody" id="dialogBody"></p><div class="grid" id="dialogChoices"></div><div class="row"><button class="primary" id="dialogContinue">CONTINUAR</button></div></div></div>
+<div class="overlay" id="death"><div class="modal hero"><div class="heroart">💫</div><div class="eyebrow">NO ES EL FINAL</div><h1>Te has quedado sin fuerzas</h1><p>La aventura merece otra oportunidad. Revive para continuar.</p><div class="row"><button class="primary" id="revive">REVIVIR · 20 ✦</button><button class="secondary" id="restart">VOLVER AL INICIO</button></div></div></div>
+
+<div id="survivalHud" aria-live="polite"><div class="survivalHead"><span>☣ RIESGO DE INFECCIÓN</span><b id="infectionValue">0%</b></div><div class="infectionTrack"><span id="infectionBar"></span></div><div id="survivalHint">Evita mordidas · encuentra antídotos</div></div>
+<div id="infectionOver" class="overlay"><div class="modal hero"><div class="heroart">☣ 🧟 🌑</div><div class="eyebrow">CONTENCIÓN FALLIDA</div><h1>Genesy ha sido infectada</h1><p>La infección llegó al 100%. El mundo ha caído otra vez. La partida se reiniciará y tendrás que volver a salvar a todos.</p><div class="row"><button class="primary" id="restartAfterInfection">REINICIAR EL MUNDO</button></div></div></div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const $=id=>document.getElementById(id);
+const state={coins:40,lives:3,health:100,xp:0,level:1,day:.28,character:'explorer',outfit:'rose',pet:'cat',owned:{character:['explorer'],outfit:['rose'],pets:['cat']},collected:[],questDone:false};
+const levels=[['Pradera del Encuentro',0x47795b,0x94b9d3],['Bosque de Luciérnagas',0x245846,0x6578a4],['Lago de los Recuerdos',0x2c7388,0x89b7d8],['Pueblo de Cristal',0x77628e,0xa4a1d0],['Costa de los Sueños',0xd3b579,0x81c5db],['Ruinas de la Luna',0x665a85,0x34345f],['Montaña Violeta',0x546d8c,0x7b91bb],['Jardín de las Estrellas',0x3b6b65,0x263c67],['Castillo del Corazón',0x57456f,0x39305c],['Nuestro Para Siempre',0x9b6d93,0x51436f]];
+const catalog={
+ character:[['explorer','Genesy · La exploradora','🧭',0,'La protagonista de los diez portales. Ágil, valiente y decidida.'],['warrior','Guerrero','🛡️',25,'Armadura violeta y espíritu valiente.'],['mage','Maga lunar','🔮',35,'Energía astral y capa encantada.'],['ranger','Guardabosques','🏹',30,'Colores del bosque y paso ligero.']],
+ outfit:[['rose','Rosa estelar','🌸',0,0xf05cae,'Conjunto clásico.'],['royal','Violeta real','👑',18,0x9562ef,'Telas moradas y detalles brillantes.'],['forest','Guardián verde','🌿',18,0x45a47a,'Ideal para el bosque.'],['midnight','Noche astral','🌌',24,0x28325f,'Un atuendo oscuro.'],['gold','Corazón dorado','✨',40,0xe2a94b,'Un conjunto especial.'],['moon','Luz de luna','🌙',30,0x9fd8ee,'Brilla bajo la luna.']],
+ pets:[['cat','Gatito nube','🐈',0,'Curioso, fiel y cariñoso.'],['dog','Perrito fiel','🐕',15,'Siempre corre a tu lado.'],['fox','Zorrito mágico','🦊',22,'Le encantan los cristales.'],['rabbit','Conejito lunar','🐇',18,'Pequeño y veloz.'],['dragon','Dragón bebé','🐉',55,'Un compañero legendario.'],['none','Sin mascota','♡',0,'Explora a solas.']]
+};
+let scene,camera,renderer,clock,player,avatar,petGroup,world,items=[],npcs=[],keys={},yaw=0,pitch=.18,drag=false,lastX=0,lastY=0,started=false,paused=false,near=null,pending=null,toastTimer,jumpV=0,onGround=true,cameraDistance=8.5,soundOn=false,audioCtx=null;
+const material=(color,rough=.8,metal=0)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+function addMesh(parent,geo,mat,pos=[0,0,0],scale=[1,1,1]){let o=new THREE.Mesh(geo,mat);o.position.set(...pos);o.scale.set(...scale);parent.add(o);o.castShadow=true;o.receiveShadow=true;return o}
+function box(parent,pos,size,color){return addMesh(parent,new THREE.BoxGeometry(...size),material(color),pos)}
+function tree(parent,x,z,seed){let g=new THREE.Group();g.position.set(x,0,z);parent.add(g);addMesh(g,new THREE.CylinderGeometry(.17,.27,1.5,8),material(0x674a43),[0,.75,0]);for(let i=0;i<3;i++){let s=1.3-i*.18;addMesh(g,new THREE.IcosahedronGeometry(1,1),material([0x236b51,0x2c7c5d,0x3b755f,0x4e5e83][(seed+i)%4]),[0,1.7+i*.58,0],[s,s*.9,s])}if(seed%3===0)addMesh(g,new THREE.SphereGeometry(.08,8,8),new THREE.MeshStandardMaterial({color:0xffa6ed,emissive:0xc74fff,emissiveIntensity:2}),[.5,2.7,.1])}
+function house(parent,x,z,label,roofColor){let g=new THREE.Group();g.position.set(x,0,z);parent.add(g);box(g,[0,.8,0],[5,1.6,4],0xd6c3d5);box(g,[0,2.2,1.94],[4.8,2.1,.16],0xa98fa7);box(g,[2.4,2.2,0],[.16,2.1,3.8],0x81728e);addMesh(g,new THREE.ConeGeometry(3.5,2.1,4),material(roofColor,.6),[0,4,0]);box(g,[0,1,2.04],[.9,1.7,.1],0x4b3651);for(let xw of [-1.45,1.45]){let w=box(g,[xw,2.25,2.04],[.7,.7,.1],0x9fe8ff);w.material.emissive.setHex(0x3f9bb8);w.material.emissiveIntensity=.3}let cv=document.createElement('canvas');cv.width=256;cv.height=64;let c=cv.getContext('2d');c.fillStyle='#fff0ff';c.font='bold 28px sans-serif';c.textAlign='center';c.fillText(label,128,42);addMesh(g,new THREE.PlaneGeometry(4,1),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(cv),transparent:true,side:THREE.DoubleSide}),[0,5.4,0])}
+function npc(parent,pos,name,color,genesy){let g=new THREE.Group();g.position.set(...pos);g.userData={kind:'npc',name,genesy};parent.add(g);addMesh(g,new THREE.CapsuleGeometry(.4,.65,5,10),material(color),[0,1,0]);addMesh(g,new THREE.SphereGeometry(.3,16,12),material(0xe7b79b),[0,1.82,0]);addMesh(g,new THREE.SphereGeometry(.33,16,10),material(genesy?0x442544:0x302743),[0,2.04,.02],[1,.62,1]);for(let s of [-1,1])addMesh(g,new THREE.SphereGeometry(.045,8,8),material(0x20172b),[s*.12,1.84,-.28]);addMesh(g,new THREE.TorusGeometry(.55,.035,6,24),new THREE.MeshStandardMaterial({color:genesy?0xff83d1:0xb9a0ff,emissive:genesy?0xff5fbd:0x7556ff,emissiveIntensity:.8}),[0,2.8,0]).rotation.x=Math.PI/2;npcs.push(g)}
+function crystal(parent,pos,id){let g=new THREE.Group();g.position.set(...pos);g.userData={kind:'crystal',id};parent.add(g);addMesh(g,new THREE.OctahedronGeometry(.48),new THREE.MeshStandardMaterial({color:0xff8cdb,emissive:0xd52da9,emissiveIntensity:1.4,metalness:.3,roughness:.2}),[0,.9,0],[.7,1.25,.7]);let l=new THREE.PointLight(0xd95dff,1.6,5);l.position.y=1;g.add(l);items.push(g)}
+function portal(parent){let g=new THREE.Group();g.position.set(0,0,-29);parent.add(g);let ring=addMesh(g,new THREE.TorusGeometry(1.65,.16,12,48),new THREE.MeshStandardMaterial({color:0xe4a0ff,metalness:.4,roughness:.2,emissive:0x9b4fff,emissiveIntensity:1.7}),[0,2.2,0]);let core=addMesh(g,new THREE.CircleGeometry(1.5,48),new THREE.MeshBasicMaterial({color:0x7554e8,transparent:true,opacity:.45,side:THREE.DoubleSide}),[0,2.2,0]);let l=new THREE.PointLight(0xa77bff,3,14);l.position.y=2.2;g.add(l);g.userData={kind:'portal'};items.push(g)}
+function createAvatar(){avatar=new THREE.Group();player.add(avatar);let skin=material(0xe8b497),hair=material(0x30233d),cloth=material(0xf05cae);addMesh(avatar,new THREE.CapsuleGeometry(.37,.68,5,10),cloth,[0,.95,0]);addMesh(avatar,new THREE.SphereGeometry(.3,16,12),skin,[0,1.78,0]);addMesh(avatar,new THREE.SphereGeometry(.33,16,12),hair,[0,1.98,.035],[1,.63,1]);for(let s of [-1,1])addMesh(avatar,new THREE.SphereGeometry(.045,8,8),material(0x251a2c),[s*.115,1.79,-.275]);for(let s of [-1,1])addMesh(avatar,new THREE.CapsuleGeometry(.12,.44,4,8),material(0x242642),[s*.17,.32,0]);}
+function updateAvatar(){if(!avatar)return;let outfit=catalog.outfit.find(a=>a[0]===state.outfit)||catalog.outfit[0];avatar.children[0].material.color.setHex(outfit[4]);avatar.children[2].material.color.setHex(state.character==='mage'?0x29285a:state.character==='ranger'?0x59372b:0x30233d);if(petGroup){player.remove(petGroup);petGroup=null}if(state.pet!=='none'){petGroup=new THREE.Group();player.add(petGroup);petGroup.position.set(1.25,0,-.35);let fur=state.pet==='fox'?0xe78b50:state.pet==='dragon'?0x8e6de7:state.pet==='rabbit'?0xe6d8e9:state.pet==='dog'?0xc79a6c:0xf1e7df;addMesh(petGroup,new THREE.SphereGeometry(.34,12,10),material(fur),[0,.42,0],[1.3,.85,.8]);addMesh(petGroup,new THREE.SphereGeometry(.25,12,10),material(fur),[0,.66,-.25]);for(let s of [-1,1])addMesh(petGroup,new THREE.ConeGeometry(.1,.32,7),material(fur),[s*.15,.93,-.24])}}
+function makeWorld(){if(world){scene.remove(world);world.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}})}world=new THREE.Group();scene.add(world);items=[];npcs=[];let lv=levels[state.level-1];scene.background=new THREE.Color(lv[2]);scene.fog=new THREE.Fog(lv[2],34,94);let ground=addMesh(world,new THREE.PlaneGeometry(100,100),material(lv[1]),[0,-.1,0]);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;
+for(let i=0;i<11;i++)addMesh(world,new THREE.IcosahedronGeometry(1,1),material(new THREE.Color(lv[1]).multiplyScalar(.7+i*.015)),[-42+i*8,2+Math.sin(i*1.4)*2,-36],[6,5+(i%3)*2,4]);
+for(let i=0;i<25;i++){let z=24-i*2.2,x=Math.sin(i*.33)*4.3;let stone=box(world,[x,.02,z],[2.5,.15,1.65],i%3?0xb2a6ba:0xd1c0cf);stone.rotation.y=Math.sin(i*.3)*.2}
+for(let i=0;i<94;i++){let side=i%2?1:-1;tree(world,side*(8+(i*17.31)%25),26-(i*13.7)%57,(i*3)%7)}
+for(let i=0;i<20;i++)addMesh(world,new THREE.OctahedronGeometry(.6),new THREE.MeshStandardMaterial({color:[0xb28bff,0x76d9ee,0xff9bd6][i%3],emissive:[0x6744d6,0x347cba,0xc43b8b][i%3],emissiveIntensity:.7,metalness:.3}),[Math.sin(i*8.4)*22,.8,Math.cos(i*3.2)*25],[.65,1.7,.65]);
+house(world,-11,-7,'HOGAR',0xa85fbd);house(world,11,-14,'TIENDA',0x617dc4);house(world,0,-25,'PORTAL',0xc76bc0);npc(world,[3,0,1],'Genesy',0xe77ac1,true);npc(world,[-4,0,-11],'Guardián',0x8b7de1,false);
+for(let i=0;i<5;i++){let id=`${state.level}-${i}`;if(!state.collected.includes(id))crystal(world,[Math.sin(i*4.4)*10,0,13-i*5.5],id)}portal(world);player.position.set(0,.1,8);player.rotation.set(0,0,0);updateAvatar();updateUI()}
+function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x8caed1);camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,200);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,1.8));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;$('game').appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xcbd8ff,0x29314a,2));let sun=new THREE.DirectionalLight(0xffe4d1,2.4);sun.position.set(-18,30,12);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-38;sun.shadow.camera.right=38;sun.shadow.camera.top=38;sun.shadow.camera.bottom=-38;scene.add(sun);player=new THREE.Group();scene.add(player);createAvatar();makeWorld();bind();loadSave();animate()}
+function bind(){addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault();if(e.repeat)return;if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='shift')keys.sprint=true});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key.toLowerCase()==='shift')keys.sprint=false});renderer.domElement.addEventListener('wheel',e=>{cameraDistance=THREE.MathUtils.clamp(cameraDistance+Math.sign(e.deltaY)*.8,4.5,13);},{passive:true});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===2){drag=true;lastX=e.clientX;lastY=e.clientY}});addEventListener('pointerup',()=>drag=false);addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.005;pitch=Math.max(-.2,Math.min(.7,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY}});
+$('play').onclick=()=>{started=true;$('start').classList.remove('open');toast('¡La aventura comienza! Busca los cristales.');save()};$('continue').onclick=()=>{loadSave();started=true;$('start').classList.remove('open');toast('¡Qué bueno tenerte de vuelta!')};$('pause').onclick=()=>showDialogue('Aventura en pausa','Tómate un respiro. Cuando estés listo, continúa.',[['CONTINUAR',closeDialogue],['GUARDAR PARTIDA',()=>{save();closeDialogue();toast('Partida guardada correctamente.')}],['SONIDO: '+(soundOn?'ACTIVADO':'DESACTIVADO'),()=>{soundOn=!soundOn;if(soundOn){try{audioCtx=audioCtx||new AudioContext();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=220;g.gain.value=.015;o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.18)}catch(e){}}closeDialogue();toast('Sonido '+(soundOn?'activado':'desactivado')+'.')}],['REINICIAR REGIÓN',()=>{makeWorld();closeDialogue()}]]);document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('close').onclick=closePanel;$('back').onclick=closePanel;$('equip').onclick=()=>{if(pending)choose(pending.type,pending.item)};$('dialogClose').onclick=closeDialogue;$('dialogContinue').onclick=closeDialogue;$('revive').onclick=()=>{if(state.coins<20){toast('Necesitas 20 monedas para revivir.');return}state.coins-=20;state.lives=3;state.health=100;player.position.set(0,.1,8);$('death').classList.remove('open');paused=false;updateUI();save()};$('restart').onclick=()=>{state.level=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='rose';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;save()};document.querySelectorAll('[data-move]').forEach(b=>{let k=b.dataset.move;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false));b.addEventListener('lostpointercapture',()=>keys[k]=false)});$('jump').onclick=()=>{if(onGround){jumpV=5.5;onGround=false}};$('talk').onclick=interact}
+function animate(){requestAnimationFrame(animate);let dt=Math.min(clock.getDelta(),.04),t=performance.now()*.001;if(started&&!paused){state.day=(state.day+dt*.004)%1;move(dt);updateWorld(dt);proximity();if(player.position.y < -8)die();if(state.health<=0)die()}let daylight=Math.max(.1,Math.sin(state.day*Math.PI*2-Math.PI/2)*.5+.55);scene.traverse(o=>{if(o.isDirectionalLight)o.intensity=1+daylight*1.5});$('time').textContent=`☼ ${String(Math.floor(state.day*24)).padStart(2,'0')}:00 · ${state.day>.27&&state.day<.8?'DÍA':'NOCHE'}`;let target=new THREE.Vector3(player.position.x,player.position.y+1.3,player.position.z),d=cameraDistance,h=Math.cos(pitch)*d;camera.position.set(target.x+Math.sin(yaw)*h,target.y+2+Math.sin(pitch)*cameraDistance,target.z+Math.cos(yaw)*h);camera.lookAt(target);renderer.render(scene,camera)}
+function move(dt){let f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0),r=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),dx=Math.sin(yaw)*f+Math.cos(yaw)*r,dz=Math.cos(yaw)*f-Math.sin(yaw)*r,len=Math.hypot(dx,dz);if(len){dx/=len;dz/=len;let speed=keys.sprint?9.2:5.8;player.position.x+=dx*speed*dt;player.position.z+=dz*speed*dt;player.rotation.y=Math.atan2(dx,dz);avatar.position.y=Math.sin(performance.now()*.014)*.045}else avatar.position.y=0;player.position.x=THREE.MathUtils.clamp(player.position.x,-34,34);player.position.z=THREE.MathUtils.clamp(player.position.z,-33,31);if(!onGround){jumpV-=12*dt;player.position.y+=jumpV*dt;if(player.position.y<=.1){player.position.y=.1;onGround=true;jumpV=0}}if(petGroup){petGroup.position.x=1.05+Math.sin(performance.now()*.002)*.18;petGroup.position.y=.1+Math.abs(Math.sin(performance.now()*.004))*.12}}
+function updateWorld(dt){let t=performance.now()*.001;for(let o of items){if(!o.parent)continue;if(o.userData.kind==='crystal'){o.rotation.y+=dt*1.2;o.position.y=.12+Math.sin(t*2.2+o.position.x)*.13}else if(o.userData.kind==='portal'){o.children[0].rotation.z+=dt*.4;o.children[1].rotation.z-=dt*.2}}}
+function proximity(){near=null;let best=3.1;for(let o of [...items,...npcs]){if(!o.parent)continue;let d=player.position.distanceTo(o.position);if(d<best){best=d;near=o}}let p=$('prompt');if(near){p.style.display='block';p.innerHTML=near.userData.kind==='crystal'?'Pulsa <b>E</b> para recoger recuerdo':near.userData.kind==='portal'?'Pulsa <b>E</b> para viajar de región':`Pulsa <b>E</b> para hablar con ${near.userData.name}`}else p.style.display='none'}
+function interact(){if(!started)return;if(!near){showDialogue('Exploración','Busca cristales rosados, habla con Genesy y encuentra el portal violeta.');return}if(near.userData.kind==='crystal'){let id=near.userData.id;if(!state.collected.includes(id)){state.collected.push(id);state.coins+=8;state.xp+=20;state.health=Math.min(100,state.health+4);scene.remove(near);items=items.filter(o=>o!==near);let count=state.collected.filter(v=>v.startsWith(state.level+'-')).length;if(count>=5){state.questDone=true;state.coins+=25;state.xp+=50;showDialogue('¡Misión completada! ✨','Has reunido los cinco recuerdos. Recibes 25 monedas adicionales.')}toast('Recuerdo encontrado · +8 monedas · +20 XP');updateUI();save()}return}if(near.userData.kind==='portal'){if(!state.questDone){showDialogue('Portal sellado ✨','Primero reúne los cinco recuerdos brillantes de esta región. El portal se abrirá cuando completes la misión.');return}nextLevel();return}if(near.userData.kind==='npc'){if(near.userData.genesy)showDialogue('Genesy ♡','¿Seguimos nuestra aventura juntos? Cada recuerdo nos acerca más.',[['Prometerlo',()=>{state.coins+=10;state.xp+=15;closeDialogue();updateUI();save();toast('Genesy sonríe · +10 monedas')}],['Preguntar por la misión',()=>showDialogue('La misión','Encuentra los cinco cristales brillantes de esta región. ¡Yo creo en ti!')],['Darle una flor 🌸',()=>{if(state.coins>=5){state.coins-=5;state.xp+=10;showDialogue('Genesy ♡','¡Es preciosa! La guardaré como uno de nuestros recuerdos.');updateUI()}else showDialogue('Genesy','Guarda unas monedas para comprar una flor.')}]]);else showDialogue('Guardián de regiones','El portal te lleva a diez lugares diferentes. Encuentra todos los recuerdos para ganar recompensas.')}}
+function nextLevel(){if(!state.questDone){showDialogue('Una misión pendiente','Encuentra los cinco cristales de esta región antes de continuar.');return}if(state.level>=10){showDialogue('Nuestro Para Siempre ♡','¡Llegaste al final! Los recuerdos que reuniste vivirán siempre en este pequeño mundo.');return}state.level++;state.questDone=false;makeWorld();toast('Región descubierta: '+levels[state.level-1][0]);showDialogue('NIVEL '+state.level+' / 10',levels[state.level-1][0]+'\\n'+levels[state.level-1][2]+'');save()}
+function die(){if($('death').classList.contains('open'))return;state.lives--;state.health=100;player.position.set(0,.1,8);if(state.lives<=0){state.lives=0;paused=true;$('death').classList.add('open')}else toast('Has perdido una vida. Te quedan '+state.lives+'.');updateUI();save()}
+function showDialogue(title,body,choices=[]){$('dialogTitle').textContent=title;$('dialogBody').textContent=body;let box=$('dialogChoices');box.innerHTML='';choices.forEach(([label,fn])=>{let b=document.createElement('button');b.className='choice';b.textContent=label;b.onclick=fn;box.appendChild(b)});$('dialogContinue').style.display=choices.length?'none':'inline-block';$('dialogue').classList.add('open');paused=true}
+function closeDialogue(){$('dialogue').classList.remove('open');paused=false}
+function openPanel(type){pending=null;let config={character:['PERSONAJE','Escoge tu aventurero','Compra personajes y equipa tu favorito.'],outfit:['VESTIDOR','Cambia tu estilo','Los conjuntos comprados se pueden volver a equipar.'],pets:['MASCOTAS','Elige un compañero','Tu mascota te acompaña al explorar.'],quests:['DIARIO','Tus misiones','Encuentra los cinco cristales de la región y habla con Genesy.'],map:['MAPA','Diez regiones','Elige una región desbloqueada.'],inventory:['INVENTARIO','Tus recuerdos','Tu progreso de aventura.']}[type];$('panelEyebrow').textContent=config[0];$('panelTitle').textContent=config[1];$('panelDesc').textContent=config[2];$('equip').style.display=['character','outfit','pets'].includes(type)?'inline-block':'none';let grid=$('choices');grid.innerHTML='';let list=[];if(['character','outfit','pets'].includes(type)){let key=type==='pets'?'pets':type;list=catalog[key].map(a=>({id:a[0],name:a[1],emoji:a[2],cost:a[3],desc:a[type==='outfit'?5:4],color:a[4],type,owned:state.owned[type].includes(a[0]),selected:(type==='pets'?state.pet:state[type])===a[0]}))}else if(type==='map')list=levels.map((a,i)=>({id:i+1,name:`${i+1}. ${a[0]}`,emoji:i<(state.maxLevel||state.level)?'🌟':'🔒',desc:a[2],owned:i<(state.maxLevel||state.level),selected:i+1===state.level,level:i+1}));else if(type==='quests')list=[{emoji:'💎',name:'Recuerdos perdidos',desc:`Cristales de esta región: ${state.collected.filter(v=>v.startsWith(state.level+'-')).length}/5`,owned:true},{emoji:'💬',name:'Habla con Genesy',desc:'Encuentra a Genesy junto al sendero.',owned:true},{emoji:'🌀',name:'Encuentra el portal',desc:'Viaja por las diez regiones.',owned:true}];else list=[{emoji:'✦',name:state.coins+' monedas',desc:'Monedas para compras.',owned:true},{emoji:'💎',name:state.collected.length+' recuerdos',desc:'Cristales recogidos.',owned:true},{emoji:'★',name:state.xp+' XP',desc:'Experiencia total.',owned:true}];list.forEach(item=>{let b=document.createElement('button');b.className='choice'+(item.selected?' selected':'');b.innerHTML=`<span class="emoji">${item.emoji}</span><strong>${item.name}</strong><small>${item.desc||''}<br>${item.cost!==undefined?(item.owned?(item.selected?'✓ EQUIPADO':'✓ COMPRADO'):(item.cost===0?'Gratis':'✦ '+item.cost+' monedas')):''}</small>`;b.onclick=()=>{grid.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');pending={type:item.type||type,item};if(type==='map'){if(item.owned){state.level=item.level;state.questDone=state.collected.filter(v=>v.startsWith(state.level+'-')).length>=5;makeWorld();closePanel();toast('Viajaste a '+levels[state.level-1][0]);save()}else{toast('Completa los recuerdos de cada región para desbloquear la siguiente.')}}};grid.appendChild(b)});$('panel').classList.add('open');paused=true}
+function choose(type,item){if(!item)return;let group=type==='character'?'character':type==='outfit'?'outfit':'pets';if(!state.owned[group].includes(item.id)){if(state.coins<item.cost){toast('No tienes monedas suficientes. Busca cristales.');return}state.coins-=item.cost;state.owned[group].push(item.id);toast('Comprado: '+item.name)}if(type==='pets')state.pet=item.id;else state[type]=item.id;updateAvatar();updateUI();save();openPanel(type);toast('Equipado: '+item.name)}
+function closePanel(){$('panel').classList.remove('open');paused=false}
+function updateUI(){$('healthText').textContent=Math.round(state.health);$('coins').textContent=state.coins;$('lives').textContent=state.lives;$('level').textContent=state.level;let n=state.collected.filter(v=>v.startsWith(state.level+'-')).length;$('questCount').textContent=`Recuerdos: ${n} / 5`;$('questProgress').style.width=(n/5*100)+'%';$('questTitle').textContent=state.questDone?'Región completada ✨':'Los recuerdos perdidos';$('questDesc').textContent=state.questDone?'¡Encontraste todos los recuerdos! Busca el portal.':'Encuentra los cristales brillantes y habla con Genesy.'}
+function toast(msg){let el=$('toast');el.textContent=msg;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2500)}
+function save(){try{localStorage.setItem('npmm-web-save',JSON.stringify(state))}catch(e){}}
+function loadSave(){try{let s=JSON.parse(localStorage.getItem('npmm-web-save')||'null');if(s){Object.assign(state,s);state.owned=Object.assign({character:['explorer'],outfit:['rose'],pets:['cat']},s.owned||{});for(let k of ['character','outfit','pets'])if(!state.owned[k].includes(state[k]))state.owned[k].push(state[k]);state.questDone=state.collected.filter(v=>v.startsWith(state.level+'-')).length>=5;makeWorld();updateUI()}}catch(e){}}
+
+// === CINEMATIC WORLD SYSTEM ===
+const miniCtx=$('miniCanvas')?.getContext('2d');
+let bannerTimer=null, worldClock=0, sparkles=[];
+function cinematicSetup(){
+  // Better renderer atmosphere and a tiny minimap without external assets.
+  if(renderer){renderer.toneMappingExposure=1.18;renderer.setClearColor(0x9db9df,1)}
+  if(scene && !scene.getObjectByName('moonGlow')){
+    const glow=new THREE.PointLight(0xffb8ed,1.0,34);glow.name='moonGlow';glow.position.set(-12,9,-15);scene.add(glow);
+    const fill=new THREE.DirectionalLight(0xc4b8ff,.38);fill.position.set(18,12,-22);scene.add(fill);
+  }
+  const label=$('worldLabel'); if(label)label.textContent=levels[state.level-1]?.[0]||'Nuestro pequeño mundo';
+}
+function drawMiniMap(){
+  if(!miniCtx||!player)return;
+  const c=miniCtx,w=180,h=180;c.clearRect(0,0,w,h);
+  c.fillStyle='#0b1327';c.fillRect(0,0,w,h);
+  c.strokeStyle='#6c76a6';c.lineWidth=1;c.globalAlpha=.55;
+  for(let i=15;i<180;i+=30){c.beginPath();c.moveTo(i,0);c.lineTo(i,180);c.stroke();c.beginPath();c.moveTo(0,i);c.lineTo(180,i);c.stroke()}
+  c.globalAlpha=1;
+  // Show a simple local compass/map relative to the playable world.
+  const px=90+(player.position.x/38)*70, py=90+(player.position.z/38)*70;
+  c.fillStyle='#ff91d9';c.shadowColor='#ff72cf';c.shadowBlur=13;c.beginPath();c.arc(px,py,5,0,Math.PI*2);c.fill();c.shadowBlur=0;
+  c.strokeStyle='#ffb6e5';c.lineWidth=2;c.beginPath();c.moveTo(px,py);c.lineTo(px+Math.sin(player.rotation.y)*12,py+Math.cos(player.rotation.y)*12);c.stroke();
+  c.fillStyle='#b8a2ff';for(const o of items){if(o.userData.kind==='crystal'){let x=90+(o.position.x/38)*70,y=90+(o.position.z/38)*70;c.beginPath();c.arc(x,y,2.6,0,Math.PI*2);c.fill()}}
+  c.fillStyle='#f8e9ff';c.font='bold 10px sans-serif';c.fillText('N',86,12);
+}
+function showRegionBanner(title){
+  const b=$('levelBanner');if(!b)return;
+  $('bannerTitle').textContent=title.toUpperCase();
+  $('screenFlash')?.classList.remove('flash');void $('screenFlash')?.offsetWidth;$('screenFlash')?.classList.add('flash');
+  b.classList.add('show');clearTimeout(bannerTimer);bannerTimer=setTimeout(()=>b.classList.remove('show'),2600);
+}
+function upgradeWorldVisuals(){
+  if(!world)return;
+  // Add luminous flowers and a few stylized stones around the trail.
+  const glowMat=new THREE.MeshStandardMaterial({color:0xffb4e6,emissive:0xf04db7,emissiveIntensity:1.1,roughness:.3});
+  for(let i=0;i<30;i++){
+    const x=Math.sin(i*7.7)*7.4, z=22-i*1.55;
+    const flower=new THREE.Group();flower.position.set(x,.04,z);world.add(flower);
+    addMesh(flower,new THREE.CylinderGeometry(.025,.035,.28,5),material(0x3f8a64),[0,.14,0]);
+    addMesh(flower,new THREE.SphereGeometry(.10,8,7),glowMat,[0,.31,0],[1,.65,1]);
+    const dot=new THREE.PointLight(0xff80d7,.14,2.3);dot.position.y=.35;flower.add(dot);
+  }
+  // Soft glowing stones make the path more readable.
+  for(let i=0;i<10;i++){
+    const peb=addMesh(world,new THREE.DodecahedronGeometry(.22,0),material(i%2?0x9d8cbd:0x6b8f9e),[Math.sin(i*2.4)*3.2,.13,18-i*4.4],[1,.5,1.4]);
+    peb.rotation.y=i*.7;
+  }
+  // Tall ancient pillars, luminous grass and crystal formations add depth to every region.
+  const lv=state.level, palette=levels[lv-1];
+  for(let i=0;i<8;i++){
+    const side=i%2?1:-1,z=-7-Math.floor(i/2)*7.5,x=side*(10+(i%3)*1.2),h=2.2+(i%3)*.55;
+    const pillar=new THREE.Group();pillar.position.set(x,0,z);world.add(pillar);
+    const stoneMat=material(i%2?0x777493:0x626d89,.94);
+    addMesh(pillar,new THREE.CylinderGeometry(.32,.43,h,7),stoneMat,[0,h/2,0]);
+    addMesh(pillar,new THREE.BoxGeometry(1.04,.2,.88),stoneMat,[0,h,0]);
+    const rune=addMesh(pillar,new THREE.TorusGeometry(.17,.035,6,14),new THREE.MeshStandardMaterial({color:0x91eaff,emissive:0x32bde9,emissiveIntensity:.85}),[0,h*.66,.36]);rune.rotation.x=Math.PI/2;
+  }
+  for(let i=0;i<54;i++){
+    const side=i%2?1:-1,x=side*(7.8+(i*13.73)%23),z=25-(i*9.27)%57;
+    const tuft=new THREE.Group();tuft.position.set(x,0,z);tuft.rotation.y=(i*1.7)%6.28;world.add(tuft);
+    for(let k=0;k<3;k++){const blade=addMesh(tuft,new THREE.ConeGeometry(.11,.42+(k%2)*.2,4),material(i%3?palette[1]:0x69b89b),[(k-1)*.13,.2,(k%2)*.1]);blade.rotation.z=(k-1)*.28}
+  }
+  for(let i=0;i<10;i++){
+    const x=(i%2?1:-1)*(13+(i*3.1)%8),z=18-i*4.1;
+    const crystal=addMesh(world,new THREE.OctahedronGeometry(.8+(i%3)*.18,0),new THREE.MeshStandardMaterial({color:[0x75d9ff,0x9c86ff,0xff9fd7][i%3],emissive:[0x1c83bd,0x4d2bb0,0xb52c7e][i%3],emissiveIntensity:.48,metalness:.25,roughness:.32}),[x,.7,z],[.72,1.65,.72]);crystal.rotation.z=.16;
+  }
+  const motes=new THREE.Group();world.add(motes);const moteMat=new THREE.MeshBasicMaterial({color:0xc4eaff,transparent:true,opacity:.6});
+  for(let i=0;i<34;i++){const mote=new THREE.Mesh(new THREE.SphereGeometry(.032,5,4),moteMat);mote.position.set(Math.sin(i*13.2)*27,.7+(i%6)*.48,Math.cos(i*7.7)*29);motes.add(mote)}
+  // Landmark silhouettes change by region so the ten portals feel like different places.
+  if(lv===3){const water=addMesh(world,new THREE.PlaneGeometry(15,23),new THREE.MeshStandardMaterial({color:0x348ba7,transparent:true,opacity:.72,roughness:.22,metalness:.22}),[21,.005,-7]);water.rotation.x=-Math.PI/2;for(let i=0;i<8;i++)addMesh(world,new THREE.DodecahedronGeometry(.65),material(0x9aa4b7),[13+i*2.2,.1,-18+(i%3)*4],[1,.22,1.1])}
+  if(lv===5){for(let i=0;i<5;i++){const palm=new THREE.Group();palm.position.set(i%2?18:-18,0,14-i*9);world.add(palm);addMesh(palm,new THREE.CylinderGeometry(.17,.28,3.5,7),material(0x8d6241),[0,1.75,0]);for(let j=0;j<5;j++){const leaf=addMesh(palm,new THREE.ConeGeometry(.28,2.1,5),material(0x387b58),[Math.sin(j*1.26)*.85,3.45,Math.cos(j*1.26)*.85]);leaf.rotation.z=Math.sin(j*1.26)*.75;leaf.rotation.x=Math.cos(j*1.26)*.75}}}
+  if(lv===7){for(let i=0;i<7;i++){const peak=addMesh(world,new THREE.ConeGeometry(2.5+(i%3),6+(i%3)*1.8,5),material(i%2?0x6d7897:0x818aa6),[(i-3)*8,2.8,-31-(i%2)*3],[1,1,1]);peak.rotation.z=(i%2?-.08:.08)}}
+  if(lv===9){for(const x of [-18,-12,12,18]){const tower=new THREE.Group();tower.position.set(x,0,-23);world.add(tower);addMesh(tower,new THREE.CylinderGeometry(1,1.25,6,8),material(0x665477),[0,3,0]);addMesh(tower,new THREE.ConeGeometry(1.45,2.5,8),material(0x322842),[0,7.1,0]);addMesh(tower,new THREE.BoxGeometry(.22,1.2,.08),new THREE.MeshStandardMaterial({color:0xffb6e8,emissive:0xe84cb8,emissiveIntensity:1}),[0,3.4,.98])}}
+  if(lv===10){for(let i=0;i<3;i++){const ring=addMesh(world,new THREE.TorusGeometry(2.2+i*.65,.08,8,48),new THREE.MeshStandardMaterial({color:[0xffd780,0xff9fd7,0x9de8ff][i],emissive:[0xc78325,0xc43c92,0x3689c0][i],emissiveIntensity:1.2,metalness:.4}),[0,3+i*.55,-25]);ring.rotation.y=i*.45}}
+}
+const originalMakeWorld=makeWorld;
+makeWorld=function(){
+  originalMakeWorld();
+  upgradeWorldVisuals();
+  cinematicSetup();
+  drawMiniMap();
+  const label=$('worldLabel');if(label)label.textContent=levels[state.level-1]?.[0]||'Nuestro pequeño mundo';
+};
+// More satisfying movement and a tiny sparkle trail, while retaining original controls.
+const originalMove=move;
+move=function(dt){
+  originalMove(dt);
+  if(avatar){
+    const moving=!!(keys.w||keys.a||keys.s||keys.d||keys.arrowup||keys.arrowdown||keys.arrowleft||keys.arrowright);
+    avatar.rotation.z=THREE.MathUtils.lerp(avatar.rotation.z,moving?Math.sin(performance.now()*.012)*.045:0,.16);
+  }
+};
+const originalNextLevel=nextLevel;
+nextLevel=function(){
+  const before=state.level;originalNextLevel();
+  if(state.level!==before){showRegionBanner(levels[state.level-1][0]);const label=$('worldLabel');if(label)label.textContent=levels[state.level-1][0]}
+};
+const originalInteract=interact;
+interact=function(){
+  const before=state.collected.length;
+  originalInteract();
+  if(state.collected.length>before){$('screenFlash')?.classList.remove('flash');void $('screenFlash')?.offsetWidth;$('screenFlash')?.classList.add('flash');drawMiniMap()}
+};
+// Fix camera zoom to use the same variable the camera actually reads.
+const zoomHandlerFix=()=>{if(camera)cameraDistance=THREE.MathUtils.clamp(cameraDistance,4.5,13)};
+cinematicSetup();
+
+
+// ===== COMPLETE TREASURE HUNT + REAL-TIME COMBAT SYSTEM =====
+// This add-on is intentionally defined before init() so the first world is built with it.
+state.treasures = Array.isArray(state.treasures) ? state.treasures : [];
+state.cluesRead = Array.isArray(state.cluesRead) ? state.cluesRead : [];
+state.maxLevel = Math.max(Number(state.maxLevel)||1, Number(state.level)||1);
+const storyTreasureLore = [
+ ['Corona del Alba','La corona guarda el primer recuerdo: dos viajeros prometieron que ningún portal los separaría. Una inscripción apunta hacia el Bosque de Luciérnagas.'],
+ ['Brújula de Ceniza','La aguja no señala el norte; señala aquello que más importa. En su reverso aparece el símbolo del Lago de los Recuerdos.'],
+ ['Perla del Lago','La perla conserva una voz: “No busques el destino, escucha las pistas que dejó el camino”. El mapa menciona el Pueblo de Cristal.'],
+ ['Corazón de Cristal','Dentro late una luz que no se apaga. La nota revela que alguien escondió un mapa en la Costa de los Sueños.'],
+ ['Mapa de los Náufragos','El mapa dibuja diez portales y una estrella partida en dos. Una mitad duerme en las Ruinas de la Luna.'],
+ ['Máscara Lunar','Tras la máscara hay un mensaje: la sombra no es invencible; solo teme a quien mantiene viva su esperanza.'],
+ ['Ojo de la Montaña','La gema muestra una ruta secreta hacia el Jardín de las Estrellas y revela que los guardianes protegen las pistas, no el oro.'],
+ ['Semilla Estelar','Al tocar la semilla, una voz promete que cada recuerdo puede hacer florecer un mundo entero. La última llave espera en el castillo.'],
+ ['Llave del Castillo','La llave abre un cofre con dos mitades de un medallón. Solo falta reunirlas en el último portal.'],
+ ['Tesoro Para Siempre','El último tesoro no es oro: es la historia completa de los viajeros. Los diez portales brillan porque cada recuerdo fue encontrado y protegido. ¡Aventura completada!']
+];
+let storyChest=null, storyEnemies=[], swordRig=null;
+const battle={lastAttack:0,particles:[],enemyTimers:new WeakMap(),attackRange:3.6};
+let combatTextTimer=null;
+function combatText(msg){const el=$('combatText');if(!el)return;el.textContent=msg;el.classList.remove('show');void el.offsetWidth;el.classList.add('show');clearTimeout(combatTextTimer);combatTextTimer=setTimeout(()=>el.classList.remove('show'),1250)}
+function combatFlash(){const el=$('combatFlash');if(!el)return;el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit')}
+function battleParticles(pos,color=0xffd36a,count=14){
+ if(!scene||!pos)return;
+ for(let i=0;i<count;i++){
+  const mesh=new THREE.Mesh(new THREE.SphereGeometry(.035+Math.random()*.045,6,5),new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));
+  mesh.position.copy(pos);mesh.userData.vel=new THREE.Vector3((Math.random()-.5)*4.8,1+Math.random()*4.2,(Math.random()-.5)*4.8);mesh.userData.life=.35+Math.random()*.45;scene.add(mesh);battle.particles.push(mesh);
+ }
+}
+function faceEntity(from,to){return Math.atan2(to.x-from.x,to.z-from.z)}
+function showBattleHud(enemy){const hud=$('battleHud');if(!hud)return;if(!enemy||!enemy.visible||enemy.userData.hp<=0){hud.style.display='none';return}hud.style.display='block';$('bhName').textContent=enemy.userData.name.toUpperCase();$('bhLevel').textContent=enemy.userData.level;$('bhHealth').textContent=Math.ceil(enemy.userData.hp/enemy.userData.maxHp*100)+'%';$('bhBar').style.width=Math.max(0,enemy.userData.hp/enemy.userData.maxHp*100)+'%'}
+function createSword(){
+ if(!avatar||swordRig)return;
+ swordRig=new THREE.Group();swordRig.position.set(.42,1.05,-.23);avatar.add(swordRig);
+ const blade=new THREE.Mesh(new THREE.BoxGeometry(.105,.82,.09),new THREE.MeshStandardMaterial({color:0xa8edff,metalness:.82,roughness:.18,emissive:0x226a91,emissiveIntensity:.42}));blade.position.y=.48;blade.rotation.z=-.12;swordRig.add(blade);
+ const guard=new THREE.Mesh(new THREE.BoxGeometry(.38,.09,.13),new THREE.MeshStandardMaterial({color:0xf1c66d,metalness:.7,roughness:.3}));guard.position.y=.08;swordRig.add(guard);
+ const grip=new THREE.Mesh(new THREE.CylinderGeometry(.055,.06,.28,8),new THREE.MeshStandardMaterial({color:0x54334d,roughness:.8}));grip.position.y=-.1;swordRig.add(grip);
+ const pommel=new THREE.Mesh(new THREE.SphereGeometry(.075,8,8),new THREE.MeshStandardMaterial({color:0xffd77a,metalness:.65}));pommel.position.y=-.25;swordRig.add(pommel);
+}
+function addStoryObjects(){
+ storyEnemies=[];storyChest=null;createSword();
+ const lv=state.level,done=state.treasures.includes(String(lv));
+ const wood=material(0x69402c,.85),gold=material(0xf2c55e,.34,.55);
+ const chest=new THREE.Group();chest.position.set(lv%2?-8:8,0,-20);chest.userData={kind:'treasure',level:lv};
+ addMesh(chest,new THREE.BoxGeometry(1.45,.72,.95),wood,[0,.43,0]);
+ addMesh(chest,new THREE.BoxGeometry(1.5,.15,1),gold,[0,.84,0]);
+ addMesh(chest,new THREE.BoxGeometry(.18,.27,.09),gold,[0,.53,.51]);
+ const chestLight=new THREE.PointLight(0xffc75c,.85,6);chestLight.position.set(0,1.35,0);chest.add(chestLight);
+ const rune=addMesh(chest,new THREE.TorusGeometry(.24,.045,7,20),new THREE.MeshStandardMaterial({color:0xffe69a,emissive:0xffb52e,emissiveIntensity:1.7}),[0,1.35,0]);rune.rotation.x=Math.PI/2;
+ world.add(chest);storyChest=chest;
+ if(!done)items.push(chest);else chest.visible=false;
+ if(done)return;
+ const names=['Sombra del Portal','Lobo de Bruma','Vigía del Lago','Centinela de Cristal','Cangrejo de la Costa','Espectro Lunar','Trol de la Cumbre','Polilla Estelar','Caballero Umbrío','Dragón del Umbral'];
+ const enemy=new THREE.Group();enemy.position.set(lv%2?5.8:-5.8,0,-14);enemy.userData={kind:'enemy',name:names[lv-1],hp:4+Math.floor((lv-1)/2),maxHp:4+Math.floor((lv-1)/2),level:lv,stun:0,hitFlash:0,windup:0,cooldown:1.2,phase:0};
+ const skin=material([0x39375e,0x31535b,0x493553,0x37576c][(lv-1)%4],.55,.15),dark=material(0x211c31,.65,.15),glowMat=new THREE.MeshStandardMaterial({color:0xff596e,emissive:0xff193b,emissiveIntensity:2.2});
+ addMesh(enemy,new THREE.CapsuleGeometry(.48,.88,5,9),skin,[0,1.03,0]);addMesh(enemy,new THREE.SphereGeometry(.38,12,10),dark,[0,2.02,0]);
+ for(const side of [-1,1])addMesh(enemy,new THREE.SphereGeometry(.075,8,8),glowMat,[side*.145,2.06,-.32]);
+ for(const side of [-1,1]){const horn=addMesh(enemy,new THREE.ConeGeometry(.15,.52,6),dark,[side*.27,2.36,0]);horn.rotation.z=side*-.42}
+ const aura=new THREE.PointLight(0xff365f,1.25,5);aura.position.y=1.7;enemy.add(aura);
+ world.add(enemy);storyEnemies.push(enemy);items.push(enemy);
+}
+const baseLoadSaveFinal=loadSave;
+loadSave=function(){baseLoadSaveFinal();state.maxLevel=Math.max(Number(state.maxLevel)||1,Number(state.level)||1);updateUI()};
+const cinematicMakeWorld=makeWorld;
+makeWorld=function(){cinematicMakeWorld();addStoryObjects();updateUI()};
+function defeatEnemy(enemy){
+ if(!enemy||enemy.userData.hp>0)return;
+ enemy.visible=false;items=items.filter(o=>o!==enemy);const u=enemy.userData;const pos=enemy.position.clone().add(new THREE.Vector3(0,1.2,0));battleParticles(pos,0xb99bff,34);showBattleHud(null);
+ const reward=12+u.level;state.coins+=reward;state.xp+=30+u.level*3;
+ combatText('¡GUARDIÁN DERROTADO!');showDialogue('¡Centinela derrotado! ⚔️',`Has vencido a ${u.name}. Recibes ${reward} monedas y ${30+u.level*3} XP. El cofre está libre, pero necesitas las cinco pistas de esta región para abrirlo.`);updateUI();save();
+}
+function attackEnemy(enemy,damage){
+ if(!enemy||!enemy.visible||enemy.userData.hp<=0)return;
+ const u=enemy.userData;u.hp=Math.max(0,u.hp-damage);u.stun=.24;u.hitFlash=.22;
+ const p=enemy.position.clone().add(new THREE.Vector3(0,1.45,0));battleParticles(p,damage>1?0xffe16b:0x7beaff,damage>1?20:12);
+ const dx=enemy.position.x-player.position.x,dz=enemy.position.z-player.position.z,len=Math.hypot(dx,dz)||1;enemy.position.x+=dx/len*.36;enemy.position.z+=dz/len*.36;
+ enemy.rotation.y=faceEntity(enemy.position,player.position);if(swordRig){swordRig.rotation.x=-1.3;swordRig.rotation.z=-.8;setTimeout(()=>{if(swordRig){swordRig.rotation.x=0;swordRig.rotation.z=0}},170)}
+ showBattleHud(enemy);combatFlash();if(u.hp<=0)defeatEnemy(enemy);else combatText(damage>1?'¡GOLPE CRÍTICO!':'¡IMPACTO!');updateUI();save();
+}
+function playerAttack(){
+ if(!started||paused)return;const now=performance.now();if(now-battle.lastAttack<430)return;battle.lastAttack=now;createSword();
+ const enemy=storyEnemies.find(e=>e.visible&&e.userData.hp>0&&player.position.distanceTo(e.position)<=battle.attackRange);
+ if(!enemy){combatText('ACÉRCATE AL GUARDIÁN');return}
+ player.rotation.y=faceEntity(player.position,enemy.position);attackEnemy(enemy,Math.random()<.2?2:1);
+}
+function updateBattle(dt){
+ if(!started||paused)return;createSword();
+ for(const enemy of storyEnemies){
+  if(!enemy.visible||enemy.userData.hp<=0)continue;
+  const u=enemy.userData,d=player.position.distanceTo(enemy.position);u.phase+=dt;u.cooldown-=dt;
+  if(u.hitFlash>0){u.hitFlash-=dt;enemy.scale.setScalar(1+Math.max(0,u.hitFlash)*.55)}else enemy.scale.setScalar(1+Math.sin(u.phase*3.1)*.025);
+  if(u.stun>0){u.stun-=dt;continue}
+  if(d<15&&d>2.1){const dx=player.position.x-enemy.position.x,dz=player.position.z-enemy.position.z,len=Math.hypot(dx,dz)||1;const speed=1.05+u.level*.055;enemy.position.x+=dx/len*speed*dt;enemy.position.z+=dz/len*speed*dt;enemy.rotation.y=faceEntity(enemy.position,player.position)}
+  if(d<=2.15){enemy.rotation.y=faceEntity(enemy.position,player.position);if(u.windup<=0&&u.cooldown<=0){u.windup=.62;u.cooldown=2.0;combatText('¡ESQUIVA! SHIFT O SALTA')}if(u.windup>0){u.windup-=dt;enemy.scale.set(1.13,1.13,1.13);if(u.windup<=0){const dodging=!!(keys.shift||keys.sprint||keys[' ']||keys.space||player.position.distanceTo(enemy.position)>2.5);if(!dodging){state.health=Math.max(0,state.health-Math.max(1,(6+u.level*1.35)*(1-Math.min(.48,state.armorLevel*.12))*(performance.now()/1000<shieldUntil?.45:1)));combatFlash();combatText('¡TE HAN GOLPEADO!');battleParticles(player.position.clone().add(new THREE.Vector3(0,1,0)),0xff506c,14);updateUI();save();if(state.health<=0)die()}else{combatText('¡ESQUIVA PERFECTA!');player.position.x+=Math.sin(player.rotation.y)*.8;player.position.z+=Math.cos(player.rotation.y)*.8}}}}
+ }
+ for(let i=battle.particles.length-1;i>=0;i--){const p=battle.particles[i];p.userData.life-=dt;p.position.addScaledVector(p.userData.vel,dt);p.userData.vel.y-=7.5*dt;p.material.opacity=Math.max(0,p.userData.life/.8);if(p.userData.life<=0){scene.remove(p);p.geometry.dispose();p.material.dispose();battle.particles.splice(i,1)}}
+ if(near&&near.userData.kind==='enemy')showBattleHud(near);else if(!storyEnemies.some(e=>e.visible&&player.position.distanceTo(e.position)<7))showBattleHud(null);
+ if(swordRig){swordRig.rotation.x=THREE.MathUtils.lerp(swordRig.rotation.x,0,.16);swordRig.rotation.z=THREE.MathUtils.lerp(swordRig.rotation.z,0,.16)}
+}
+const cinematicUpdateWorld=updateWorld;
+updateWorld=function(dt){cinematicUpdateWorld(dt);updateBattle(dt)};
+const previousNextLevel=nextLevel;
+nextLevel=function(){previousNextLevel();state.maxLevel=Math.max(Number(state.maxLevel)||1,Number(state.level)||1);save()};
+const cinematicInteract=interact;
+interact=function(){
+ if(!started)return;
+ if(near?.userData?.kind==='enemy'){playerAttack();return}
+ if(near?.userData?.kind==='treasure'){
+  const levelKey=String(state.level),found=state.treasures.includes(levelKey),clues=state.collected.filter(v=>v.startsWith(state.level+'-')).length;
+  if(found){showDialogue('Tesoro recuperado ✨','Ya registraste este tesoro. Acércate al portal para continuar la historia.');return}
+  if(clues<5){showDialogue('Cofre sellado 🗝️',`El mecanismo tiene cinco ranuras. Busca las cinco pistas luminosas para descifrarlo. Pistas encontradas: ${clues}/5.`);return}
+  if(storyEnemies.some(e=>e.visible&&e.userData.hp>0)){showDialogue('El guardián protege el tesoro ⚔️','Derrota al guardián. Pulsa F o haz clic para atacar; usa SHIFT o ESPACIO para esquivar su golpe cuando aparezca el aviso.');return}
+  state.treasures.push(levelKey);state.questDone=true;state.coins+=35;state.xp+=80;near.visible=false;items=items.filter(o=>o!==near);battleParticles(near.position.clone().add(new THREE.Vector3(0,1,0)),0xffd36a,42);
+  const lore=storyTreasureLore[state.level-1];state.cluesRead.push(levelKey);showDialogue('¡TESORO DESENTERRADO! ✨ '+lore[0],lore[1]+'\n\n+35 monedas · +80 XP. El portal de esta región ya está abierto.');updateUI();save();return;
+ }
+ if(near?.userData?.kind==='portal'&&!state.treasures.includes(String(state.level))){showDialogue('Portal sellado 🌀','Para abrir este portal, reúne las cinco pistas, vence al guardián y reclama el tesoro de la región.');return}
+ cinematicInteract();
+};
+const cinematicProximity=proximity;
+proximity=function(){
+ cinematicProximity();
+ if(near?.userData?.kind==='enemy'){$('prompt').innerHTML='⚔ <b>F / CLIC</b> atacar · <b>E</b> golpe rápido; esquiva con SHIFT';showBattleHud(near)}
+ else if(near?.userData?.kind==='treasure')$('prompt').innerHTML='🗝️ <b>E</b> examinar cofre';
+ else if(near?.userData?.kind==='portal'&&!state.treasures.includes(String(state.level)))$('prompt').innerHTML='🔒 Portal sellado · consigue el tesoro';
+};
+const cinematicBind=bind;
+bind=function(){
+ cinematicBind();
+ $('restart').onclick=()=>{state.level=1;state.maxLevel=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='rose';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;updateUI();save()};
+ addEventListener('keydown',e=>{if(!e.repeat&&e.key.toLowerCase()==='f')playerAttack()});
+ renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===0&&started&&!paused)playerAttack()});
+ const mobile=$('mobile');if(mobile&&!$('attackMobile')){const btn=document.createElement('button');btn.id='attackMobile';btn.textContent='⚔ ATACAR';btn.addEventListener('click',playerAttack);mobile.appendChild(btn)}
+};
+const cinematicUI=updateUI;
+updateUI=function(){cinematicUI();if(state.treasures){const n=state.collected.filter(v=>v.startsWith(state.level+'-')).length,found=state.treasures.includes(String(state.level));$('questTitle').textContent=found?'Tesoro recuperado ✨':'Caza del tesoro · Región '+state.level;$('questDesc').textContent=found?'Tesoro recuperado. El portal ya está abierto.':'Reúne 5 pistas, derrota al guardián y abre el cofre dorado.';$('questCount').textContent=`Pistas ${n}/5 · ${found?'tesoro hallado':'tesoro oculto'}`;$('questProgress').style.width=(n/5*100)+'%'}};
+
+// ===== GENESY & CHRIS: STORY CAMPAIGN UPGRADE =====
+state.playerName='Genesy';
+state.regionObjectives=state.regionObjectives||{};
+state.defeatedEnemies=Array.isArray(state.defeatedEnemies)?state.defeatedEnemies:[];
+state.chrisTalked=!!state.chrisTalked;
+const regionMissions=[
+ {title:'El primer juramento',task:'Encuentra a Chris y habla con él antes de reclamar el tesoro.',need:0,token:'',icon:'💬'},
+ {title:'La niebla infectada',task:'Activa 3 faroles de niebla y derrota a los cinco zombis.',need:3,token:'Farol espectral',icon:'🏮'},
+ {title:'Voces bajo el agua',task:'Recupera 3 runas hundidas y vence a los ahogados.',need:3,token:'Runa hundida',icon:'🔱'},
+ {title:'El corazón fracturado',task:'Rompe 4 sellos de cristal y derrota a los infectados cristalinos.',need:4,token:'Sello de cristal',icon:'💠'},
+ {title:'SOS desde la costa',task:'Recupera 3 señales de los náufragos y limpia la costa.',need:3,token:'Señal de auxilio',icon:'⚓'},
+ {title:'Las brasas de la luna',task:'Enciende 4 braseros antiguos y derrota a los espectros.',need:4,token:'Brasero lunar',icon:'🔥'},
+ {title:'La senda del gigante',task:'Encuentra 3 reliquias de montaña y supera a los troles.',need:3,token:'Reliquia de cumbre',icon:'⛰️'},
+ {title:'Jardín marchito',task:'Recupera 4 semillas estelares para devolver la luz al jardín.',need:4,token:'Semilla estelar',icon:'🌟'},
+ {title:'El asedio del castillo',task:'Activa 3 mecanismos del castillo y derrota a sus caballeros zombis.',need:3,token:'Mecanismo real',icon:'⚙️'},
+ {title:'La última memoria',task:'Reúne 5 fragmentos de memoria y derrota a los guardianes finales.',need:5,token:'Fragmento de memoria',icon:'💜'}
+];
+const zombieNames=[
+ ['Zombi del sendero','Infectado del granero','Perro carroñero','Zombi de ojos rojos','El primer devorador'],
+ ['Zombi de la niebla','Lobo infectado','Recolector podrido','Acechador del bosque','La Madre de la Niebla'],
+ ['Ahogado errante','Pescador hundido','Anguila espectral','Náufrago putrefacto','El Capitán Sumergido'],
+ ['Infectado de cuarzo','Gólem quebrado','Zombi prismático','Minero cristalizado','El Corazón Roto'],
+ ['Zombi marinero','Cangrejo infectado','Saqueador costero','Náufrago hambriento','El Almirante Muerto'],
+ ['Espectro lunar','Zombi de ceniza','Monje sin rostro','Sombra errante','La Reina del Eclipse'],
+ ['Zombi de la cumbre','Trol de piedra','Cuervo carroñero','Gigante enfermo','El Coloso de Hielo'],
+ ['Polilla corrompida','Zombi de raíces','Espantapájaros vivo','Hada marchita','La Reina Marchita'],
+ ['Guardia zombi','Caballero maldito','Arquero podrido','Verdugo real','El Rey Sin Corazón'],
+ ['Eco de Genesy','Eco de Chris','Sombra del pasado','Devorador de recuerdos','El Vacío Final']
+];
+const missionMatColors=[0xffc45d,0x70e5ff,0x6fffc2,0x91a9ff,0xffa36d,0xc8a4ff,0x9ce7ff,0xffd76a,0xff7e9e,0xe9a9ff];
+function makeDetailedAvatar(){
+ avatar=new THREE.Group();player.add(avatar);
+ const skin=material(0xdca987,.72),hair=material(0x302034,.78),cloth=material(0xf05cae,.68),dark=material(0x25243b,.8),gold=material(0xdab66c,.35,.45),white=material(0xfff4ec,.35),iris=material(0x443b75,.3);
+ addMesh(avatar,new THREE.CapsuleGeometry(.31,.62,7,14),cloth,[0,1.08,0]); // torso, index 0
+ addMesh(avatar,new THREE.SphereGeometry(.285,24,18),skin,[0,1.83,0]); // head index 1
+ addMesh(avatar,new THREE.SphereGeometry(.315,20,14),hair,[0,2.02,.035],[1.04,.66,1.02]); // hair index 2
+ addMesh(avatar,new THREE.CapsuleGeometry(.09,.19,4,8),skin,[0,1.57,0]);
+ for(const side of [-1,1]){
+  addMesh(avatar,new THREE.SphereGeometry(.052,12,10),white,[side*.105,1.84,-.258]);
+  addMesh(avatar,new THREE.SphereGeometry(.027,10,8),iris,[side*.105,1.84,-.303]);
+  const brow=addMesh(avatar,new THREE.BoxGeometry(.10,.022,.025),hair,[side*.105,1.925,-.274]);brow.rotation.z=side*-.08;
+  addMesh(avatar,new THREE.CapsuleGeometry(.045,.24,4,7),hair,[side*.255,1.79,.015],[.9,1.05,.8]);
+  addMesh(avatar,new THREE.CapsuleGeometry(.115,.32,4,8),cloth,[side*.43,1.17,0]);
+  addMesh(avatar,new THREE.SphereGeometry(.115,10,8),skin,[side*.44,.91,-.015]);
+  addMesh(avatar,new THREE.CapsuleGeometry(.115,.39,5,8),dark,[side*.17,.40,0]);
+  addMesh(avatar,new THREE.BoxGeometry(.27,.16,.38),dark,[side*.17,.13,-.04]);
+ }
+ addMesh(avatar,new THREE.ConeGeometry(.035,.08,8),skin,[0,1.79,-.31]);
+ addMesh(avatar,new THREE.BoxGeometry(.10,.018,.018),material(0x8e4b62),[0,1.72,-.29]);
+ addMesh(avatar,new THREE.BoxGeometry(.55,.10,.35),gold,[0,.78,0]);
+ addMesh(avatar,new THREE.BoxGeometry(.34,.34,.20),material(0x5a4777),[0,1.18,.30]);
+ addMesh(avatar,new THREE.TorusGeometry(.12,.035,7,18),gold,[0,.8,-.03]);
+ // Hair fringe and a small star-shaped clasp make Genesy recognizable.
+ for(let i=0;i<4;i++){const lock=addMesh(avatar,new THREE.ConeGeometry(.09,.26,7),hair,[-.20+i*.13,1.92,-.23]);lock.rotation.z=.16+i*.12}
+ const clasp=addMesh(avatar,new THREE.OctahedronGeometry(.09),gold,[.23,2.02,-.19]);clasp.material.emissive=new THREE.Color(0x7e3d9e);clasp.material.emissiveIntensity=.35;
+}
+createAvatar=makeDetailedAvatar;
+const oldUpdateAvatarVisual=updateAvatar;
+updateAvatar=function(){
+ oldUpdateAvatarVisual();
+ if(!petGroup||state.pet==='none')return;
+ while(petGroup.children.length){const o=petGroup.children[0];petGroup.remove(o);if(o.geometry)o.geometry.dispose();if(o.material)o.material.dispose()}
+ const furHex=state.pet==='fox'?0xd9773d:state.pet==='dragon'?0x7664d8:state.pet==='rabbit'?0xe7dce7:state.pet==='dog'?0xb98758:0xe9e0d7;
+ const fur=material(furHex,.82),darkFur=material(state.pet==='dragon'?0x3d2d7b:furHex*.62,.82),eye=material(0x241c2d,.3),shine=new THREE.MeshStandardMaterial({color:0xffd3ef,emissive:0x9d4e9b,emissiveIntensity:.25});
+ const dragon=state.pet==='dragon',rabbit=state.pet==='rabbit',fox=state.pet==='fox';
+ addMesh(petGroup,new THREE.SphereGeometry(.29,18,14),fur,[0,.42,0],[1.28,.8,.85]);
+ addMesh(petGroup,new THREE.SphereGeometry(.235,18,14),fur,[0,.65,-.23],[1,1,.92]);
+ for(const side of [-1,1]){
+  addMesh(petGroup,new THREE.SphereGeometry(.027,8,8),eye,[side*.09,.68,-.425]);
+  addMesh(petGroup,new THREE.SphereGeometry(.009,6,6),shine,[side*.095,.69,-.445]);
+  if(rabbit||dragon){const ear=addMesh(petGroup,new THREE.ConeGeometry(.09,rabbit?.38:.29,8),fur,[side*.13,.94,-.22]);ear.rotation.z=side*-.16}
+  else if(fox||state.pet==='cat'||state.pet==='dog'){const ear=addMesh(petGroup,new THREE.ConeGeometry(.10,.27,8),fur,[side*.15,.85,-.22]);ear.rotation.z=side*-.22}
+  addMesh(petGroup,new THREE.CapsuleGeometry(.07,.25,4,7),fur,[side*.19,.25,.01]);
+ }
+ addMesh(petGroup,new THREE.SphereGeometry(.085,10,8),darkFur,[0,.56,-.44],[1,.75,.7]);
+ if(!dragon)addMesh(petGroup,new THREE.SphereGeometry(.035,8,8),material(0x372735),[0,.58,-.50]);
+ const tail=addMesh(petGroup,new THREE.CapsuleGeometry(.07,fox?.48:.30,4,8),fur,[fox?-.38:.33,.45,.20]);tail.rotation.z=fox?-.9:.7;
+ if(dragon){addMesh(petGroup,new THREE.ConeGeometry(.14,.42,5),darkFur,[-.23,.52,.04]);addMesh(petGroup,new THREE.ConeGeometry(.14,.42,5),darkFur,[.23,.52,.04]);}
+};
+function missionProgress(lv=state.level){return Number(state.regionObjectives[String(lv)]||0)}
+function missionDone(lv=state.level){const m=regionMissions[lv-1];return lv===1?!!state.chrisTalked:missionProgress(lv)>=m.need}
+function makeMissionItems(){
+ const lv=state.level,m=regionMissions[lv-1];if(!m||lv===1||missionDone(lv))return;
+ const count=m.need,shape=lv===3?'cone':lv===4?'octa':lv===5?'torus':lv===6?'flame':lv===9?'box':'crystal';
+ for(let i=0;i<count;i++){
+  const id=`${lv}-mission-${i}`;if(state.collected.includes(id))continue;
+  const obj=new THREE.Group();obj.position.set(Math.sin(i*4.1+lv)*12,0,10-i*8);obj.userData={kind:'mission',id,level:lv,label:m.token};world.add(obj);
+  const mat=new THREE.MeshStandardMaterial({color:missionMatColors[lv-1],emissive:missionMatColors[lv-1],emissiveIntensity:.75,metalness:.25,roughness:.25});
+  let mesh;if(shape==='cone')mesh=addMesh(obj,new THREE.ConeGeometry(.38,.9,7),mat,[0,1,0]);else if(shape==='torus'){mesh=addMesh(obj,new THREE.TorusGeometry(.42,.11,8,24),mat,[0,1,0]);mesh.rotation.x=Math.PI/2}else if(shape==='box')mesh=addMesh(obj,new THREE.BoxGeometry(.58,.58,.58),mat,[0,1,0]);else if(shape==='flame')mesh=addMesh(obj,new THREE.ConeGeometry(.38,.9,7),mat,[0,1,0]);else mesh=addMesh(obj,new THREE.OctahedronGeometry(.48),mat,[0,1,0],[.8,1.3,.8]);
+  const ring=addMesh(obj,new THREE.TorusGeometry(.53,.035,6,24),new THREE.MeshStandardMaterial({color:0xffffff,emissive:missionMatColors[lv-1],emissiveIntensity:1.2}),[0,.18,0]);ring.rotation.x=Math.PI/2;
+  const light=new THREE.PointLight(missionMatColors[lv-1],.65,4);light.position.y=1;obj.add(light);items.push(obj);
+ }
+}
+function addZombiesFive(){
+ const lv=state.level;
+ // Replace the single generic enemy with a five-enemy encounter for every chapter.
+ for(const old of [...storyEnemies]){if(old.parent)old.parent.remove(old);items=items.filter(o=>o!==old)}
+ storyEnemies=[];
+ const positions=[[-7.5,-9],[7.5,-10],[-3.5,-18],[4.2,-23],[0,-15]];
+ for(let i=0;i<5;i++){
+  const id=`${lv}-enemy-${i}`;if(state.defeatedEnemies.includes(id))continue;
+  const enemy=new THREE.Group();enemy.position.set(positions[i][0],0,positions[i][1]);
+  const name=zombieNames[lv-1][i],boss=i===4;
+  enemy.userData={kind:'enemy',id,name,hp:(boss?12+lv*2:4+Math.floor((lv-1)/2)),maxHp:(boss?12+lv*2:4+Math.floor((lv-1)/2)),level:lv,stun:0,hitFlash:0,windup:0,cooldown:1.1+Math.random()*.6,phase:Math.random()*5,boss};
+  const skin=material([0x52664b,0x43584c,0x3c6b68,0x6a5a70,0x5b484e,0x4e456a,0x596d80,0x54664d,0x534752,0x574260][lv-1],.94);
+  const rag=material([0x4c3e46,0x34413b,0x30464d,0x5e4e70,0x68513d,0x383044,0x4d5664,0x374a39,0x38303e,0x332842][lv-1],.95);
+  const bone=material(0xb5b39b,.85),eye=new THREE.MeshStandardMaterial({color:0xff394f,emissive:0xe8142b,emissiveIntensity:2.5});
+  const size=boss?1.23:0.82+((i%2)*.08);
+  addMesh(enemy,new THREE.CapsuleGeometry(.34*size,.65*size,6,10),rag,[0,.91*size,0]);
+  addMesh(enemy,new THREE.SphereGeometry(.29*size,16,12),skin,[0,1.65*size,0]);
+  addMesh(enemy,new THREE.SphereGeometry(.30*size,14,10),rag,[0,1.83*size,.02],[1,.42,1]);
+  for(const side of [-1,1]){
+   addMesh(enemy,new THREE.SphereGeometry(.047*size,8,8),eye,[side*.105*size,1.67*size,-.245*size]);
+   const arm=addMesh(enemy,new THREE.CapsuleGeometry(.09*size,.46*size,4,7),skin,[side*.43*size,1.02*size,0]);arm.rotation.z=side===-1?-.38:.55;
+   addMesh(enemy,new THREE.SphereGeometry(.11*size,8,8),bone,[side*.47*size,.77*size,-.04]);
+   addMesh(enemy,new THREE.CapsuleGeometry(.105*size,.38*size,4,7),rag,[side*.16*size,.34*size,0]);
+  }
+  const wound=addMesh(enemy,new THREE.SphereGeometry(.08*size,8,6),new THREE.MeshStandardMaterial({color:0x4c1d2d,roughness:1}),[.14*size,1.34*size,-.25*size]);wound.scale.set(1,.6,.2);
+  if(boss){const horn1=addMesh(enemy,new THREE.ConeGeometry(.13,.42,6),bone,[-.18,2.02,0]);horn1.rotation.z=-.3;const horn2=addMesh(enemy,new THREE.ConeGeometry(.13,.42,6),bone,[.18,2.02,0]);horn2.rotation.z=.3}
+  if(boss){const crown=addMesh(enemy,new THREE.TorusGeometry(.47,.055,8,28),new THREE.MeshStandardMaterial({color:missionMatColors[lv-1],emissive:missionMatColors[lv-1],emissiveIntensity:2}),[0,2.36,0]);crown.rotation.x=Math.PI/2;const sigil=addMesh(enemy,new THREE.OctahedronGeometry(.19,1),new THREE.MeshStandardMaterial({color:0xffe5a3,emissive:0xffa32b,emissiveIntensity:2}),[0,2.65,0]);sigil.userData.bossSigil=true;}
+  const aura=new THREE.PointLight(lv===10?0xd45aff:0xff365f,boss?1.35:.35,boss?6:2.5);aura.position.y=1.4*size;enemy.add(aura);
+  enemy.scale.setScalar(boss?1.12:1);world.add(enemy);storyEnemies.push(enemy);items.push(enemy);
+ }
+}
+const originalStoryObjectsPlus=addStoryObjects;
+addStoryObjects=function(){originalStoryObjectsPlus();addZombiesFive();makeMissionItems()};
+const oldMakeWorldPlus=makeWorld;
+makeWorld=function(){
+ oldMakeWorldPlus();
+ // The playable hero is Genesy; Chris is the guide waiting near the first path.
+ for(let i=npcs.length-1;i>=0;i--){const n=npcs[i];if(n.userData.name==='Genesy'){if(n.parent)n.parent.remove(n);npcs.splice(i,1)}else if(n.userData.name==='Guardián'){n.userData.name='Chris';n.userData.genesy=false;const shirt=n.children[0];if(shirt?.material?.color)shirt.material.color.setHex(0x3d88a8)}}
+ addRegionLandmarks();updateUI();
+};
+function addRegionLandmarks(){
+ const lv=state.level;
+ const stone=material(lv===6?0x4b3b3b:lv===7?0x7e8b9d:0x71687e,.95), glow=new THREE.MeshStandardMaterial({color:missionMatColors[lv-1],emissive:missionMatColors[lv-1],emissiveIntensity:.75});
+ if(lv===2||lv===6||lv===9){ // cemetery / haunted ruins / castle graveyard
+  for(let i=0;i<12;i++){const x=(i%2?1:-1)*(5+(i*3.3)%19),z=22-(i*5.7)%48;const g=new THREE.Group();g.position.set(x,0,z);world.add(g);addMesh(g,new THREE.BoxGeometry(.72,.9,.2),stone,[0,.5,0]);addMesh(g,new THREE.BoxGeometry(.18,.5,.24),stone,[0,1.05,0]);addMesh(g,new THREE.BoxGeometry(.52,.16,.24),stone,[0,1.13,0]);const light=new THREE.PointLight(lv===2?0x9dffdc:0xb18bff,.28,3);light.position.y=1.2;g.add(light)}
+ }
+ if(lv===4){for(let i=0;i<9;i++){const x=(i%3-1)*7,z=-5-Math.floor(i/3)*7;const pillar=addMesh(world,new THREE.OctahedronGeometry(.9),glow,[x,1.5,z],[.8,2.4,.8]);pillar.rotation.z=.2}}
+ if(lv===5){for(let i=0;i<7;i++){const x=(i-3)*6,z=20-(i%3)*14;addMesh(world,new THREE.ConeGeometry(2.6,1.3,7),material(0xd8c18b),[x,.35,z],[1.5,.55,1.2])}const ship=new THREE.Group();ship.position.set(20,0,-18);world.add(ship);addMesh(ship,new THREE.BoxGeometry(5,.8,2),material(0x5d3f35),[0,.9,0]);for(let x of [-1.4,1.4])addMesh(ship,new THREE.CylinderGeometry(.09,.12,4,7),material(0x543a31),[x,2.8,0]);addMesh(ship,new THREE.BoxGeometry(2.6,2,.08),material(0xc4b8a4),[0,3,0])}
+ if(lv===6){for(let i=0;i<9;i++){const x=(i-4)*5,z=-8-(i%3)*8;const lava=addMesh(world,new THREE.PlaneGeometry(3.8,8),new THREE.MeshStandardMaterial({color:0xff4c26,emissive:0xa92112,emissiveIntensity:1.5,roughness:.25}),[x,.015,z]);lava.rotation.x=-Math.PI/2;const rock=addMesh(world,new THREE.ConeGeometry(2,3+(i%3),5),material(0x39323c),[x,1.3,z-3]);rock.rotation.z=.15*(i%2?1:-1)}}
+ if(lv===7){for(let i=0;i<9;i++){const x=(i-4)*5,z=-18-(i%2)*7;addMesh(world,new THREE.ConeGeometry(1.4,5+(i%3),6),material(0xc8d9e9),[x,2.4,z])}}
+ if(lv===8){for(let i=0;i<18;i++){const x=Math.sin(i*2.4)*22,z=Math.cos(i*1.7)*24;const stem=addMesh(world,new THREE.CylinderGeometry(.035,.06,.6,5),material(0x4c936c),[x,.3,z]);addMesh(world,new THREE.SphereGeometry(.18,8,8),glow,[x,.67,z])}}
+ if(lv===10){for(let i=0;i<8;i++){const ring=addMesh(world,new THREE.TorusGeometry(2+i*.5,.045,6,36),glow,[Math.sin(i)*12,2+i*.3,-18-Math.cos(i)*8]);ring.rotation.set(i*.2,i*.4,i*.3)}}
+}
+const oldDefeatEnemyPlus=defeatEnemy;
+defeatEnemy=function(enemy){const id=enemy?.userData?.id;oldDefeatEnemyPlus(enemy);if(id&&!state.defeatedEnemies.includes(id))state.defeatedEnemies.push(id);save();updateUI()};
+const oldInteractFinal=interact;
+interact=function(){
+ if(!started)return;
+ if(near?.userData?.kind==='mission'){
+  const u=near.userData,lv=state.level;if(state.collected.includes(u.id)){return}
+  state.collected.push(u.id);state.regionObjectives[String(lv)]=missionProgress(lv)+1;state.coins+=6;state.xp+=12;
+  const pos=near.position.clone().add(new THREE.Vector3(0,1,0));battleParticles(pos,missionMatColors[lv-1],18);if(near.parent)near.parent.remove(near);items=items.filter(o=>o!==near);
+  const m=regionMissions[lv-1];combatText(missionProgress(lv)>=m.need?'OBJETIVO COMPLETADO':'OBJETIVO: '+missionProgress(lv)+'/'+m.need);showDialogue(missionProgress(lv)>=m.need?'¡Objetivo completado!':m.token+' recuperado',missionProgress(lv)>=m.need?`Has completado: ${m.title}. Ahora consigue las cinco pistas, derrota a los cinco enemigos y abre el cofre.`:`Encontraste ${m.token.toLowerCase()}. Te faltan ${m.need-missionProgress(lv)} para completar esta misión.`);updateUI();save();return;
+ }
+ if(near?.userData?.kind==='npc'&&near.userData.name==='Chris'){
+  if(state.level===1&&!state.chrisTalked){state.chrisTalked=true;state.coins+=15;state.xp+=25;showDialogue('Chris · El mensaje de medianoche','Genesy, por fin llegaste. La ciudad cayó cuando los portales se abrieron y los muertos comenzaron a caminar. Encontré diez sellos: cada mundo guarda una parte de la verdad. No confíes en el Guardián; no está protegiendo el tesoro, está protegiendo algo que viene detrás de nosotros. Busca las cinco pistas, derrota a los cinco infectados y abre el cofre. Si encuentras mi diario, no leas la última página en voz alta.');updateUI();save();return}
+  showDialogue('Chris · Tu compañero',state.level===10?'Genesy, el último portal está abierto. No luchamos para encontrar oro; luchamos para recuperar los recuerdos que el Vacío nos robó.':'No bajes la guardia, Genesy. '+regionMissions[state.level-1].task+' Los cinco enemigos no caerán todos de la misma forma: observa cuándo preparan su ataque y esquiva.');return;
+ }
+ if(near?.userData?.kind==='enemy'){playerAttack();return}
+ if(near?.userData?.kind==='treasure'){
+  const lv=state.level,levelKey=String(lv),found=state.treasures.includes(levelKey),clues=state.collected.filter(v=>v.startsWith(lv+'-')&&v.indexOf('-mission-')<0).length,m=regionMissions[lv-1];
+  if(found){showDialogue('Tesoro recuperado','Este mundo ya está a salvo. Usa el portal para continuar la historia.');return}
+  if(lv===1&&!state.chrisTalked){showDialogue('Antes del tesoro','Chris conoce la clave de este cofre. Encuéntralo y habla con él.');return}
+  if(clues<5){showDialogue('Cofre sellado',`Faltan pistas. Has encontrado ${clues}/5 cristales de memoria.`);return}
+  if(!missionDone(lv)){showDialogue('La misión aún no termina',m.task+` Progreso: ${missionProgress(lv)}/${m.need}.`);return}
+  const alive=storyEnemies.filter(e=>e.visible&&e.userData.hp>0).length;if(alive){showDialogue('Cinco amenazas siguen en pie',`Debes derrotar a los cinco enemigos de este mundo. Quedan ${alive}. Usa F o clic para atacar; corre con SHIFT y salta para esquivar.`);return}
+  state.treasures.push(levelKey);state.questDone=true;state.coins+=35;state.xp+=80;near.visible=false;items=items.filter(o=>o!==near);battleParticles(near.position.clone().add(new THREE.Vector3(0,1,0)),0xffd36a,42);
+  const lore=storyTreasureLore[lv-1];state.cluesRead.push(levelKey);showDialogue('CAPÍTULO DESBLOQUEADO · '+lore[0],lore[1]+'\n\n+35 monedas · +80 XP. El portal se ha abierto.');updateUI();save();return;
+ }
+ if(near?.userData?.kind==='portal'&&!state.treasures.includes(String(state.level))){showDialogue('Portal sellado','Completa la misión especial, encuentra cinco pistas, derrota a los cinco enemigos y reclama el tesoro.');return}
+ oldInteractFinal();
+};
+const oldProximityFinal=proximity;
+proximity=function(){oldProximityFinal();if(near?.userData?.kind==='mission')$('prompt').innerHTML=`${near.userData.label} · pulsa <b>E</b> para recoger`;else if(near?.userData?.kind==='enemy')$('prompt').innerHTML='🧟 <b>F / CLIC</b> atacar · <b>E</b> golpe rápido · <b>SHIFT</b> correr';else if(near?.userData?.kind==='treasure')$('prompt').innerHTML='🗝️ <b>E</b> examinar cofre';else if(near?.userData?.kind==='npc'&&near.userData.name==='Chris')$('prompt').innerHTML='💬 <b>E</b> hablar con Chris';};
+const oldUpdateBattleFinal=updateBattle;
+updateBattle=function(dt){oldUpdateBattleFinal(dt);for(const e of storyEnemies){if(e.visible&&e.userData.hp>0){e.rotation.z=THREE.MathUtils.lerp(e.rotation.z,Math.sin(performance.now()*.004+e.position.x)*.025,.06);for(const child of e.children){if(child.isMesh&&child.position.y>.6&&child.position.y<1.5)child.rotation.z=Math.sin(performance.now()*.003+e.position.x)*.04}}}};
+const oldUpdateUIFinal=updateUI;
+updateUI=function(){oldUpdateUIFinal();const lv=state.level,m=regionMissions[lv-1];if(m){const clues=state.collected.filter(v=>v.startsWith(lv+'-')&&!v.includes('-mission-')).length;const kills=state.defeatedEnemies.filter(id=>id.startsWith(lv+'-enemy-')).length;const objective=lv===1?(state.chrisTalked?'Chris habló contigo':'Habla con Chris'):m.token+': '+missionProgress(lv)+'/'+m.need;$('questTitle').textContent=state.treasures.includes(String(lv))?'Tesoro recuperado · portal abierto':m.title;$('questDesc').textContent=state.treasures.includes(String(lv))?'Este mundo ya está a salvo. Busca el portal.':m.task;$('questCount').textContent=`Pistas ${clues}/5 · Enemigos ${kills}/5 · ${objective}`;$('questProgress').style.width=(Math.min(1,(clues/5+kills/5+(missionDone(lv)?1:0))/3)*100)+'%';$('level').textContent=lv;$('levelBanner')?.querySelector('span')?.replaceChildren(document.createTextNode('CAPÍTULO '+lv+' / 10'))}};
+const oldBindFinal=bind;
+bind=function(){oldBindFinal();$('play').onclick=()=>{state.level=1;state.maxLevel=1;state.health=100;state.lives=3;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.character='explorer';state.outfit='rose';state.pet='cat';state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};makeWorld();updateUI();started=true;$('start').classList.remove('open');showDialogue('PRÓLOGO · LA NOCHE EN QUE TODO CAMBIÓ','La lluvia caía sobre el pueblo cuando el cielo se abrió en diez grietas. De ellas salieron criaturas que parecían personas, pero ya no recordaban sus nombres. Genesy despertó junto a un portal apagado y una espada que no reconocía. En su bolsillo había una nota escrita por Chris: “Si todavía recuerdas quién eres, ven a buscarme. No abras el décimo portal”.\n\nAhora Genesy debe cruzar diez mundos, descubrir qué convirtió a los vivos en zombis y recuperar los recuerdos robados. Cada mundo tiene una misión distinta, cinco enemigos y un tesoro que revela una parte de la verdad. La última página de la historia todavía no está escrita.');save()};$('continue').textContent='CONTINUAR PARTIDA';};
+// Narrative copy and character identity in the start screen.
+$('start').querySelector('.eyebrow').textContent='PRÓLOGO · DIEZ MUNDOS · UNA VERDAD OCULTA';
+$('start').querySelector('.heroart').textContent='🗡️ 🧟 🌑 🔮';
+$('start').querySelector('.subtitle').textContent='GENESY · CHRIS · AVENTURA 3D';
+$('start').querySelector('.hero p').textContent='El mundo cayó cuando diez portales despertaron a los muertos. Eres Genesy. Encuentra a Chris, sobrevive a los zombis y descubre la verdad detrás de los tesoros. Cada región tiene una misión propia, enemigos más peligrosos y una historia que cambia con tus decisiones.';
+$('play').textContent='COMENZAR HISTORIA →';
+// Make the level map strictly progressive: no jumping into chapters not unlocked yet.
+const oldOpenPanelProgressive=openPanel;
+openPanel=function(type){oldOpenPanelProgressive(type);if(type==='map'){document.querySelectorAll('#choices .choice').forEach((b,i)=>{if(i>=Math.max(1,Number(state.maxLevel)||1)){b.disabled=true;b.style.opacity='.42';b.title='Completa el capítulo anterior para desbloquear este mundo'}})}};
+
+
+// ===== SURVIVAL WORLD: HORDE, INFECTION, COMPANION AI & BIGGER MAP =====
+state.infection = Math.max(0, Math.min(100, Number(state.infection)||0));
+let infectionEnding=false, petAttackCooldown=0, infectionPulse=0, hordeCounter=0, infectionResetTimer=null, petCommandActive=false, gameAudio=null, letterReadCount=0;
+const infectionEl=$('infectionValue'), infectionBar=$('infectionBar');
+function renderInfection(){
+ const value=Math.max(0,Math.min(100,Math.round(state.infection||0)));
+ if(infectionEl)infectionEl.textContent=value+'%';
+ if(infectionBar){infectionBar.style.width=value+'%';infectionBar.classList.toggle('danger',value>=65)}
+ const hint=$('survivalHint');if(hint)hint.textContent=value>=75?'¡PELIGRO CRÍTICO! Busca un antídoto ya':value>=40?'La infección se extiende: evita las mordidas':'Evita mordidas · encuentra antídotos';
+}
+function addInfection(amount,reason='¡Mordida infectada!'){
+ if(infectionEnding||!started)return;
+ state.infection=Math.min(100,(Number(state.infection)||0)+amount);
+ renderInfection();combatText(reason+' +'+amount+'%');combatFlash();save();
+ if(state.infection>=100)infectionGameOver();
+}
+function resetCampaignAfterInfection(){
+ if(infectionResetTimer){clearTimeout(infectionResetTimer);infectionResetTimer=null;}
+ infectionEnding=false;paused=false;started=false;
+ try{localStorage.removeItem('npmm-web-save')}catch(e){}
+ state.coins=40;state.lives=3;state.health=100;state.infection=0;state.xp=0;state.level=1;state.maxLevel=1;state.character='explorer';state.outfit='rose';state.pet='cat';state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;
+ makeWorld();updateAvatar();updateUI();renderInfection();$('infectionOver').classList.remove('open');$('start').classList.add('open');
+}
+function infectionGameOver(){if(infectionEnding)return;infectionEnding=true;paused=true;started=false;$('infectionOver').classList.add('open');$('restartAfterInfection').onclick=resetCampaignAfterInfection;combatText('GENESY HA SIDO INFECTADA');infectionResetTimer=setTimeout(resetCampaignAfterInfection,5000);}
+// Enlarge the walkable area to create a true exploration zone instead of a tiny arena.
+const survivalMoveBase=move;
+move=function(dt){
+ survivalMoveBase(dt);
+ if(player){player.position.x=THREE.MathUtils.clamp(player.position.x,-47,47);player.position.z=THREE.MathUtils.clamp(player.position.z,-46,46)}
+};
+const survivalMakeWorldBase=makeWorld;
+function addLargeWorldLayer(){
+ if(!world)return;
+ // Add a wider ground beneath the original terrain and a connected, readable trail network.
+ const ground=new THREE.Mesh(new THREE.PlaneGeometry(142,142),material(levels[state.level-1][1],.98));ground.rotation.x=-Math.PI/2;ground.position.y=-.16;ground.receiveShadow=true;world.add(ground);
+ const pathMat=material(state.level===5?0xb7a17b:state.level===6?0x3b3036:0x8c8490,.98);
+ for(let i=0;i<18;i++){
+   const z=34-i*4.2,x=Math.sin(i*.46)*8;
+   const path=addMesh(world,new THREE.BoxGeometry(5.2,.035,3.7),pathMat,[x,-.105,z]);path.rotation.y=Math.sin(i*.46)*.16;
+ }
+ // Outer landmarks make the expanded map feel like a place to explore, not a small combat room.
+ const rockMat=material(state.level===7?0xb8c6d8:state.level===6?0x39333a:0x52655c,.98);
+ for(let i=0;i<46;i++){
+   const a=i*2.39996,r=28+(i%7)*2.5,x=Math.cos(a)*r,z=Math.sin(a)*r;
+   const rock=addMesh(world,new THREE.DodecahedronGeometry(.7+(i%4)*.32,0),rockMat,[x,.15,z],[1.3,1.0+(i%3)*.6,1.15]);rock.rotation.set(i*.2,i*.7,i*.13);
+ }
+ // Distinct map feature according to chapter.
+ if(state.level===1||state.level===2||state.level===9){
+   for(let i=0;i<16;i++){const x=(i%4-1.5)*10,z=22-Math.floor(i/4)*15;const g=new THREE.Group();g.position.set(x,0,z);world.add(g);addMesh(g,new THREE.BoxGeometry(.9,1.25,.22),rockMat,[0,.65,0]);addMesh(g,new THREE.BoxGeometry(.18,.7,.26),rockMat,[0,1.35,0]);if(state.level===2||state.level===9){const glow=new THREE.PointLight(0x87ffc7,.3,4);glow.position.y=1.5;g.add(glow)}}
+ }
+ // Strong landmarks visible from afar help navigation.
+ const beaconMat=new THREE.MeshStandardMaterial({color:missionMatColors[state.level-1],emissive:missionMatColors[state.level-1],emissiveIntensity:1.3,metalness:.2,roughness:.25});
+ for(let i=0;i<4;i++){const x=(i%2?1:-1)*(30+(i%3)*3),z=(i<2?-1:1)*(24+(i*3));const ob=addMesh(world,new THREE.OctahedronGeometry(1.05),beaconMat,[x,2.1,z],[.75,2.4,.75]);ob.rotation.z=.2;const l=new THREE.PointLight(missionMatColors[state.level-1],.8,8);l.position.copy(ob.position);world.add(l)}
+}
+function addHorde(){
+ if(!world)return;
+ const lv=state.level;
+ const hordeNames=['Zombi errante','Infectado veloz','Zombi acorazado','Acechador','Carroñero'];
+ const skinColors=[0x52664b,0x43584c,0x3c6b68,0x6a5a70,0x5b484e,0x4e456a,0x596d80,0x54664d,0x534752,0x574260];
+ for(let i=0;i<14;i++){
+   const id=`${lv}-horde-${i}`;if(state.defeatedEnemies.includes(id))continue;
+   // Keep a safe spawn radius so the player isn't instantly surrounded.
+   const a=i*2.39996+lv*.41,r=18+(i%5)*4.5,x=Math.cos(a)*r,z=Math.sin(a)*r;
+   const boss=i%7===6, fast=i%5===1, armored=i%5===2;
+   const enemy=new THREE.Group();enemy.position.set(x,0,z);
+   const maxHp=(fast?2:armored?5:3)+Math.floor((lv-1)/3)+(boss?3:0);
+   enemy.userData={kind:'enemy',id,name:boss?'Zombi alfa':hordeNames[i%hordeNames.length],hp:maxHp,maxHp,level:lv,stun:0,hitFlash:0,windup:0,cooldown:1.3+Math.random(),phase:Math.random()*6,boss,fast,armored,horde:true};
+   const scale=boss?1.24:armored?1.05:.78+Math.random()*.12;
+   const rag=material(armored?0x343a42:[0x453b40,0x34443b,0x4b454a,0x4c3e46][i%4],.97),flesh=material(skinColors[(lv-1)%skinColors.length],.98),bone=material(0xb4b09a,.9);
+   const eye=new THREE.MeshStandardMaterial({color:boss?0xffb13d:0xff314f,emissive:boss?0xff701f:0xc91031,emissiveIntensity:2.2});
+   addMesh(enemy,new THREE.CapsuleGeometry(.34*scale,.66*scale,5,9),rag,[0,.9*scale,0]);
+   addMesh(enemy,new THREE.SphereGeometry(.285*scale,14,11),flesh,[0,1.63*scale,0]);
+   addMesh(enemy,new THREE.SphereGeometry(.30*scale,12,9),rag,[0,1.81*scale,.025],[1,.42,1]);
+   for(const side of [-1,1]){
+     addMesh(enemy,new THREE.SphereGeometry(.05*scale,8,6),eye,[side*.105*scale,1.65*scale,-.235*scale]);
+     const arm=addMesh(enemy,new THREE.CapsuleGeometry(.085*scale,.46*scale,4,7),flesh,[side*.42*scale,1.04*scale,0]);arm.rotation.z=side*(fast?.72:.45);
+     addMesh(enemy,new THREE.SphereGeometry(.095*scale,8,6),bone,[side*.46*scale,.79*scale,-.04]);
+     addMesh(enemy,new THREE.CapsuleGeometry(.10*scale,.36*scale,4,7),rag,[side*.16*scale,.32*scale,0]);
+   }
+   if(armored){for(let side of [-1,1])addMesh(enemy,new THREE.BoxGeometry(.26,.24,.23),material(0x65727e,.7,.4),[side*.29,1.17,0]);}
+   if(boss){for(let side of [-1,1]){const horn=addMesh(enemy,new THREE.ConeGeometry(.14,.43,6),bone,[side*.18,2.02,0]);horn.rotation.z=side*-.3}}
+   const light=new THREE.PointLight(boss?0xff8a38:0xff365f,boss?1:.25,boss?6:2);light.position.y=1.4*scale;enemy.add(light);
+   enemy.scale.setScalar(scale);world.add(enemy);storyEnemies.push(enemy);items.push(enemy);
+ }
+}
+const survivalStoryObjectsBase=addStoryObjects;
+addStoryObjects=function(){survivalStoryObjectsBase();addHorde();};
+const survivalMakeWorldLayerBase=makeWorld;
+makeWorld=function(){survivalMakeWorldLayerBase();addLargeWorldLayer();drawMiniMap();renderInfection();};
+// Infection antidotes are scarce: three doses are spread across the enlarged region.
+function addAntidotes(){
+ if(!world)return;
+ for(let i=0;i<3;i++){
+   const id=`${state.level}-antidote-${i}`;if(state.collected.includes(id))continue;
+   const obj=new THREE.Group();obj.position.set((i-1)*24,0, i===0?28:i===1?-34:4);obj.userData={kind:'antidote',id};
+   const bottleMat=new THREE.MeshStandardMaterial({color:0x72f5c0,emissive:0x21b87a,emissiveIntensity:.8,metalness:.15,roughness:.2});
+   addMesh(obj,new THREE.CylinderGeometry(.24,.3,.62,10),bottleMat,[0,.42,0]);addMesh(obj,new THREE.CylinderGeometry(.12,.12,.17,8),material(0xe8d9ad),[0,.82,0]);
+   const ring=addMesh(obj,new THREE.TorusGeometry(.46,.035,6,20),bottleMat,[0,.15,0]);ring.rotation.x=Math.PI/2;const light=new THREE.PointLight(0x54ffc0,.8,4);light.position.y=.8;obj.add(light);world.add(obj);items.push(obj);
+ }
+}
+const survivalMakeWorldAntidoteBase=makeWorld;
+makeWorld=function(){survivalMakeWorldAntidoteBase();addAntidotes();};
+// Make the player and pet look more intentional: layered travel gear, boots, pack, and collar.
+const survivalAvatarBase=makeDetailedAvatar;
+makeDetailedAvatar=function(){
+ survivalAvatarBase();
+ if(!avatar)return;
+ const leather=material(0x493044,.82),steel=material(0x93a6bb,.35,.65),accent=new THREE.MeshStandardMaterial({color:0x73e6ff,emissive:0x2a9bce,emissiveIntensity:.5,metalness:.35,roughness:.25});
+ addMesh(avatar,new THREE.BoxGeometry(.36,.42,.22),leather,[0,1.12,.34]); // backpack
+ addMesh(avatar,new THREE.BoxGeometry(.12,.64,.11),steel,[-.28,1.15,.12]);
+ addMesh(avatar,new THREE.BoxGeometry(.12,.64,.11),steel,[.28,1.15,.12]);
+ addMesh(avatar,new THREE.TorusGeometry(.13,.035,8,18),accent,[.02,1.3,-.31]);
+ for(let side of [-1,1]){const boot=addMesh(avatar,new THREE.BoxGeometry(.29,.16,.43),leather,[side*.17,.08,-.12]);boot.rotation.x=-.06;}
+ for(let i=0;i<3;i++){const strand=addMesh(avatar,new THREE.ConeGeometry(.065,.2,7),material(0x4b2a43),[-.12+i*.12,1.94,-.25]);strand.rotation.z=.1+i*.08;}
+};
+createAvatar=makeDetailedAvatar;
+const survivalPetBase=updateAvatar;
+updateAvatar=function(){survivalPetBase();if(petGroup){const collar=new THREE.Mesh(new THREE.TorusGeometry(.19,.035,7,18),new THREE.MeshStandardMaterial({color:0xffd16d,metalness:.5,roughness:.3,emissive:0x9b5a12,emissiveIntensity:.3}));collar.rotation.x=Math.PI/2;collar.position.set(0,.55,-.22);petGroup.add(collar);const charm=addMesh(petGroup,new THREE.OctahedronGeometry(.075),new THREE.MeshStandardMaterial({color:0x76f5dc,emissive:0x2bdbb0,emissiveIntensity:.9}),[0,.48,-.43]);}};
+// Companion behaviour: the equipped pet attacks nearby infected enemies and buys Genesy time.
+const survivalUpdateBattleBase=updateBattle;
+updateBattle=function(dt){
+ const beforeHealth=state.health;
+ survivalUpdateBattleBase(dt);
+ if(state.health<beforeHealth){addInfection(10+Math.floor(state.level*.7),'¡MORDIDA!');}
+ if(!started||paused||infectionEnding)return;
+ petAttackCooldown-=dt;
+ if(petCommandActive&&petGroup&&state.pet!=='none'&&petAttackCooldown<=0){
+   let target=null,best=8.5;
+   for(const e of storyEnemies){if(!e.visible||e.userData.hp<=0)continue;const d=player.position.distanceTo(e.position);if(d<best){best=d;target=e}}
+   if(target){petAttackCooldown=1.15;petCommandActive=false;const from=petGroup.getWorldPosition(new THREE.Vector3());const to=target.position.clone().add(new THREE.Vector3(0,1,0));
+     const beamMat=new THREE.MeshBasicMaterial({color:state.pet==='dragon'?0xff8a42:state.pet==='fox'?0xffd36a:0x72f5dc,transparent:true,opacity:.9});const beam=new THREE.Mesh(new THREE.SphereGeometry(.17,8,8),beamMat);beam.position.copy(from);scene.add(beam);battle.particles.push(beam);beam.userData.vel=to.clone().sub(from).multiplyScalar(2.6);beam.userData.life=.28;
+     target.userData.petHitAt=performance.now();attackEnemy(target,1+(state.pet==='dragon'?1:0));combatText('¡'+(state.pet==='dragon'?'DRAGÓN':'MASCOTA')+' ATACA!');
+   }
+ }
+ // Infection creeps up when surrounded by several zombies; running away prevents extra exposure.
+ let nearby=0;for(const e of storyEnemies){if(e.visible&&e.userData.hp>0&&player.position.distanceTo(e.position)<4.3)nearby++}
+ infectionPulse+=dt;
+ if(nearby>=3&&infectionPulse>=1.6){infectionPulse=0;addInfection(2,'¡RODEADA POR ZOMBIS!')}
+ renderInfection();
+};
+// Antidotes and map objectives are handled by the same interaction key as other world objects.
+const survivalInteractBase=interact;
+interact=function(){
+ if(near?.userData?.kind==='antidote'){
+   const obj=near,u=obj.userData;state.collected.push(u.id);state.infection=Math.max(0,(Number(state.infection)||0)-38);state.health=Math.min(100,state.health+12);state.coins+=4;const pos=obj.position.clone().add(new THREE.Vector3(0,1,0));battleParticles(pos,0x58ffc0,24);if(obj.parent)obj.parent.remove(obj);items=items.filter(o=>o!==obj);renderInfection();combatText('ANTÍDOTO · −38% INFECCIÓN');showDialogue('Antídoto recuperado','La medicina reduce la infección en 38% y restaura parte de tu salud. Guarda los tres frascos para cuando más los necesites.');updateUI();save();return;
+ }
+ survivalInteractBase();
+};
+// Improve proximity feedback for survival supplies and make the pet visible in the survival instructions.
+const survivalProximityBase=proximity;
+proximity=function(){survivalProximityBase();if(near?.userData?.kind==='antidote')$('prompt').innerHTML='🧪 <b>E</b> recoger antídoto · −38% infección';};
+// The map panel also reports your survival state, and every new game starts clean.
+const survivalUIBase=updateUI;
+updateUI=function(){survivalUIBase();renderInfection();};
+const survivalSaveBase=save;
+save=function(){state.infection=Math.max(0,Math.min(100,Number(state.infection)||0));survivalSaveBase()};
+const survivalLoadBase=loadSave;
+loadSave=function(){survivalLoadBase();state.infection=Math.max(0,Math.min(100,Number(state.infection)||0));renderInfection()};
+// Rebuild the campaign start/reset actions so infection, hordes and unlocks reset together.
+$('restartAfterInfection').onclick=resetCampaignAfterInfection;
+const finalPlayButton=$('play');
+finalPlayButton.onclick=()=>{
+ state.level=1;state.maxLevel=1;state.health=100;state.infection=0;state.lives=3;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.character='explorer';state.outfit='rose';state.pet='cat';state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};
+ makeWorld();updateAvatar();updateUI();renderInfection();started=true;paused=false;infectionEnding=false;$('infectionOver').classList.remove('open');$('start').classList.remove('open');showDialogue('PRÓLOGO · LA ÚLTIMA ESPERANZA','La ciudad está perdida y las calles se llenan de zombis. Genesy, encuentra a Chris, reúne las pistas y salva los diez mundos. Si la infección llega al 100%, perderás y la partida volverá al principio. Tu mascota te ayudará a combatir, pero no puede salvarte de todas las mordidas. Busca antídotos, explora el mapa y no dejes que te rodeen.');save();
+};
+// Draw the expanded terrain on the minimap; the player and horde positions are updated live.
+const survivalDrawMiniBase=drawMiniMap;
+drawMiniMap=function(){
+ if(!miniCtx||!player)return;const c=miniCtx,w=180,h=180;c.clearRect(0,0,w,h);c.fillStyle='#101726';c.fillRect(0,0,w,h);
+ c.strokeStyle='#394960';c.lineWidth=1;for(let i=10;i<180;i+=20){c.beginPath();c.moveTo(i,0);c.lineTo(i,180);c.stroke();c.beginPath();c.moveTo(0,i);c.lineTo(180,i);c.stroke()}
+ c.strokeStyle='#b9a9a0';c.lineWidth=3;c.beginPath();c.moveTo(90,145);c.lineTo(90,110);c.lineTo(110,88);c.lineTo(90,63);c.lineTo(90,28);c.stroke();
+ for(const o of items){if(!o.visible)continue;const x=90+(o.position.x/50)*78,y=90+(o.position.z/50)*78;if(x<3||x>177||y<3||y>177)continue;
+   if(o.userData.kind==='enemy'){c.fillStyle='#ff526b';c.fillRect(x-2,y-2,4,4)}else if(o.userData.kind==='crystal'||o.userData.kind==='mission'){c.fillStyle='#68f5d4';c.beginPath();c.arc(x,y,2.3,0,Math.PI*2);c.fill()}else if(o.userData.kind==='antidote'){c.fillStyle='#9dffad';c.fillRect(x-2,y-2,4,4)}else if(o.userData.kind==='treasure'){c.fillStyle='#ffd76e';c.fillRect(x-3,y-3,6,6)}else if(o.userData.kind==='portal'){c.fillStyle='#c6a0ff';c.beginPath();c.arc(x,y,4,0,Math.PI*2);c.stroke()}
+ }
+ const px=90+(player.position.x/50)*78,py=90+(player.position.z/50)*78;c.fillStyle='#fff';c.beginPath();c.arc(px,py,4,0,Math.PI*2);c.fill();c.strokeStyle='#75f5dc';c.lineWidth=2;c.stroke();c.fillStyle='#fff';c.font='bold 10px sans-serif';c.fillText('N',86,11);
+};
+const survivalAnimateBase=animate;
+// animate is recursive and already calls updateWorld, so draw the live map at a modest cadence.
+const survivalDrawCadence={t:0};
+const survivalUpdateWorldBase=updateWorld;
+updateWorld=function(dt){survivalUpdateWorldBase(dt);survivalDrawCadence.t+=dt;if(survivalDrawCadence.t>.35){survivalDrawCadence.t=0;drawMiniMap()}};
+// ===== FINAL POLISH PATCH: commanded companion, chapter-specific biomes, letters, sound and mobile =====
+// Companion is passive by default. Press R or the on-screen command to send it after one nearby target.
+function orderPetAttack(){
+ if(!started||paused)return;
+ if(state.pet==='none'||!petGroup){toast('Equipa una mascota en el vestidor primero.');return}
+ const target=storyEnemies.find(e=>e.visible&&e.userData.hp>0&&player.position.distanceTo(e.position)<14);
+ if(!target){toast('No hay zombis cerca. Acércate antes de dar la orden.');return}
+ petCommandActive=true;petAttackCooldown=0;toast('🐾 ¡Mascota, ataca a '+(target.userData.name||'ese zombi')+'!');playSfx('pet');
+}
+// Small synthesized sound effects; no external audio assets required.
+function playSfx(type='pickup'){
+ try{
+  if(!gameAudio)gameAudio=new (window.AudioContext||window.webkitAudioContext)();
+  if(gameAudio.state==='suspended')gameAudio.resume();
+  const now=gameAudio.currentTime, cfg={pickup:[660,.11,'sine'],attack:[125,.08,'sawtooth'],pet:[520,.12,'triangle'],letter:[880,.18,'sine'],portal:[240,.32,'sine'],hurt:[78,.16,'square']}[type]||[440,.1,'sine'];
+  const osc=gameAudio.createOscillator(),gain=gameAudio.createGain();osc.type=cfg[2];osc.frequency.setValueAtTime(cfg[0],now);if(type==='portal')osc.frequency.exponentialRampToValueAtTime(660,now+.3);if(type==='hurt')osc.frequency.exponentialRampToValueAtTime(42,now+.14);gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.065,now+.012);gain.gain.exponentialRampToValueAtTime(.0001,now+cfg[1]);osc.connect(gain);gain.connect(gameAudio.destination);osc.start(now);osc.stop(now+cfg[1]+.02);
+ }catch(e){}
+}
+// Unique, discoverable letters from Chris are placed at different points in every region.
+const chapterLetters=[
+ ['Carta 01 · La primera noche','Genesy: si lees esto, significa que llegaste al pueblo. No intentes salvar a todos a la vez. Busca un lugar seguro, aprende cómo se mueven y no permitas que te muerdan.'],
+ ['Carta 02 · Bajo la niebla','Vi siluetas caminando entre los árboles aunque no había nadie vivo. El bosque escucha los pasos: avanza despacio y no confundas las luces con luciérnagas.'],
+ ['Carta 03 · El lago recuerda','Las voces bajo el agua repiten nombres. La gema azul no es una joya: es el recuerdo de la primera persona que abrió un portal.'],
+ ['Carta 04 · El pueblo de vidrio','Las ventanas reflejan cosas que todavía no han ocurrido. Si ves tu sombra mirando hacia otro lado, no la sigas.'],
+ ['Carta 05 · La costa perdida','El capitán escondió la llave dentro del casco. Las mareas cambian el camino, pero el faro siempre apunta hacia la verdad.'],
+ ['Carta 06 · Ceniza lunar','La luna no causó la infección; solo la hizo visible. El origen está mucho más abajo, donde las piedras todavía están calientes.'],
+ ['Carta 07 · La montaña','El frío conserva los cuerpos y también los secretos. La criatura más grande no es la más peligrosa: observa sus pausas antes de atacar.'],
+ ['Carta 08 · El jardín enfermo','Las raíces están conectadas. Cuando una criatura cae, el jardín lo siente. Destruye el sello antes de que vuelva a crecer.'],
+ ['Carta 09 · El castillo','El rey pidió que cerraran las puertas desde fuera. No estaba intentando mantener a los zombis fuera; estaba intentando mantener algo dentro.'],
+ ['Carta 10 · La última página','Genesy, fui yo quien abrió el primer portal para buscar una forma de salvarte. Lo que vino después fue mi culpa. Si llegaste hasta aquí, termina lo que empecé. — Chris']
+];
+function addChrisLetter(){
+ if(!world)return;const lv=state.level,id=lv+'-letter';if(state.collected.includes(id))return;
+ const spots=[[-24,17],[23,-9],[-27,-22],[15,25],[31,-29],[-8,-35],[28,12],[-31,4],[6,32],[-22,-29]];const [x,z]=spots[lv-1];
+ const g=new THREE.Group();g.position.set(x,.12,z);g.userData={kind:'letter',id,level:lv};
+ const paper=new THREE.MeshStandardMaterial({color:0xf0d9a1,roughness:.92,side:THREE.DoubleSide});const ink=material(0x6c3e49,.9),wax=new THREE.MeshStandardMaterial({color:0xb8455d,emissive:0x4b1020,emissiveIntensity:.3});
+ addMesh(g,new THREE.BoxGeometry(.72,.04,.52),paper,[0,.16,0]);for(let j=0;j<3;j++)addMesh(g,new THREE.BoxGeometry(.38-j*.04,.012,.018),ink,[0,.19,-.12+j*.09]);addMesh(g,new THREE.CylinderGeometry(.09,.09,.025,12),wax,[.19,.205,.13]);
+ const glow=new THREE.PointLight(0xffd77b,.65,4);glow.position.y=.8;g.add(glow);g.userData.kind='letter';world.add(g);items.push(g);
+}
+const polishedMakeWorld=makeWorld;
+makeWorld=function(){polishedMakeWorld();addChrisLetter();drawMiniMap();};
+// Each level receives its own palette, weather, and landmark silhouette so portals feel like different places.
+function polishBiome(){
+ if(!scene||!world)return;const lv=state.level;
+ const skies=[0x9cb9df,0x26384a,0x477d91,0x9d9cbd,0xd8b98c,0x241e3a,0x9cb7d2,0x315d4d,0x30243c,0x33244d];
+ const fogs=[0x9cb9df,0x26384a,0x477d91,0x9d9cbd,0xd8b98c,0x241e3a,0x9cb7d2,0x315d4d,0x30243c,0x33244d];
+ scene.background=new THREE.Color(skies[lv-1]);scene.fog=new THREE.Fog(fogs[lv-1],lv===2||lv===6?18:38,lv===2||lv===6?76:128);
+ // Landmark sets: ruins, swamp pools, crystal arches, shipwreck, lava, ice spires, giant flowers, castle towers, portal rings.
+ const rock=material(lv===6?0x39333c:lv===7?0xc7d8e8:lv===5?0x9a7654:0x62576d,.96);
+ const accent=new THREE.MeshStandardMaterial({color:missionMatColors[lv-1],emissive:missionMatColors[lv-1],emissiveIntensity:lv===10?1.8:.65,roughness:.32,metalness:.15});
+ if(lv===2){for(let i=0;i<16;i++){let x=Math.sin(i*4.1)*34,z=Math.cos(i*2.3)*32;const pool=addMesh(world,new THREE.CylinderGeometry(1.3,1.7,.08,12),new THREE.MeshStandardMaterial({color:0x193e45,metalness:.2,roughness:.2,emissive:0x102d35}),[x,.015,z],[1.4,1,1]);pool.rotation.y=i*.4}}
+ if(lv===3){for(let i=0;i<10;i++){const x=(i%5-2)*11,z=18-Math.floor(i/5)*28;const arch=new THREE.TorusGeometry(1.6,.18,8,18);const a=addMesh(world,arch,accent,[x,2,z]);a.rotation.y=Math.PI/2;const light=new THREE.PointLight(missionMatColors[lv-1],.35,7);light.position.set(x,2,z);world.add(light)}}
+ if(lv===6){for(let i=0;i<16;i++){const x=Math.sin(i*3.7)*36,z=Math.cos(i*2.8)*36;addMesh(world,new THREE.ConeGeometry(1.5+Math.random(),4+Math.random()*5,5),rock,[x,2,z]);const crack=addMesh(world,new THREE.BoxGeometry(.2, .03, 3+Math.random()*3),new THREE.MeshStandardMaterial({color:0xff542c,emissive:0xff2a0c,emissiveIntensity:1.8}),[x,.03,z]);crack.rotation.y=i*.8}}
+ if(lv===7){for(let i=0;i<18;i++){const x=Math.sin(i*2.4)*38,z=Math.cos(i*2.4)*38;const cone=addMesh(world,new THREE.ConeGeometry(2.2,7+(i%4),6),rock,[x,3.4,z]);cone.rotation.z=Math.sin(i)*.12}}
+ if(lv===8){for(let i=0;i<14;i++){const x=Math.sin(i*1.9)*31,z=Math.cos(i*2.2)*31;const stem=addMesh(world,new THREE.CylinderGeometry(.12,.22,2.6,7),material(0x35734c),[x,1.3,z]);const bloom=addMesh(world,new THREE.SphereGeometry(1.1,10,8),accent,[x,2.8,z],[1.2,.7,1.2]);bloom.rotation.y=i*.5}}
+ if(lv===9){for(let i=0;i<8;i++){const x=(i%2?1:-1)*(13+(i%4)*4),z=23-i*6;addMesh(world,new THREE.BoxGeometry(2.4,8+(i%3)*2,2.4),rock,[x,4,z]);const cap=addMesh(world,new THREE.ConeGeometry(2,2.2,4),accent,[x,9+(i%3),z]);cap.rotation.y=Math.PI/4}}
+ if(lv===10){for(let i=0;i<7;i++){const ring=addMesh(world,new THREE.TorusGeometry(3+i*1.5,.09,8,48),accent,[Math.sin(i*1.2)*15,3+i*.45,-18-Math.cos(i)*12]);ring.rotation.set(i*.2,i*.35,i*.25)}}
+}
+const polishWorldWithBiome=makeWorld;
+makeWorld=function(){polishWorldWithBiome();polishBiome();};
+// Handle letters and make combat/pickups audible.
+const interactBeforeLetters=interact;
+interact=function(){
+ if(near?.userData?.kind==='letter'){
+  const u=near.userData;if(state.collected.includes(u.id))return;state.collected.push(u.id);state.coins+=10;state.xp+=18;letterReadCount++;const letter=chapterLetters[u.level-1];const pos=near.position.clone().add(new THREE.Vector3(0,1,0));battleParticles(pos,0xffd66b,22);if(near.parent)near.parent.remove(near);items=items.filter(o=>o!==near);playSfx('letter');showDialogue(letter[0],letter[1]+'\n\n+10 monedas · +18 XP');updateUI();save();return;
+ }
+ const wasInfection=Number(state.infection)||0;const kind=near?.userData?.kind;interactBeforeLetters();if(kind==='crystal'||kind==='mission'||kind==='treasure'||kind==='antidote'||kind==='portal')playSfx(kind==='portal'?'portal':'pickup');if((Number(state.infection)||0)>wasInfection)playSfx('hurt');
+};
+const proximityBeforeLetter=proximity;proximity=function(){proximityBeforeLetter();if(near?.userData?.kind==='letter')$('prompt').innerHTML='✉️ <b>E</b> leer carta de Chris';};
+const battleBeforeSfx=playerAttack;
+playerAttack=function(){battleBeforeSfx();playSfx('attack')};
+// Order command accessible from keyboard and UI. R is reserved for pet commands.
+addEventListener('keydown',e=>{if(e.repeat)return;if(e.key.toLowerCase()==='r')orderPetAttack()});
+$('petOrder')?.addEventListener('click',orderPetAttack);$('petOrderDesktop')?.addEventListener('click',orderPetAttack);
+const requestGameFullscreen=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen();if(screen.orientation?.lock)await screen.orientation.lock('landscape')}catch(e){toast('Gira el móvil horizontalmente; el navegador puede limitar la pantalla completa.')}};$('fullScreen')?.addEventListener('click',requestGameFullscreen);$('fullScreenDesktop')?.addEventListener('click',requestGameFullscreen);
+$('talk')?.addEventListener('contextmenu',e=>{e.preventDefault();orderPetAttack()});
+function mobileLandscapeHint(){document.body.classList.toggle('mobile-landscape-hint',innerWidth<760&&innerHeight>innerWidth)}
+addEventListener('resize',mobileLandscapeHint);mobileLandscapeHint();
+// Include letter symbols in the minimap, distinct from enemies and mission tokens.
+const drawMapBeforeLetters=drawMiniMap;
+drawMiniMap=function(){drawMapBeforeLetters();if(!miniCtx||!player)return;const c=miniCtx;for(const o of items){if(!o.visible||o.userData.kind!=='letter')continue;const x=90+(o.position.x/50)*78,y=90+(o.position.z/50)*78;if(x<3||x>177||y<3||y>177)continue;c.fillStyle='#ffd76e';c.save();c.translate(x,y);c.rotate(Math.PI/4);c.fillRect(-3,-3,6,6);c.restore()}};
+
+// ===== LARGE UPDATE: CRAFTING, HERO PROGRESSION, POWERS, BOSS PHASES & FX =====
+state.heroLevel=Math.max(1,Number(state.heroLevel)||1);
+state.weaponLevel=Math.max(0,Number(state.weaponLevel)||0);
+state.armorLevel=Math.max(0,Number(state.armorLevel)||0);
+state.bag=Object.assign({herbs:0,crystals:0,bones:0,potions:0,antidotes:0},state.bag||{});
+state.powerCooldowns=Object.assign({heal:0,pulse:0,shield:0},state.powerCooldowns||{});
+let shieldUntil=0, bossPulseTimers=new WeakMap(), fxClock=0;
+const recipes=[
+ {id:'potion',name:'Poción de vida',emoji:'🧪',cost:{herbs:2,crystals:1},desc:'Crea una poción que recupera 40 puntos de salud al usarla.',craft(){state.bag.potions++}},
+ {id:'antidote',name:'Antídoto',emoji:'💚',cost:{herbs:2,crystals:1},desc:'Crea un antídoto para usarlo cuando suba la infección.',craft(){state.bag.antidotes++}},
+ {id:'sword',name:'Mejora de espada',emoji:'🗡️',cost:{crystals:4,bones:3},desc:'Aumenta permanentemente el daño de Genesy.',craft(){state.weaponLevel++}},
+ {id:'armor',name:'Armadura reforzada',emoji:'🛡️',cost:{bones:4,herbs:2},desc:'Reduce el daño recibido.',craft(){state.armorLevel++}}
+];
+function heroXpNeed(){return 100+(state.heroLevel-1)*65}
+function syncHeroProgress(){
+ let gained=false;
+ while(state.xp>=heroXpNeed()&&state.heroLevel<30){state.xp-=heroXpNeed();state.heroLevel++;state.health=Math.min(100, state.health+12);gained=true}
+ if(gained){toast('¡GENESY SUBIÓ AL NIVEL '+state.heroLevel+'! +12 salud');showRegionBanner('NIVEL '+state.heroLevel+' · PODER DESBLOQUEADO');playSfx?.('portal')}
+}
+function grantLoot(kind){state.bag=state.bag||{herbs:0,crystals:0,bones:0,potions:0,antidotes:0};if(kind==='enemy'){state.bag.bones+=1+(Math.random()<.32?1:0);if(Math.random()<.52)state.bag.herbs++;if(Math.random()<.22)state.bag.crystals++}else if(kind==='crystal'){state.bag.crystals++;if(Math.random()<.35)state.bag.herbs++}else if(kind==='letter'){state.bag.herbs++}updateUI();save()}
+function bagCount(key){return Number(state.bag?.[key]||0)}
+function hasRecipe(recipe){return Object.entries(recipe.cost).every(([k,n])=>bagCount(k)>=n)}
+function spendRecipe(recipe){for(const [k,n] of Object.entries(recipe.cost))state.bag[k]-=n;recipe.craft();updateUI();save();toast('Fabricado: '+recipe.name)}
+function openCraftPanel(){
+ pending=null;$('panelEyebrow').textContent='SUPERVIVENCIA · TALLER';$('panelTitle').textContent='Inventario y fabricación';$('panelDesc').textContent=`Nivel ${state.heroLevel} · Espada +${state.weaponLevel} · Armadura +${state.armorLevel}. Los materiales se obtienen explorando y derrotando zombis.`;$('equip').style.display='none';const grid=$('choices');grid.innerHTML='';
+ const resources=[['🌿','Hierbas',bagCount('herbs')],['💎','Cristales',bagCount('crystals')],['🦴','Huesos',bagCount('bones')],['🧪','Pociones',bagCount('potions')],['💚','Antídotos',bagCount('antidotes')]];
+ resources.forEach(([emoji,name,count])=>{const b=document.createElement('div');b.className='choice';b.innerHTML=`<span class="emoji">${emoji}</span><strong>${name}: ${count}</strong><small>Materiales de tu mochila</small>`;grid.appendChild(b)});
+ recipes.forEach(r=>{const b=document.createElement('button');b.className='choice';const cost=Object.entries(r.cost).map(([k,n])=>`${({herbs:'🌿',crystals:'💎',bones:'🦴'}[k])} ${n}`).join(' · ');b.innerHTML=`<span class="emoji">${r.emoji}</span><strong>${r.name}</strong><small>${r.desc}<br>Necesitas: ${cost}<br>${hasRecipe(r)?'✓ LISTO PARA FABRICAR':'Faltan materiales'}</small>`;b.disabled=!hasRecipe(r);if(b.disabled)b.style.opacity='.45';b.onclick=()=>{if(!hasRecipe(r)){toast('Te faltan materiales para fabricar esto.');return}spendRecipe(r);openCraftPanel()};grid.appendChild(b)});
+ const powers=document.createElement('button');powers.className='choice';powers.innerHTML='<span class="emoji">✨</span><strong>Poderes de Genesy</strong><small>Teclas 1: curar · 2: pulso mágico · 3: escudo. El pulso hace más daño al subir de nivel.</small>';powers.onclick=()=>showDialogue('Poderes de Genesy','1 · LUZ SANADORA: recupera salud.\n2 · PULSO ASTRAL: daña a los enemigos cercanos.\n3 · ESCUDO LUNAR: reduce el daño recibido durante unos segundos.\n\nCada poder tiene su propio tiempo de recarga.');grid.appendChild(powers);
+ $('panel').classList.add('open');paused=true;
+}
+const openPanelBeforeUpgrade=openPanel;
+openPanel=function(type){if(type==='inventory'){openCraftPanel();return}openPanelBeforeUpgrade(type)};
+function usePower(which){
+ if(!started||paused)return;const now=performance.now()/1000;state.powerCooldowns=state.powerCooldowns||{heal:0,pulse:0,shield:0};const cd=state.powerCooldowns[which]||0;if(now<cd){toast('Poder recargándose: '+Math.ceil(cd-now)+' s');return}
+ if(which==='heal'){if(state.health>=100){toast('Tu salud ya está al máximo.');return}state.health=Math.min(100,state.health+32+Math.floor(state.heroLevel/2));state.powerCooldowns.heal=now+14;const pos=player.position.clone().add(new THREE.Vector3(0,1,0));battleParticles(pos,0x76ffb4,26);combatText('LUZ SANADORA +SALUD');playSfx?.('pickup')}
+ else if(which==='pulse'){let hits=0;for(const e of [...storyEnemies])if(e.visible&&e.userData.hp>0&&player.position.distanceTo(e.position)<7.5){attackEnemy(e,3+Math.floor(state.heroLevel/2)+state.weaponLevel);hits++}if(!hits){toast('No hay enemigos cerca para el pulso astral.');return}state.powerCooldowns.pulse=now+9;const pos=player.position.clone().add(new THREE.Vector3(0,1,0));battleParticles(pos,0xb78aff,46);combatFlash();combatText('PULSO ASTRAL');playSfx?.('attack')}
+ else if(which==='shield'){shieldUntil=now+5;state.powerCooldowns.shield=now+18;const ring=new THREE.Mesh(new THREE.TorusGeometry(1.05,.075,8,36),new THREE.MeshStandardMaterial({color:0x7ce8ff,emissive:0x3abfff,emissiveIntensity:1.6,transparent:true,opacity:.9}));ring.rotation.x=Math.PI/2;ring.position.copy(player.position);ring.position.y=.16;scene.add(ring);setTimeout(()=>{if(ring.parent)ring.parent.remove(ring);ring.geometry.dispose();ring.material.dispose()},5100);combatText('ESCUDO LUNAR ACTIVO');playSfx?.('pickup')}
+ updateUI();save();
+}
+// Power controls work on keyboard, and also on touch screens.
+addEventListener('keydown',e=>{if(e.repeat)return;const k=e.key.toLowerCase();if(k==='1')usePower('heal');if(k==='2')usePower('pulse');if(k==='3')usePower('shield')});
+function addPowerButtons(){
+ if(!$('powerBar')){const bar=document.createElement('div');bar.id='powerBar';bar.innerHTML='<button data-power="heal">🧪 CURAR <small>1</small></button><button data-power="pulse">✨ PULSO <small>2</small></button><button data-power="shield">🛡️ ESCUDO <small>3</small></button>';document.body.appendChild(bar);bar.querySelectorAll('[data-power]').forEach(b=>b.addEventListener('click',()=>usePower(b.dataset.power)))}
+}
+addPowerButtons();
+const powerStyle=document.createElement('style');powerStyle.textContent=`#powerBar{position:fixed;z-index:5;right:154px;bottom:18px;display:flex;gap:6px}#powerBar button{border:1px solid #d6baff65;background:linear-gradient(145deg,#251d43ed,#0d1830ed);box-shadow:0 6px 22px #0005;border-radius:12px;padding:10px 12px;font-size:10px;font-weight:900}#powerBar small{display:inline-grid;place-items:center;margin-left:4px;width:18px;height:18px;border-radius:5px;background:#ffffff20;color:#ffe5a6}@media(max-width:760px){#powerBar{right:8px;bottom:178px;flex-direction:column}#powerBar button{padding:8px 9px;font-size:9px}#miniMap{width:86px;height:86px;right:8px;bottom:8px}.left{width:160px!important}}.boss-aura{filter:drop-shadow(0 0 12px #ff438e)}`;document.head.appendChild(powerStyle);
+// Hero XP is separate from the ten story chapters; weapon and armor upgrades persist.
+const updateUIBeforeHeroProgress=updateUI;
+updateUI=function(){syncHeroProgress();updateUIBeforeHeroProgress();const el=$('level');if(el)el.title=`Capítulo ${state.level}/10 · Nivel de Genesy ${state.heroLevel}`;const xpNeed=heroXpNeed();let tag=$('heroProgressTag');if(!tag){tag=document.createElement('div');tag.id='heroProgressTag';tag.style.cssText='position:fixed;z-index:4;top:75px;right:16px;padding:6px 9px;border:1px solid #d7b8ff55;border-radius:9px;background:#0a0d1bd9;color:#f3e5ff;font-size:10px;pointer-events:none';document.body.appendChild(tag)}tag.textContent=`GENESY NIV. ${state.heroLevel} · XP ${state.xp}/${xpNeed} · ⚔ +${state.weaponLevel} · 🛡 +${state.armorLevel}`};
+// Make combat scale with the hero and gear.
+const attackEnemyBeforeProgress=attackEnemy;
+attackEnemy=function(enemy,damage){attackEnemyBeforeProgress(enemy,Math.max(1,damage+Math.floor((state.heroLevel-1)/3)+state.weaponLevel))};
+const defeatEnemyBeforeLoot=defeatEnemy;
+defeatEnemy=function(enemy){const wasAlive=enemy&&enemy.userData.hp>0;defeatEnemyBeforeLoot(enemy);if(wasAlive){grantLoot('enemy');if(enemy.userData.boss){state.coins+=25;state.xp+=65;state.bag.crystals+=2;state.health=Math.min(100,state.health+15);toast('¡JEFE DERROTADO! +25 monedas · cristales raros');battleParticles(enemy.position.clone().add(new THREE.Vector3(0,1.5,0)),0xffd76e,55)}syncHeroProgress();updateUI();save()}};
+// Pickups and Chris's letters also provide crafting materials.
+const interactBeforeCraftLoot=interact;
+interact=function(){const kind=near?.userData?.kind;const before=state.collected.length;interactBeforeCraftLoot();if(kind==='crystal'&&state.collected.length>before)grantLoot('crystal');else if(kind==='letter'&&state.collected.length>before)grantLoot('letter');syncHeroProgress()};
+// Damage is reduced by armor; a timed lunar shield halves the remaining damage.
+// Bosses have a rage phase and an area shockwave, with a clear visual tell.
+const updateBattleBeforeBossPhase=updateBattle;
+updateBattle=function(dt){
+ const now=performance.now()/1000;
+ for(const e of storyEnemies){if(!e.visible||e.userData.hp<=0||!e.userData.boss)continue;const u=e.userData;u.bossPulse=(u.bossPulse||0)-dt;const ratio=u.hp/u.maxHp;if(ratio<.5){u.enraged=true;u.cooldown=Math.min(u.cooldown||1,.9);e.scale.setScalar(1.22+Math.sin(now*7)*.035);for(const c of e.children)if(c.isLight)c.intensity=2.2}else{u.enraged=false}if(u.bossPulse<=0&&player.position.distanceTo(e.position)<5.4){u.bossPulse=u.enraged?3.2:5.5;combatText(u.enraged?'¡FURIA DEL JEFE!':'¡ONDA DE CHOQUE!');const p=e.position.clone().add(new THREE.Vector3(0,.4,0));battleParticles(p,u.enraged?0xff3c66:0xff9a54,34);if(player.position.distanceTo(e.position)<4.4){const dodge=!!(keys.shift||keys.sprint||keys[' ']||keys.space);if(!dodge){state.health=Math.max(0,state.health-(u.enraged?15:9)*(1-Math.min(.48,state.armorLevel*.12))*(now<shieldUntil?.45:1));combatFlash();updateUI();save();if(state.health<=0)die()}else combatText('¡ESQUIVA PERFECTA!')}}}
+ updateBattleBeforeBossPhase(dt);
+ for(const e of storyEnemies){if(!e.visible||!e.userData.boss)continue;for(const c of e.children){if(c.userData?.bossSigil)c.rotation.y+=dt*1.8;if(c.geometry?.type==='TorusGeometry')c.rotation.z+=dt*.6}}
+};
+// Persist the new systems with the existing local save; initialize them on a new story.
+$('play').addEventListener('click',()=>{state.heroLevel=1;state.weaponLevel=0;state.armorLevel=0;state.bag={herbs:0,crystals:0,bones:0,potions:0,antidotes:0};state.powerCooldowns={heal:0,pulse:0,shield:0};shieldUntil=0;updateUI();save()});
+$('restart').addEventListener('click',()=>{state.heroLevel=1;state.weaponLevel=0;state.armorLevel=0;state.bag={herbs:0,crystals:0,bones:0,potions:0,antidotes:0};state.powerCooldowns={heal:0,pulse:0,shield:0};shieldUntil=0;updateUI();save()});
+$('continue').addEventListener('click',()=>{state.heroLevel=Math.max(1,Number(state.heroLevel)||1);state.weaponLevel=Math.max(0,Number(state.weaponLevel)||0);state.armorLevel=Math.max(0,Number(state.armorLevel)||0);state.bag=Object.assign({herbs:0,crystals:0,bones:0,potions:0,antidotes:0},state.bag||{});updateUI()});
+// Crafted consumables can be used from inventory cards with a quick tap.
+const openCraftPanelBeforeConsumables=openCraftPanel;
+openCraftPanel=function(){openCraftPanelBeforeConsumables();const grid=$('choices');const usePotion=document.createElement('button');usePotion.className='choice';usePotion.innerHTML='<span class="emoji">🧪</span><strong>Usar poción</strong><small>Consume una poción y recupera 40 de salud.</small>';usePotion.disabled=bagCount('potions')<1||state.health>=100;if(usePotion.disabled)usePotion.style.opacity='.45';usePotion.onclick=()=>{if(bagCount('potions')<1)return;state.bag.potions--;state.health=Math.min(100,state.health+40);updateUI();save();openCraftPanel();toast('Poción utilizada')};grid.appendChild(usePotion);const useAntidote=document.createElement('button');useAntidote.className='choice';useAntidote.innerHTML='<span class="emoji">💚</span><strong>Usar antídoto</strong><small>Consume un antídoto y reduce 45 de infección.</small>';useAntidote.disabled=bagCount('antidotes')<1||(Number(state.infection)||0)<=0;if(useAntidote.disabled)useAntidote.style.opacity='.45';useAntidote.onclick=()=>{if(bagCount('antidotes')<1)return;state.bag.antidotes--;state.infection=Math.max(0,(Number(state.infection)||0)-45);updateUI();save();openCraftPanel();toast('Antídoto utilizado')};grid.appendChild(useAntidote)};
+
+
+// Celestial realm: floating motes, polished light, and a subtle animated environment.
+const initBeforeCelestialPolish=init;
+let celestialMotes=null,celestialMoteData=[];
+init=function(){
+ initBeforeCelestialPolish();
+ if(!scene||!renderer||celestialMotes)return;
+ try{
+  const count=320,positions=new Float32Array(count*3),colors=new Float32Array(count*3),sizes=new Float32Array(count);
+  for(let i=0;i<count;i++){
+   positions[i*3]=(Math.random()-.5)*82;positions[i*3+1]=Math.random()*18+.25;positions[i*3+2]=(Math.random()-.5)*82;
+   const hue=Math.random();let c=hue<.5?[.35,.82,1]:hue<.78?[.78,.52,1]:[1,.65,.83];colors.set(c,i*3);sizes[i]=Math.random()*.8+.25;
+   celestialMoteData.push({speed:Math.random()*.45+.12,phase:Math.random()*6.28,baseY:positions[i*3+1]});
+  }
+  const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.BufferAttribute(positions,3));geo.setAttribute('color',new THREE.BufferAttribute(colors,3));geo.setAttribute('size',new THREE.BufferAttribute(sizes,1));
+  const mat=new THREE.PointsMaterial({size:.17,vertexColors:true,transparent:true,opacity:.68,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true});
+  celestialMotes=new THREE.Points(geo,mat);celestialMotes.frustumCulled=false;scene.add(celestialMotes);
+  const rim=new THREE.PointLight(0x62dfff,1.1,38);rim.position.set(0,5,-7);scene.add(rim);
+  const fill=new THREE.PointLight(0xb98aff,.65,30);fill.position.set(-8,4,5);scene.add(fill);
+  renderer.toneMappingExposure=1.22;renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+ }catch(e){console.warn('Efectos celestiales no disponibles',e)}
+};
+const animateBeforeCelestialMotes=animate;
+animate=function(){
+ animateBeforeCelestialMotes();
+ if(celestialMotes&&celestialMotes.geometry){
+  const pos=celestialMotes.geometry.attributes.position.array,t=performance.now()*.001;
+  for(let i=0;i<celestialMoteData.length;i++){const d=celestialMoteData[i],j=i*3;pos[j+1]=d.baseY+Math.sin(t*d.speed+d.phase)*.48;if(pos[j+1]<.18)pos[j+1]=.18;}
+  celestialMotes.geometry.attributes.position.needsUpdate=true;
+  celestialMotes.position.x=player?player.position.x*.18:0;celestialMotes.position.z=player?player.position.z*.18:0;
+ }
+};
+
+renderInfection();
+
+init();
+</script></body></html>
