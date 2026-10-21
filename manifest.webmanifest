@@ -1,0 +1,12 @@
+{
+  "name": "Los 10 Portales",
+  "short_name": "10 Portales",
+  "description": "Una aventura fantástica de Genesy y Chris a través de diez mundos mágicos.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#071326",
+  "theme_color": "#071326",
+  "icons": []
+}

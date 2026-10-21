@@ -1,7 +1,6 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><title>Genesy y Chris · Los Diez Portales</title>
-        <link rel="icon" href="1.jpeg">
-
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><title>Los 10 Portales · Edición renovada</title>
+  <link rel="icon" href="1.jpeg">
 <style>
 :root{--bg:#080a15;--panel:#0d1122e8;--line:#c7a4ff42;--violet:#9c78ff;--pink:#ff83c9;--gold:#ffd88a;--text:#f6f2ff;--muted:#a8b0cc}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,sans-serif}button{font:inherit;color:inherit;cursor:pointer}#game{position:fixed;inset:0}#game canvas{display:block;width:100%;height:100%}.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse,transparent 45%,#03050c80)}
 .top{position:fixed;z-index:3;top:12px;left:14px;right:14px;display:flex;align-items:center;gap:12px;padding:10px 13px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(110deg,#090e1ce8,#1a1231d9);backdrop-filter:blur(15px);box-shadow:0 12px 36px #0005}.brand{font-size:12px;font-weight:1000;letter-spacing:1px;white-space:nowrap}.brand em{color:var(--pink);font-style:normal}.brand small{display:block;font-size:8px;color:#a1adce;letter-spacing:2px;margin-top:4px}.stats{display:flex;gap:6px;flex:1;justify-content:flex-end;flex-wrap:wrap}.stat{padding:7px 9px;border:1px solid #ffffff12;background:#070b18d9;border-radius:9px;font-size:10px;color:#c2cbe3;white-space:nowrap}.stat b{color:white}.gold{color:var(--gold)}.pink{color:var(--pink)}.icon{border:1px solid var(--line);border-radius:9px;background:#24203b;width:36px;height:36px}
@@ -142,9 +141,38 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opaci
 <style id="anime-performance-patch">
 html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none} @media(max-width:760px){#game canvas{image-rendering:auto}*{scrollbar-width:none}} @media(prefers-reduced-motion:reduce){.hero *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
+
+<!-- LOS DIEZ PORTALES: mobile usability, install prompt and ambient audio -->
+<link rel="manifest" href="./manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Los 10 Portales">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Los 10 Portales">
+<style>
+/* Fix a selector collision: the movement button had inherited the fixed-position sidebar style. */
+.dpad .left{position:static;left:auto;top:auto;width:auto;grid-column:1;grid-row:2}
+.dpad .up{position:static;grid-column:2;grid-row:1}
+.dpad .down{position:static;grid-column:2;grid-row:2}
+.dpad .right{position:static;grid-column:3;grid-row:2}
+@media(max-width:760px){
+  #game{height:100dvh;min-height:100dvh}
+  #game canvas{width:100vw!important;height:100dvh!important}
+  .top{z-index:9}
+  .left{z-index:8}
+  #mobile{z-index:12}
+  #mobile button{min-width:35px;min-height:35px;touch-action:none;-webkit-user-select:none;user-select:none}
+  #survivalHud{bottom:145px}
+  #miniMap{bottom:6px}
+  #installApp,#soundToggle{font-size:9px;padding:7px 9px}
+}
+#extraTools{position:fixed;z-index:25;right:10px;top:58px;display:flex;gap:6px}
+#installApp,#soundToggle{border:1px solid #8de7ff70;border-radius:10px;padding:8px 11px;color:#f4fbff;background:linear-gradient(145deg,#10324aee,#26173fee);font-weight:900;box-shadow:0 5px 18px #0005}
+#installApp[hidden]{display:none}
+@media(max-width:760px){#extraTools{top:48px;right:5px;gap:4px}#installApp,#soundToggle{padding:6px 7px;font-size:8px}}
+</style>
+
 </head>
 <body><div id="game"></div><div class="vignette"></div>
-<header class="top"><div class="brand">♡ NUESTRO <em>PEQUEÑO MUNDO</em><small>GENESY Y CHRIS · LOS DIEZ PORTALES</small></div><div class="stats"><div class="stat">♥ <b id="healthText">100</b>%</div><div class="stat">✦ <b id="coins">40</b> <span class="gold">MONEDAS</span></div><div class="stat">☘ <b id="lives">3</b> <span class="pink">VIDAS</span></div><div class="stat">★ NIVEL <b id="level">1</b>/10</div><div class="stat hide" id="time">☼ 08:00</div></div><button class="icon" id="pause">Ⅱ</button></header>
+<header class="top"><div class="brand">♡ NUESTRO <em>PEQUEÑO MUNDO</em><small>GENESY Y CHRIS · LOS 10 PORTALES</small></div><div class="stats"><div class="stat">♥ <b id="healthText">100</b>%</div><div class="stat">✦ <b id="coins">40</b> <span class="gold">MONEDAS</span></div><div class="stat">☘ <b id="lives">3</b> <span class="pink">VIDAS</span></div><div class="stat">★ NIVEL <b id="level">1</b>/10</div><div class="stat hide" id="time">☼ 08:00</div></div><button class="icon" id="pause">Ⅱ</button></header>
 <aside class="left"><section class="glass quest"><div class="eyebrow">✧ OBJETIVO ACTUAL</div><h3 id="questTitle">Los recuerdos perdidos</h3><p id="questDesc">Encuentra los cristales brillantes y habla con Genesy.</p><div class="progress"><span id="questProgress"></span></div><p id="questCount" style="margin-top:7px">Recuerdos: 0 / 5</p></section><section class="glass actions"><button class="action" data-panel="character"><span>🧑‍🚀</span>PERSONAJE</button><button class="action" data-panel="outfit"><span>👗</span>VESTIDOR</button><button class="action" data-panel="pets"><span>🐾</span>MASCOTAS</button><button class="action" data-panel="quests"><span>📜</span>MISIONES</button><button class="action" data-panel="map"><span>🗺️</span>REGIONES</button><button class="action" data-panel="inventory"><span>🎒</span>INVENTARIO</button></section></aside>
 <div id="battleHud"><div class="bh-top"><span id="bhName">GUARDIÁN</span><span>NIVEL <b id="bhLevel">1</b></span></div><div class="bh-sub">ENERGÍA DEL ENEMIGO · <b id="bhHealth">100%</b></div><div class="bh-track"><div id="bhBar"></div></div></div><div id="combatText"></div><div id="combatFlash"></div>
 <div class="prompt" id="prompt">Pulsa <b>E</b> para interactuar</div><div class="help"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> moverse · <span class="key">ESPACIO</span> saltar · <span class="key">E</span> interactuar · <span class="key">SHIFT</span> correr · <span class="key">R</span> ordenar ataque mascota · rueda zoom · clic derecho cámara</div>
@@ -1107,7 +1135,114 @@ animate=function(){
  }
 };
 
+
+/* REAL VISUAL REWORK v2: distinct biomes and a redesigned playable Genesy */
+const buildGenesyV2=function(){
+ avatar=new THREE.Group();player.add(avatar);
+ const skin=material(0xf1c1a1,.7), hair=material(0x302019,.88), blue=material(0x087bc7,.62), blueDark=material(0x123b65,.8), trim=material(0x8beaff,.35,.2), leather=material(0x543b2b,.85), boot=material(0x171f30,.82), eyeWhite=material(0xfff9f1,.3), iris=material(0x8a4b20,.25), shine=new THREE.MeshBasicMaterial({color:0xffffff});
+ // keep first three meshes compatible with existing outfit logic
+ addMesh(avatar,new THREE.CapsuleGeometry(.32,.62,6,12),blue,[0,1.08,0]);
+ addMesh(avatar,new THREE.SphereGeometry(.30,24,18),skin,[0,1.84,0],[.96,1.08,.86]);
+ addMesh(avatar,new THREE.SphereGeometry(.34,22,16),hair,[0,2.06,.055],[1.05,.72,1.03]);
+ // Long, layered hair framing her face and flowing down her back
+ for(let s of [-1,1]){
+  let sideLock=addMesh(avatar,new THREE.CapsuleGeometry(.105,.55,5,9),hair,[s*.285,1.69,.035],[.9,1.25,.78]);sideLock.rotation.z=s*.08;
+  let rear=addMesh(avatar,new THREE.CapsuleGeometry(.19,.73,5,10),hair,[s*.17,1.52,.22],[.9,1.2,.68]);rear.rotation.z=s*-.12;
+  let ear=addMesh(avatar,new THREE.SphereGeometry(.06,10,8),skin,[s*.29,1.79,-.005]);
+  addMesh(avatar,new THREE.SphereGeometry(.087,14,12),eyeWhite,[s*.125,1.85,-.258],[.86,1.2,.5]);
+  addMesh(avatar,new THREE.SphereGeometry(.052,12,10),iris,[s*.125,1.85,-.292],[.9,1.15,.5]);
+  addMesh(avatar,new THREE.SphereGeometry(.022,8,8),shine,[s*.139,1.875,-.311]);
+  const brow=addMesh(avatar,new THREE.BoxGeometry(.12,.026,.025),hair,[s*.13,1.96,-.26]);brow.rotation.z=s*-.10;
+  // long fringe locks
+  const fringe=addMesh(avatar,new THREE.ConeGeometry(.12,.43,8),hair,[s*.13,1.98,-.245]);fringe.rotation.z=s*-.19;
+  const arm=new THREE.Group();arm.position.set(s*.34,1.38,0);avatar.add(arm);arm.userData.walkSide=s;
+  addMesh(arm,new THREE.CapsuleGeometry(.105,.34,5,9),blue,[s*.035,-.19,0]);
+  addMesh(arm,new THREE.CapsuleGeometry(.075,.14,4,7),leather,[s*.045,-.35,-.005]);
+  addMesh(arm,new THREE.SphereGeometry(.085,12,10),skin,[s*.05,-.44,-.02]);avatar.userData[s<0?'leftArm':'rightArm']=arm;
+  const leg=new THREE.Group();leg.position.set(s*.16,.49,0);avatar.add(leg);leg.userData.walkSide=s;
+  addMesh(leg,new THREE.CapsuleGeometry(.11,.36,5,8),blueDark,[0,-.13,0]);
+  addMesh(leg,new THREE.BoxGeometry(.25,.14,.35),boot,[0,-.35,-.05]);avatar.userData[s<0?'leftLeg':'rightLeg']=leg;
+ }
+ // hoodie, collar, seams, belt and explorer backpack
+ addMesh(avatar,new THREE.SphereGeometry(.15,14,10),blueDark,[0,1.47,.12],[1.2,.65,.7]);
+ addMesh(avatar,new THREE.BoxGeometry(.13,.12,.035),trim,[0,1.35,-.306]);
+ addMesh(avatar,new THREE.BoxGeometry(.42,.42,.19),leather,[0,1.17,.30]);
+ addMesh(avatar,new THREE.BoxGeometry(.47,.08,.34),leather,[0,.78,0]);
+ addMesh(avatar,new THREE.BoxGeometry(.12,.24,.035),trim,[.18,1.1,-.27]);
+ addMesh(avatar,new THREE.OctahedronGeometry(.085),new THREE.MeshStandardMaterial({color:0x78efff,emissive:0x079dff,emissiveIntensity:1.6}),[0,1.2,-.34]);
+ addMesh(avatar,new THREE.SphereGeometry(.027,8,8),skin,[0,1.76,-.292]);
+ addMesh(avatar,new THREE.TorusGeometry(.12,.025,7,18),trim,[0,.8,-.03]);
+};
+createAvatar=buildGenesyV2;
+function addBiomeV2(){
+ const lv=state.level, palettes=[
+  {sky:0x76b9f4,fog:0x9cccf0,ground:0x397a42,accent:0x62e9ff},
+  {sky:0x152d55,fog:0x304b64,ground:0x173e31,accent:0x9cffb5},
+  {sky:0x6bb9d8,fog:0x9ad9e9,ground:0x267f87,accent:0x62f5ff},
+  {sky:0x9c8bd6,fog:0xb3a8d9,ground:0x75638e,accent:0xff9cf5},
+  {sky:0x48bde5,fog:0xafe6ef,ground:0xd8b86c,accent:0xffd77a},
+  {sky:0x21152e,fog:0x4d263f,ground:0x382d43,accent:0xff633f},
+  {sky:0x8cbbdf,fog:0xc2dff3,ground:0x6c8798,accent:0xcaf4ff},
+  {sky:0x111b49,fog:0x293d68,ground:0x244d4c,accent:0xffd76a},
+  {sky:0x30234e,fog:0x55416f,ground:0x4b3c62,accent:0xff9bcf},
+  {sky:0x07182e,fog:0x1e3458,ground:0x182b48,accent:0x7cecff}
+ ][lv-1];
+ scene.background.setHex(palettes.sky);scene.fog.color.setHex(palettes.fog);scene.fog.near=lv===5?26:18;scene.fog.far=lv===5?115:88;
+ // recolor the actual terrain, not merely the HUD
+ for(const child of world.children){if(child.geometry?.type==='PlaneGeometry'&&child.position.y<0.1&&child.material?.color){child.material.color.setHex(palettes.ground);child.material.roughness=.96;}}
+ const accent=new THREE.MeshStandardMaterial({color:palettes.accent,emissive:palettes.accent,emissiveIntensity:lv===6||lv===10?1.6:.7,roughness:.28});
+ const rock=material(lv===5?0xd6bd7e:lv===6?0x302837:lv===7?0xc8e0f1:0x34465b,.95);
+ // distinctive large-scale silhouettes for every realm
+ if(lv===1){for(let i=0;i<22;i++){let x=Math.sin(i*8.7)*34,z=-8-(i*7)%70;tree(world,x,z,i+3)}
+  for(let i=0;i<7;i++){const hill=addMesh(world,new THREE.SphereGeometry(1,12,9),material(i%2?0x4f9b57:0x6ab86a),[(i-3)*11,.4,-36-(i%3)*8],[6,2.2,5])}}
+ if(lv===2){for(let i=0;i<28;i++){let x=Math.sin(i*5.3)*31,z=-5-(i*8)%68;tree(world,x,z,i+1)}for(let i=0;i<20;i++){let x=Math.sin(i*7.1)*26,z=-i*3.2;addMesh(world,new THREE.SphereGeometry(.12,7,6),new THREE.MeshBasicMaterial({color:i%2?0x8cffcb:0x8adfff}),[x,1.4+(i%4)*.5,z])}}
+ if(lv===3){const lake=addMesh(world,new THREE.CircleGeometry(16,48),new THREE.MeshStandardMaterial({color:0x249cb8,metalness:.45,roughness:.16,transparent:true,opacity:.88,emissive:0x064c68,emissiveIntensity:.35}),[0,.025,-18]);lake.rotation.x=-Math.PI/2;for(let i=0;i<14;i++){const r=17+(i%3)*2,a=i*2.399;addMesh(world,new THREE.ConeGeometry(1.4,2.3,6),rock,[Math.cos(a)*r,.8,Math.sin(a)*r-18])}}
+ if(lv===4){for(let i=0;i<14;i++){const x=(i%4-1.5)*8,z=-5-Math.floor(i/4)*13;const crystalTower=addMesh(world,new THREE.OctahedronGeometry(1.2),accent,[x,2.4,z],[.8,2.7,.8]);crystalTower.rotation.z=.12*i;addMesh(world,new THREE.BoxGeometry(1.8,.25,1.8),rock,[x,.2,z])}}
+ if(lv===5){for(let i=0;i<11;i++){let x=(i-5)*6,z=-8-(i%3)*16;addMesh(world,new THREE.ConeGeometry(3.2,1.6,7),material(0xe4c47d),[x,.45,z],[1.5,.5,1.2]);}const sun=new THREE.Mesh(new THREE.SphereGeometry(4,16,12),new THREE.MeshBasicMaterial({color:0xffd18a}));sun.position.set(-22,19,-55);world.add(sun)}
+ if(lv===6){for(let i=0;i<14;i++){const x=(i-7)*4.4,z=-7-(i%4)*12;const lava=addMesh(world,new THREE.PlaneGeometry(2.4,9),new THREE.MeshStandardMaterial({color:0xff3b20,emissive:0xff2600,emissiveIntensity:2.3,roughness:.2}),[x,.04,z]);lava.rotation.x=-Math.PI/2;const spire=addMesh(world,new THREE.ConeGeometry(2.1,5+(i%4)*1.5,5),rock,[x,2,z-2]);spire.rotation.z=(i%2?.15:-.15)}}
+ if(lv===7){for(let i=0;i<18;i++){const x=(i-9)*4.5,z=-12-(i%4)*12;const peak=addMesh(world,new THREE.ConeGeometry(2.8,8+(i%5)*2,6),rock,[x,4,z]);peak.rotation.z=(i%2)*.08}}
+ if(lv===8){for(let i=0;i<36;i++){const x=Math.sin(i*2.4)*31,z=-i*2;tree(world,x,z,i+8);const orb=addMesh(world,new THREE.SphereGeometry(.12+(i%3)*.04,8,7),accent,[x,2.2+(i%4)*.5,z]);orb.userData.floaty=true}}
+ if(lv===9){for(let i=0;i<12;i++){const x=(i%4-1.5)*9,z=-10-Math.floor(i/4)*17;const tower=addMesh(world,new THREE.BoxGeometry(2.3,7+(i%3)*2,2.3),rock,[x,3.5,z]);addMesh(world,new THREE.ConeGeometry(2,2.5,4),accent,[x,8+(i%3)*2,z]);for(let s of [-1,1])addMesh(world,new THREE.BoxGeometry(.3,3,.3),accent,[x+s*1.4,2,z])}}
+ if(lv===10){for(let i=0;i<12;i++){const r=5+i*1.5;const ring=addMesh(world,new THREE.TorusGeometry(r,.07,6,64),new THREE.MeshStandardMaterial({color:palettes.accent,emissive:palettes.accent,emissiveIntensity:1.5,transparent:true,opacity:.72}),[0,2+i*.65,-24]);ring.rotation.set(i*.21,i*.13,i*.31)}for(let i=0;i<20;i++){const shard=addMesh(world,new THREE.OctahedronGeometry(.55),accent,[Math.sin(i*2.3)*23,1+(i%6)*1.7,-i*3]);shard.rotation.set(i*.2,i*.5,i*.3)}}
+ // Add a perimeter of varied cliffs so every realm reads as a place, not a flat blue plane.
+ if(lv===1||lv===3||lv===5||lv===7||lv===10){for(let i=0;i<18;i++){const a=i*Math.PI*2/18,r=39;addMesh(world,new THREE.ConeGeometry(2.4,5+(i%4)*2,6),rock,[Math.cos(a)*r,1.5,Math.sin(a)*r],[1.4,1,1.3])}}
+}
+const makeWorldBeforeBiomeV2=makeWorld;
+makeWorld=function(){makeWorldBeforeBiomeV2();addBiomeV2();};
+
+
 renderInfection();
 
 init();
+
+/* Installable web app: native install prompt where supported. */
+const toolBar=document.createElement('div');toolBar.id='extraTools';
+toolBar.innerHTML='<button id="installApp" hidden>⬇ INSTALAR APP</button><button id="soundToggle" aria-pressed="false">♫ SONIDO: OFF</button>';
+document.body.appendChild(toolBar);
+let installPrompt=null;
+const installButton=document.getElementById('installApp');
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;installButton.hidden=false});
+installButton.addEventListener('click',async()=>{if(installPrompt){installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;installButton.hidden=true}else{showDialogue('Instalar Los 10 Portales','En Android: abre el menú ⋮ del navegador y toca “Instalar aplicación” o “Añadir a pantalla de inicio”. En iPhone: toca Compartir y luego “Añadir a pantalla de inicio”.');}});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+
+/* Lightweight generated ambient soundtrack, no large audio files or network downloads. */
+let musicCtx=null,musicTimer=null,musicOn=false,masterGain=null;
+function startAmbientMusic(){
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+  if(!musicCtx){musicCtx=new AC();masterGain=musicCtx.createGain();masterGain.gain.value=.035;masterGain.connect(musicCtx.destination);}
+  musicCtx.resume();musicOn=true;
+  const notes=[220,261.63,329.63,392,329.63,261.63,196,246.94];
+  let idx=0;
+  const playNote=()=>{if(!musicOn||!musicCtx)return;const now=musicCtx.currentTime;const osc=musicCtx.createOscillator(),gain=musicCtx.createGain();osc.type='sine';osc.frequency.value=notes[idx++%notes.length];gain.gain.setValueAtTime(.0001,now);gain.gain.exponentialRampToValueAtTime(.24,now+.22);gain.gain.exponentialRampToValueAtTime(.0001,now+1.7);osc.connect(gain);gain.connect(masterGain);osc.start(now);osc.stop(now+1.75);};
+  if(musicTimer)clearInterval(musicTimer);playNote();musicTimer=setInterval(playNote,1450);
+  document.getElementById('soundToggle').textContent='♫ SONIDO: ON';document.getElementById('soundToggle').setAttribute('aria-pressed','true');
+ }catch(e){toast('El sonido no está disponible en este navegador.')}
+}
+function stopAmbientMusic(){musicOn=false;if(musicTimer)clearInterval(musicTimer);if(masterGain&&musicCtx){masterGain.gain.setTargetAtTime(.0001,musicCtx.currentTime,.12)}document.getElementById('soundToggle').textContent='♫ SONIDO: OFF';document.getElementById('soundToggle').setAttribute('aria-pressed','false')}
+document.getElementById('soundToggle').addEventListener('click',()=>{if(musicOn)stopAmbientMusic();else{startAmbientMusic();if(masterGain&&musicCtx)masterGain.gain.setTargetAtTime(.035,musicCtx.currentTime,.2)}});
+document.getElementById('play').addEventListener('click',()=>{if(!musicOn)startAmbientMusic()},{once:true});
+/* Persist on tab backgrounding and reduce costly visual effects on phones. */
+document.addEventListener('visibilitychange',()=>{if(document.hidden){try{save()}catch(e){}}});
+window.addEventListener('pagehide',()=>{try{save()}catch(e){}});
 </script></body></html>
