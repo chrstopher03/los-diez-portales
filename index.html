@@ -1,6 +1,7 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><title>Los 10 Portales · Edición renovada</title>
-  <link rel="icon" href="1.jpeg">
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><title>Los 10 Portales — Aventura 3D</title>
+        <link rel="icon" href="1.jpeg">
+
 <style>
 :root{--bg:#080a15;--panel:#0d1122e8;--line:#c7a4ff42;--violet:#9c78ff;--pink:#ff83c9;--gold:#ffd88a;--text:#f6f2ff;--muted:#a8b0cc}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,sans-serif}button{font:inherit;color:inherit;cursor:pointer}#game{position:fixed;inset:0}#game canvas{display:block;width:100%;height:100%}.vignette{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse,transparent 45%,#03050c80)}
 .top{position:fixed;z-index:3;top:12px;left:14px;right:14px;display:flex;align-items:center;gap:12px;padding:10px 13px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(110deg,#090e1ce8,#1a1231d9);backdrop-filter:blur(15px);box-shadow:0 12px 36px #0005}.brand{font-size:12px;font-weight:1000;letter-spacing:1px;white-space:nowrap}.brand em{color:var(--pink);font-style:normal}.brand small{display:block;font-size:8px;color:#a1adce;letter-spacing:2px;margin-top:4px}.stats{display:flex;gap:6px;flex:1;justify-content:flex-end;flex-wrap:wrap}.stat{padding:7px 9px;border:1px solid #ffffff12;background:#070b18d9;border-radius:9px;font-size:10px;color:#c2cbe3;white-space:nowrap}.stat b{color:white}.gold{color:var(--gold)}.pink{color:var(--pink)}.icon{border:1px solid var(--line);border-radius:9px;background:#24203b;width:36px;height:36px}
@@ -143,7 +144,7 @@ html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none
 </style>
 
 <!-- LOS DIEZ PORTALES: mobile usability, install prompt and ambient audio -->
-<link rel="manifest" href="./manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Los 10 Portales">
+<link rel="manifest" href="./manifest.webmanifest">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Los 10 Portales">
@@ -168,6 +169,8 @@ html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none
 #installApp,#soundToggle{border:1px solid #8de7ff70;border-radius:10px;padding:8px 11px;color:#f4fbff;background:linear-gradient(145deg,#10324aee,#26173fee);font-weight:900;box-shadow:0 5px 18px #0005}
 #installApp[hidden]{display:none}
 @media(max-width:760px){#extraTools{top:48px;right:5px;gap:4px}#installApp,#soundToggle{padding:6px 7px;font-size:8px}}
+#toast{font-size:13px;max-width:min(92vw,520px);text-align:center;box-shadow:0 10px 35px #0008,0 0 22px #78dcff35}
+@media(max-width:760px){#toast{top:42px;padding:9px 12px;font-size:11px}.left{max-width:43vw}.top .stat{font-size:7px}}
 </style>
 
 </head>
@@ -192,7 +195,7 @@ const state={coins:40,lives:3,health:100,xp:0,level:1,day:.28,character:'explore
 const levels=[['Pradera del Encuentro',0x47795b,0x94b9d3],['Bosque de Luciérnagas',0x245846,0x6578a4],['Lago de los Recuerdos',0x2c7388,0x89b7d8],['Pueblo de Cristal',0x77628e,0xa4a1d0],['Costa de los Sueños',0xd3b579,0x81c5db],['Ruinas de la Luna',0x665a85,0x34345f],['Montaña Violeta',0x546d8c,0x7b91bb],['Jardín de las Estrellas',0x3b6b65,0x263c67],['Castillo del Corazón',0x57456f,0x39305c],['Nuestro Para Siempre',0x9b6d93,0x51436f]];
 const catalog={
  character:[['explorer','Genesy · La exploradora','🧭',0,'La protagonista de los diez portales. Ágil, valiente y decidida.'],['warrior','Guerrero','🛡️',25,'Armadura violeta y espíritu valiente.'],['mage','Maga lunar','🔮',35,'Energía astral y capa encantada.'],['ranger','Guardabosques','🏹',30,'Colores del bosque y paso ligero.']],
- outfit:[['rose','Rosa estelar','🌸',0,0xf05cae,'Conjunto clásico.'],['royal','Violeta real','👑',18,0x9562ef,'Telas moradas y detalles brillantes.'],['forest','Guardián verde','🌿',18,0x45a47a,'Ideal para el bosque.'],['midnight','Noche astral','🌌',24,0x28325f,'Un atuendo oscuro.'],['gold','Corazón dorado','✨',40,0xe2a94b,'Un conjunto especial.'],['moon','Luz de luna','🌙',30,0x9fd8ee,'Brilla bajo la luna.']],
+ outfit:[['blue','Exploradora celeste','💠',0,0x1688e8,'Chaqueta azul de aventura con detalles luminosos.'],['rose','Rosa estelar','🌸',0,0xf05cae,'Conjunto clásico.'],['royal','Violeta real','👑',18,0x9562ef,'Telas moradas y detalles brillantes.'],['forest','Guardián verde','🌿',18,0x45a47a,'Ideal para el bosque.'],['midnight','Noche astral','🌌',24,0x28325f,'Un atuendo oscuro.'],['gold','Corazón dorado','✨',40,0xe2a94b,'Un conjunto especial.'],['moon','Luz de luna','🌙',30,0x9fd8ee,'Brilla bajo la luna.']],
  pets:[['cat','Gatito nube','🐈',0,'Curioso, fiel y cariñoso.'],['dog','Perrito fiel','🐕',15,'Siempre corre a tu lado.'],['fox','Zorrito mágico','🦊',22,'Le encantan los cristales.'],['rabbit','Conejito lunar','🐇',18,'Pequeño y veloz.'],['dragon','Dragón bebé','🐉',55,'Un compañero legendario.'],['none','Sin mascota','♡',0,'Explora a solas.']]
 };
 let scene,camera,renderer,clock,player,avatar,petGroup,world,items=[],npcs=[],keys={},yaw=0,pitch=.18,drag=false,lastX=0,lastY=0,started=false,paused=false,near=null,pending=null,toastTimer,jumpV=0,onGround=true,cameraDistance=8.5,soundOn=false,audioCtx=null;
@@ -261,52 +264,70 @@ function portal(parent){
   items.push(g);
 }
 function createAvatar(){
-  avatar=new THREE.Group();player.add(avatar);
-  const skin=material(0xffc6a8,.9),hair=material(0x34253b,.94),cloth=material(0x1687e8,.72),dark=material(0x172b4c,.8),gold=new THREE.MeshStandardMaterial({color:0xffc85a,metalness:.35,roughness:.4}),eye=new THREE.MeshStandardMaterial({color:0x29162a,roughness:.3});
-  // Child 0 remains the outfit torso and child 2 remains hair for existing wardrobe logic.
-  addMesh(avatar,new THREE.CapsuleGeometry(.34,.62,4,8),cloth,[0,1.02,0]);
-  addMesh(avatar,new THREE.SphereGeometry(.31,14,12),skin,[0,1.82,0],[.93,1.08,.88]);
-  addMesh(avatar,new THREE.SphereGeometry(.355,14,10),hair,[0,2.03,-.005],[1.08,.69,1.03]);
-  // Swept fringe and back hair, low-poly meshes keep the character lightweight.
-  for(let i=0;i<5;i++){let bang=addMesh(avatar,new THREE.ConeGeometry(.16,.43,5),hair,[-.24+i*.12,2.02,.24]);bang.rotation.z=-.35+i*.16;}
-  addMesh(avatar,new THREE.SphereGeometry(.29,10,8),hair,[0,1.78,-.19],[1.05,1.1,.62]);
-  // Eyes, highlights and cheeks face toward -Z (the camera-facing side).
-  for(const side of [-1,1]){
-    addMesh(avatar,new THREE.SphereGeometry(.075,8,8),eye,[side*.115,1.82,.265],[.72,1.25,.5]);
-    addMesh(avatar,new THREE.SphereGeometry(.022,6,5),material(0xffffff,.3),[side*.13,1.85,.292]);
-    addMesh(avatar,new THREE.SphereGeometry(.045,7,6),material(0xff9a9f),[side*.21,1.72,.23],[1,.55,.3]);
-  }
-  // scarf + belt + small gold clasp
-  const scarf=addMesh(avatar,new THREE.CapsuleGeometry(.12,.22,3,6),material(0xff4c63),[0,1.48,.02]);scarf.rotation.z=Math.PI/2;
-  addMesh(avatar,new THREE.BoxGeometry(.62,.11,.38),dark,[0,.77,0]);addMesh(avatar,new THREE.BoxGeometry(.12,.13,.08),gold,[0,.78,.22]);
-  // Separate pivot groups provide actual arm/leg swing instead of rotating the whole body.
-  const limbMat=material(0x152a48,.85),boot=material(0x35283e,.85);
-  avatar.userData.leftArm=new THREE.Group();avatar.userData.leftArm.position.set(-.39,1.34,0);avatar.add(avatar.userData.leftArm);
-  avatar.userData.rightArm=new THREE.Group();avatar.userData.rightArm.position.set(.39,1.34,0);avatar.add(avatar.userData.rightArm);
-  for(const [g,side] of [[avatar.userData.leftArm,-1],[avatar.userData.rightArm,1]]){
-    addMesh(g,new THREE.CapsuleGeometry(.105,.38,3,7),cloth,[0,-.24,0]);addMesh(g,new THREE.SphereGeometry(.105,7,6),skin,[0,-.48,.015]);
-  }
-  avatar.userData.leftLeg=new THREE.Group();avatar.userData.leftLeg.position.set(-.17,.57,0);avatar.add(avatar.userData.leftLeg);
-  avatar.userData.rightLeg=new THREE.Group();avatar.userData.rightLeg.position.set(.17,.57,0);avatar.add(avatar.userData.rightLeg);
-  for(const g of [avatar.userData.leftLeg,avatar.userData.rightLeg]){addMesh(g,new THREE.CapsuleGeometry(.115,.38,3,7),limbMat,[0,-.2,0]);addMesh(g,new THREE.BoxGeometry(.22,.13,.34),boot,[0,-.43,.08]);}
-  // Backpack silhouette, adds depth to the character.
-  addMesh(avatar,new THREE.BoxGeometry(.43,.52,.18),material(0x6b3d66),[0,1.03,-.27]);
+ avatar=new THREE.Group();player.add(avatar);
+ const skin=material(0xf4c6a5,.78),hair=material(0x38251f,.92),cloth=material(0x1687e8,.68),dark=material(0x172b4c,.78),gold=new THREE.MeshStandardMaterial({color:0xffd16b,metalness:.48,roughness:.3}),eye=new THREE.MeshStandardMaterial({color:0x251c2b,roughness:.24}),white=material(0xfff5ed,.25);
+ // Torso remains child 0 for wardrobe tinting. Tailored jacket silhouette.
+ addMesh(avatar,new THREE.CapsuleGeometry(.34,.62,5,12),cloth,[0,1.02,0]);
+ addMesh(avatar,new THREE.BoxGeometry(.13,.66,.36),material(0xf3e8df,.55),[0,1.02,.19]);
+ addMesh(avatar,new THREE.SphereGeometry(.31,20,16),skin,[0,1.82,0],[.93,1.08,.88]);
+ // Back hair + layered bangs; child 2 remains hair for existing character selector.
+ addMesh(avatar,new THREE.SphereGeometry(.355,20,16),hair,[0,2.02,-.045],[1.08,.73,1.08]);
+ addMesh(avatar,new THREE.SphereGeometry(.29,16,12),hair,[0,1.79,-.19],[1.05,1.14,.7]);
+ for(let i=0;i<9;i++){let x=-.28+i*.07;let bang=addMesh(avatar,new THREE.ConeGeometry(.105,.36+(i%3)*.06,8),hair,[x,1.99,.245]);bang.rotation.z=-.22+i*.06;}
+ // Long locks framing face and flowing down the back
+ for(let s of [-1,1]){let lock=addMesh(avatar,new THREE.CapsuleGeometry(.075,.56,4,8),hair,[s*.29,1.69,-.005]);lock.rotation.z=s*-.12;addMesh(avatar,new THREE.SphereGeometry(.085,10,8),skin,[s*.285,1.78,.02],[.65,.8,.45]);}
+ // Eyes, highlights, brows, nose and smile oriented toward camera (+Z)
+ for(const side of [-1,1]){addMesh(avatar,new THREE.SphereGeometry(.082,12,10),white,[side*.115,1.83,.258],[.82,1.2,.5]);addMesh(avatar,new THREE.SphereGeometry(.052,12,10),eye,[side*.115,1.83,.292],[.78,1.22,.5]);addMesh(avatar,new THREE.SphereGeometry(.018,8,6),white,[side*.13,1.855,.316]);let brow=addMesh(avatar,new THREE.BoxGeometry(.13,.025,.035),hair,[side*.115,1.94,.27]);brow.rotation.z=side*-.1;}
+ addMesh(avatar,new THREE.SphereGeometry(.025,8,6),material(0xd58f79),[0,1.77,.285],[.8,.6,.5]);
+ addMesh(avatar,new THREE.TorusGeometry(.075,.012,5,12,Math.PI),material(0x9e5263),[0,1.72,.27]);
+ // ears and scarf
+ for(const s of [-1,1])addMesh(avatar,new THREE.SphereGeometry(.07,10,8),skin,[s*.30,1.81,0],[.55,.9,.7]);
+ addMesh(avatar,new THREE.CapsuleGeometry(.13,.20,4,8),material(0xff4c63),[0,1.48,.02]);
+ addMesh(avatar,new THREE.BoxGeometry(.62,.105,.38),dark,[0,.77,0]);addMesh(avatar,new THREE.BoxGeometry(.13,.14,.08),gold,[0,.78,.22]);
+ // Shoulder guards and sleeve trim
+ for(const s of [-1,1]){let guard=addMesh(avatar,new THREE.SphereGeometry(.17,12,10),material(0x6b83a9,.5),[s*.36,1.36,0],[1,.72,1]);addMesh(avatar,new THREE.TorusGeometry(.105,.025,5,12),gold,[s*.39,1.22,.01]);}
+ avatar.userData.leftArm=new THREE.Group();avatar.userData.leftArm.position.set(-.39,1.34,0);avatar.add(avatar.userData.leftArm);avatar.userData.rightArm=new THREE.Group();avatar.userData.rightArm.position.set(.39,1.34,0);avatar.add(avatar.userData.rightArm);
+ for(const g of [avatar.userData.leftArm,avatar.userData.rightArm]){addMesh(g,new THREE.CapsuleGeometry(.105,.38,4,8),cloth,[0,-.24,0]);addMesh(g,new THREE.SphereGeometry(.105,10,8),skin,[0,-.48,.015]);addMesh(g,new THREE.TorusGeometry(.095,.018,5,12),gold,[0,-.43,.01]);}
+ avatar.userData.leftLeg=new THREE.Group();avatar.userData.leftLeg.position.set(-.17,.57,0);avatar.add(avatar.userData.leftLeg);avatar.userData.rightLeg=new THREE.Group();avatar.userData.rightLeg.position.set(.17,.57,0);avatar.add(avatar.userData.rightLeg);
+ for(const g of [avatar.userData.leftLeg,avatar.userData.rightLeg]){addMesh(g,new THREE.CapsuleGeometry(.115,.38,4,8),material(0x24334d,.8),[0,-.2,0]);addMesh(g,new THREE.BoxGeometry(.23,.14,.35),material(0x392a36,.7),[0,-.43,.08]);addMesh(g,new THREE.BoxGeometry(.23,.055,.36),gold,[0,-.37,.1]);}
+ // Backpack, straps and decorative emblem
+ addMesh(avatar,new THREE.BoxGeometry(.43,.52,.18),material(0x6b3d66),[0,1.03,-.27]);
+ addMesh(avatar,new THREE.TorusGeometry(.105,.025,6,16),gold,[0,1.13,.285]);
+ // Weapon sheath on back and small crystal accent
+ let sheath=addMesh(avatar,new THREE.BoxGeometry(.13,.76,.14),material(0x282a42),[.36,1.05,-.19]);sheath.rotation.z=-.22;
+ addMesh(avatar,new THREE.OctahedronGeometry(.075),new THREE.MeshStandardMaterial({color:0x69e8ff,emissive:0x159bd8,emissiveIntensity:1.2}),[.36,1.4,-.1]);
 }
 function updateAvatar(){if(!avatar)return;let outfit=catalog.outfit.find(a=>a[0]===state.outfit)||catalog.outfit[0];avatar.children[0].material.color.setHex(outfit[4]);avatar.children[2].material.color.setHex(state.character==='mage'?0x29285a:state.character==='ranger'?0x59372b:0x30233d);if(petGroup){player.remove(petGroup);petGroup=null}if(state.pet!=='none'){petGroup=new THREE.Group();player.add(petGroup);petGroup.position.set(1.25,0,-.35);let fur=state.pet==='fox'?0xe78b50:state.pet==='dragon'?0x8e6de7:state.pet==='rabbit'?0xe6d8e9:state.pet==='dog'?0xc79a6c:0xf1e7df;addMesh(petGroup,new THREE.SphereGeometry(.34,12,10),material(fur),[0,.42,0],[1.3,.85,.8]);addMesh(petGroup,new THREE.SphereGeometry(.25,12,10),material(fur),[0,.66,-.25]);for(let s of [-1,1])addMesh(petGroup,new THREE.ConeGeometry(.1,.32,7),material(fur),[s*.15,.93,-.24])}}
 function makeWorld(){if(world){scene.remove(world);world.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}})}world=new THREE.Group();scene.add(world);items=[];npcs=[];let lv=levels[state.level-1];scene.background=new THREE.Color(lv[2]);scene.fog=new THREE.Fog(lv[2],34,94);let ground=addMesh(world,new THREE.PlaneGeometry(100,100),material(lv[1]),[0,-.1,0]);ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;
 for(let i=0;i<11;i++)addMesh(world,new THREE.IcosahedronGeometry(1,1),material(new THREE.Color(lv[1]).multiplyScalar(.7+i*.015)),[-42+i*8,2+Math.sin(i*1.4)*2,-36],[6,5+(i%3)*2,4]);
 for(let i=0;i<25;i++){let z=24-i*2.2,x=Math.sin(i*.33)*4.3;let stone=box(world,[x,.02,z],[2.5,.15,1.65],i%3?0xb2a6ba:0xd1c0cf);stone.rotation.y=Math.sin(i*.3)*.2}
-for(let i=0;i<48;i++){let side=i%2?1:-1;tree(world,side*(9+(i*17.31)%24),26-(i*13.7)%57,(i*3)%7)}
+for(let i=0;i<34;i++){let side=i%2?1:-1;tree(world,side*(9+(i*17.31)%24),26-(i*13.7)%57,(i*3)%7)}
 for(let i=0;i<20;i++)addMesh(world,new THREE.OctahedronGeometry(.6),new THREE.MeshStandardMaterial({color:[0xb28bff,0x76d9ee,0xff9bd6][i%3],emissive:[0x6744d6,0x347cba,0xc43b8b][i%3],emissiveIntensity:.7,metalness:.3}),[Math.sin(i*8.4)*22,.8,Math.cos(i*3.2)*25],[.65,1.7,.65]);
 house(world,-11,-7,'HOGAR',0xa85fbd);house(world,11,-14,'TIENDA',0x617dc4);house(world,0,-25,'PORTAL',0xc76bc0);npc(world,[3,0,1],'Genesy',0xe77ac1,true);npc(world,[-4,0,-11],'Guardián',0x8b7de1,false);
+// Unique, lightweight landmarks for each of the ten biomes.
+const biome=state.level-1;
+const palettes=[0x69d6a0,0x9aff74,0x54d9ff,0xdca8ff,0xffd17c,0xa69cff,0x9be4ff,0xff9edb,0xffc6e8,0x76f4ff];
+const accent=palettes[biome];
+if(biome===0){for(let i=0;i<7;i++){let x=-18+i*6;let pillar=addMesh(world,new THREE.CylinderGeometry(.18,.34,2.7,7),material(0xb6b8a4),[x,1.25,-20-(i%2)*5]);addMesh(world,new THREE.IcosahedronGeometry(.35,1),new THREE.MeshStandardMaterial({color:accent,emissive:accent,emissiveIntensity:.35}),[x,2.9,-20-(i%2)*5]);}}
+if(biome===1){for(let i=0;i<14;i++){let x=Math.sin(i*4.7)*23,z=-34+(i*5.2)%60;tree(world,x,z,1+(i%3));addMesh(world,new THREE.SphereGeometry(.09,7,6),new THREE.MeshBasicMaterial({color:0xc8ff75}),[x,2.3+(i%3)*.4,z]);}}
+if(biome===2){let lake=addMesh(world,new THREE.CircleGeometry(10,48),new THREE.MeshStandardMaterial({color:0x38bde1,metalness:.25,roughness:.18,transparent:true,opacity:.8}),[0,.015,-15]);lake.rotation.x=-Math.PI/2;for(let i=0;i<9;i++)addMesh(world,new THREE.ConeGeometry(.3,.8,6),material(0x8edff0),[Math.cos(i*.7)*11,.35,Math.sin(i*.7)*11-15]);}
+if(biome===3){for(let i=0;i<13;i++){let x=-18+(i%7)*6,z=-8-Math.floor(i/7)*12;let tower=addMesh(world,new THREE.BoxGeometry(2.2,3+(i%3),2.2),material(i%2?0xb7a6d9:0x8176b7),[x,1.5+(i%3)*.5,z]);addMesh(world,new THREE.ConeGeometry(1.7,1.6,4),material(0x463e72),[x,4+(i%3)*.5,z]);}}
+if(biome===4){for(let i=0;i<10;i++){let x=-24+i*5,z=-28+(i%3)*9;addMesh(world,new THREE.ConeGeometry(1.2,2.4,7),material(0xe0c18b),[x,1,z]);addMesh(world,new THREE.ConeGeometry(.8,1.4,7),material(0x4b9d9c),[x,2.5,z]);}}
+if(biome===5){for(let i=0;i<12;i++){let x=Math.sin(i*2.2)*22,z=-30+i*4.5;let mon=addMesh(world,new THREE.BoxGeometry(1.5,3.8,1.2),material(0x555070),[x,1.8,z]);mon.rotation.z=Math.sin(i)*.12;addMesh(world,new THREE.OctahedronGeometry(.42),new THREE.MeshStandardMaterial({color:accent,emissive:accent,emissiveIntensity:.8}),[x,3.9,z]);}}
+if(biome===6){for(let i=0;i<8;i++){let x=-22+i*6,z=-26-(i%2)*10;addMesh(world,new THREE.ConeGeometry(4,9,6),material(i%2?0x9bb5d4:0x536a91),[x,3.2,z]);addMesh(world,new THREE.ConeGeometry(2.4,3.5,6),material(0xf0f7ff),[x,7.5,z]);}}
+if(biome===7){for(let i=0;i<26;i++){let x=Math.sin(i*8.4)*25,z=-32+(i*7.3)%60;let flower=addMesh(world,new THREE.SphereGeometry(.22,8,6),new THREE.MeshStandardMaterial({color:palettes[i%palettes.length],emissive:palettes[i%palettes.length],emissiveIntensity:.35}),[x,.45,z],[1,.45,1]);addMesh(world,new THREE.CylinderGeometry(.035,.05,.55,5),material(0x4b9c71),[x,.2,z]);}}
+if(biome===8){for(let i=0;i<5;i++){let x=-16+i*8;addMesh(world,new THREE.BoxGeometry(4.5,8,4),material(0x5c4a77),[x,3.9,-22]);addMesh(world,new THREE.ConeGeometry(3.5,3.8,4),material(0x302b50),[x,9.5,-22]);for(let y=2;y<7;y+=2)addMesh(world,new THREE.BoxGeometry(.5,.8,.08),new THREE.MeshStandardMaterial({color:0xffd98a,emissive:0xffb84a,emissiveIntensity:.8}),[x,y,-19.94]);}}
+if(biome===9){for(let i=0;i<16;i++){let x=Math.sin(i*2.7)*24,z=-30+(i*4.3)%58;let crystal=addMesh(world,new THREE.OctahedronGeometry(.9+(i%3)*.25),new THREE.MeshStandardMaterial({color:palettes[i%palettes.length],emissive:palettes[i%palettes.length],emissiveIntensity:.9,metalness:.25,roughness:.22}),[x,.9+(i%2)*.3,z],[.8,1.8,.8]);}}
+
 for(let i=0;i<5;i++){let id=`${state.level}-${i}`;if(!state.collected.includes(id))crystal(world,[Math.sin(i*4.4)*10,0,13-i*5.5],id)}portal(world);player.position.set(0,.1,8);player.rotation.set(0,0,0);updateAvatar();updateUI()}
-function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x8caed1);camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,200);const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer=new THREE.WebGLRenderer({antialias:!lowPower, powerPreference:'high-performance', alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,lowPower?0.72:1.0));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;renderer.toneMappingExposure=1.0;$('game').appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xcbd8ff,0x29314a,2));let sun=new THREE.DirectionalLight(0xffe4d1,2.4);sun.position.set(-18,30,12);sun.castShadow=false;scene.add(sun);player=new THREE.Group();scene.add(player);createAvatar();makeWorld();bind();loadSave();animate()}
-function bind(){addEventListener('resize',()=>{camera.aspect=innerWidth/Math.max(1,innerHeight);camera.updateProjectionMatrix();const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer.setPixelRatio(Math.min(devicePixelRatio,lowPower?0.72:1.0));renderer.setSize(innerWidth,innerHeight,false);});addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault();if(e.repeat)return;if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='shift')keys.sprint=true});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key.toLowerCase()==='shift')keys.sprint=false});renderer.domElement.addEventListener('wheel',e=>{cameraDistance=THREE.MathUtils.clamp(cameraDistance+Math.sign(e.deltaY)*.8,4.5,13);},{passive:true});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===2){drag=true;lastX=e.clientX;lastY=e.clientY}});addEventListener('pointerup',()=>drag=false);addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.005;pitch=Math.max(-.2,Math.min(.7,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY}});
-$('play').onclick=()=>{started=true;$('start').classList.remove('open');toast('¡La aventura comienza! Busca los cristales.');save()};$('continue').onclick=()=>{loadSave();started=true;$('start').classList.remove('open');toast('¡Qué bueno tenerte de vuelta!')};$('pause').onclick=()=>showDialogue('Aventura en pausa','Tómate un respiro. Cuando estés listo, continúa.',[['CONTINUAR',closeDialogue],['GUARDAR PARTIDA',()=>{save();closeDialogue();toast('Partida guardada correctamente.')}],['SONIDO: '+(soundOn?'ACTIVADO':'DESACTIVADO'),()=>{soundOn=!soundOn;if(soundOn){try{audioCtx=audioCtx||new AudioContext();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=220;g.gain.value=.015;o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.18)}catch(e){}}closeDialogue();toast('Sonido '+(soundOn?'activado':'desactivado')+'.')}],['REINICIAR REGIÓN',()=>{makeWorld();closeDialogue()}]]);document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('close').onclick=closePanel;$('back').onclick=closePanel;$('equip').onclick=()=>{if(pending)choose(pending.type,pending.item)};$('dialogClose').onclick=closeDialogue;$('dialogContinue').onclick=closeDialogue;$('revive').onclick=()=>{if(state.coins<20){toast('Necesitas 20 monedas para revivir.');return}state.coins-=20;state.lives=3;state.health=100;player.position.set(0,.1,8);$('death').classList.remove('open');paused=false;updateUI();save()};$('restart').onclick=()=>{state.level=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='rose';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;save()};document.querySelectorAll('[data-move]').forEach(b=>{let k=b.dataset.move;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false));b.addEventListener('lostpointercapture',()=>keys[k]=false)});$('jump').onclick=()=>{if(onGround){jumpV=5.5;onGround=false}};$('talk').onclick=interact}
+function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x8caed1);camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,200);const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer=new THREE.WebGLRenderer({antialias:false, powerPreference:'high-performance', alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;renderer.toneMappingExposure=1.0;$('game').appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xcbd8ff,0x29314a,2));let sun=new THREE.DirectionalLight(0xffe4d1,2.4);sun.position.set(-18,30,12);sun.castShadow=false;scene.add(sun);player=new THREE.Group();scene.add(player);createAvatar();makeWorld();bind();loadSave();animate()}
+function bind(){addEventListener('resize',()=>{camera.aspect=innerWidth/Math.max(1,innerHeight);camera.updateProjectionMatrix();const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(innerWidth,innerHeight,false);});addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault();if(e.repeat)return;if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='shift')keys.sprint=true});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key.toLowerCase()==='shift')keys.sprint=false});renderer.domElement.addEventListener('wheel',e=>{cameraDistance=THREE.MathUtils.clamp(cameraDistance+Math.sign(e.deltaY)*.8,4.5,13);},{passive:true});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===2){drag=true;lastX=e.clientX;lastY=e.clientY}});addEventListener('pointerup',()=>drag=false);addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.005;pitch=Math.max(-.2,Math.min(.7,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY}});
+$('play').onclick=()=>{started=true;$('start').classList.remove('open');toast('¡La aventura comienza! Busca los cristales.');save()};$('continue').onclick=()=>{loadSave();started=true;$('start').classList.remove('open');toast('¡Qué bueno tenerte de vuelta!')};$('pause').onclick=()=>showDialogue('Aventura en pausa','Tómate un respiro. Cuando estés listo, continúa.',[['CONTINUAR',closeDialogue],['GUARDAR PARTIDA',()=>{save();closeDialogue();toast('Partida guardada correctamente.')}],['SONIDO: '+(soundOn?'ACTIVADO':'DESACTIVADO'),()=>{soundOn=!soundOn;if(soundOn){try{audioCtx=audioCtx||new AudioContext();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=220;g.gain.value=.015;o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.18)}catch(e){}}closeDialogue();toast('Sonido '+(soundOn?'activado':'desactivado')+'.')}],['REINICIAR REGIÓN',()=>{makeWorld();closeDialogue()}]]);document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('close').onclick=closePanel;$('back').onclick=closePanel;$('equip').onclick=()=>{if(pending)choose(pending.type,pending.item)};$('dialogClose').onclick=closeDialogue;$('dialogContinue').onclick=closeDialogue;$('revive').onclick=()=>{if(state.coins<20){toast('Necesitas 20 monedas para revivir.');return}state.coins-=20;state.lives=3;state.health=100;player.position.set(0,.1,8);$('death').classList.remove('open');paused=false;updateUI();save()};$('restart').onclick=()=>{state.level=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='blue';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;save()};document.querySelectorAll('[data-move]').forEach(b=>{let k=b.dataset.move;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false));b.addEventListener('lostpointercapture',()=>keys[k]=false)});$('jump').onclick=()=>{if(onGround){jumpV=5.5;onGround=false}};$('talk').onclick=interact}
 let lastHudAt=0,lastProximityAt=0;
-function animate(){requestAnimationFrame(animate);let dt=Math.min(clock.getDelta(),.025),t=performance.now()*.001;if(started&&!paused){state.day=(state.day+dt*.004)%1;move(dt);updateWorld(dt);if(t-lastProximityAt>.12){proximity();lastProximityAt=t}if(player.position.y < -8)die();if(state.health<=0)die()}let daylight=Math.max(.1,Math.sin(state.day*Math.PI*2-Math.PI/2)*.5+.55);if(t-lastHudAt>.25){$('time').textContent=`☼ ${String(Math.floor(state.day*24)).padStart(2,'0')}:00 · ${state.day>.27&&state.day<.8?'DÍA':'NOCHE'}`;lastHudAt=t}let target=new THREE.Vector3(player.position.x,player.position.y+1.3,player.position.z),d=cameraDistance,h=Math.cos(pitch)*d;camera.position.set(target.x+Math.sin(yaw)*h,target.y+2+Math.sin(pitch)*cameraDistance,target.z+Math.cos(yaw)*h);camera.lookAt(target);if(world){for(const o of world.children){if(o.userData?.kind==='portal'){for(const q of o.children){if(q.userData?.spin)q.rotation.z+=dt*(q.geometry?.parameters?.radius?0.22:0.12);if(q.userData?.core)q.material.opacity=.48+Math.sin(t*2)*.12;if(q.userData?.orbit!==undefined){const a=t*.65+q.userData.orbit*Math.PI/4;q.position.x=Math.cos(a)*1.12;q.position.y=2.15+Math.sin(a)*1.12}}}}}renderer.render(scene,camera)}
+let lastGameRenderAt=0;
+function animate(){requestAnimationFrame(animate);let dt=Math.min(clock.getDelta(),.025),t=performance.now()*.001;if(started&&!paused){state.day=(state.day+dt*.004)%1;move(dt);updateWorld(dt);if(t-lastProximityAt>.12){proximity();lastProximityAt=t}if(player.position.y < -8)die();if(state.health<=0)die()}let daylight=Math.max(.1,Math.sin(state.day*Math.PI*2-Math.PI/2)*.5+.55);if(t-lastHudAt>.25){$('time').textContent=`☼ ${String(Math.floor(state.day*24)).padStart(2,'0')}:00 · ${state.day>.27&&state.day<.8?'DÍA':'NOCHE'}`;lastHudAt=t}let target=new THREE.Vector3(player.position.x,player.position.y+1.3,player.position.z),d=cameraDistance,h=Math.cos(pitch)*d;camera.position.set(target.x+Math.sin(yaw)*h,target.y+2+Math.sin(pitch)*cameraDistance,target.z+Math.cos(yaw)*h);camera.lookAt(target);if(world){for(const o of world.children){if(o.userData?.kind==='portal'){for(const q of o.children){if(q.userData?.spin)q.rotation.z+=dt*(q.geometry?.parameters?.radius?0.22:0.12);if(q.userData?.core)q.material.opacity=.48+Math.sin(t*2)*.12;if(q.userData?.orbit!==undefined){const a=t*.65+q.userData.orbit*Math.PI/4;q.position.x=Math.cos(a)*1.12;q.position.y=2.15+Math.sin(a)*1.12}}}}}const renderNow=performance.now();const renderInterval=state.level===1?0:33; if(renderInterval===0||renderNow-lastGameRenderAt>=renderInterval){renderer.render(scene,camera);lastGameRenderAt=renderNow}}
 let walkPhase=0;
-function move(dt){let f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0),r=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),dx=Math.sin(yaw)*f+Math.cos(yaw)*r,dz=Math.cos(yaw)*f-Math.sin(yaw)*r,len=Math.hypot(dx,dz),moving=len>0.001;if(moving){dx/=len;dz/=len;let speed=keys.sprint?7.0:4.4;player.position.x+=dx*speed*dt;player.position.z+=dz*speed*dt;player.rotation.y=Math.atan2(dx,dz);walkPhase+=dt*(keys.sprint?13:9);avatar.position.y=.035+Math.abs(Math.sin(walkPhase*2))*.045;}else{avatar.position.y=THREE.MathUtils.damp(avatar.position.y,0,12,dt);walkPhase*=Math.max(0,1-dt*5)}if(avatar.userData.leftLeg){const swing=moving?Math.sin(walkPhase)*.62:0;avatar.userData.leftLeg.rotation.x=swing;avatar.userData.rightLeg.rotation.x=-swing;avatar.userData.leftArm.rotation.x=-swing*.72;avatar.userData.rightArm.rotation.x=swing*.72;}player.position.x=THREE.MathUtils.clamp(player.position.x,-34,34);player.position.z=THREE.MathUtils.clamp(player.position.z,-33,31);if(!onGround){jumpV-=12*dt;player.position.y+=jumpV*dt;if(player.position.y<=.1){player.position.y=.1;onGround=true;jumpV=0}}if(petGroup){petGroup.position.x=1.05+Math.sin(performance.now()*.002)*.18;petGroup.position.y=.1+Math.abs(Math.sin(performance.now()*.004))*.12}}
+function move(dt){let f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0),r=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),dx=Math.sin(yaw)*f+Math.cos(yaw)*r,dz=Math.cos(yaw)*f-Math.sin(yaw)*r,len=Math.hypot(dx,dz),moving=len>0.001;if(moving){dx/=len;dz/=len;let speed=keys.sprint?10.0:6.2;player.position.x+=dx*speed*dt;player.position.z+=dz*speed*dt;player.rotation.y=Math.atan2(dx,dz);walkPhase+=dt*(keys.sprint?13:9);avatar.position.y=.035+Math.abs(Math.sin(walkPhase*2))*.045;}else{avatar.position.y=THREE.MathUtils.damp(avatar.position.y,0,12,dt);walkPhase*=Math.max(0,1-dt*5)}if(avatar.userData.leftLeg){const swing=moving?Math.sin(walkPhase)*.62:0;avatar.userData.leftLeg.rotation.x=swing;avatar.userData.rightLeg.rotation.x=-swing;avatar.userData.leftArm.rotation.x=-swing*.72;avatar.userData.rightArm.rotation.x=swing*.72;}player.position.x=THREE.MathUtils.clamp(player.position.x,-34,34);player.position.z=THREE.MathUtils.clamp(player.position.z,-33,31);if(!onGround){jumpV-=12*dt;player.position.y+=jumpV*dt;if(player.position.y<=.1){player.position.y=.1;onGround=true;jumpV=0}}if(petGroup){petGroup.position.x=1.05+Math.sin(performance.now()*.002)*.18;petGroup.position.y=.1+Math.abs(Math.sin(performance.now()*.004))*.12}}
 function updateWorld(dt){let t=performance.now()*.001;for(let o of items){if(!o.parent)continue;if(o.userData.kind==='crystal'){o.rotation.y+=dt*1.2;o.position.y=.12+Math.sin(t*2.2+o.position.x)*.13}else if(o.userData.kind==='portal'){o.children[0].rotation.z+=dt*.4;o.children[1].rotation.z-=dt*.2}}}
 function proximity(){near=null;let best=3.1;for(let o of [...items,...npcs]){if(!o.parent)continue;let d=player.position.distanceTo(o.position);if(d<best){best=d;near=o}}let p=$('prompt');if(near){p.style.display='block';p.innerHTML=near.userData.kind==='crystal'?'Pulsa <b>E</b> para recoger recuerdo':near.userData.kind==='portal'?'Pulsa <b>E</b> para viajar de región':`Pulsa <b>E</b> para hablar con ${near.userData.name}`}else p.style.display='none'}
 function interact(){if(!started)return;if(!near){showDialogue('Exploración','Busca cristales rosados, habla con Genesy y encuentra el portal violeta.');return}if(near.userData.kind==='crystal'){let id=near.userData.id;if(!state.collected.includes(id)){state.collected.push(id);state.coins+=8;state.xp+=20;state.health=Math.min(100,state.health+4);scene.remove(near);items=items.filter(o=>o!==near);let count=state.collected.filter(v=>v.startsWith(state.level+'-')).length;if(count>=5){state.questDone=true;state.coins+=25;state.xp+=50;showDialogue('¡Misión completada! ✨','Has reunido los cinco recuerdos. Recibes 25 monedas adicionales.')}toast('Recuerdo encontrado · +8 monedas · +20 XP');updateUI();save()}return}if(near.userData.kind==='portal'){if(!state.questDone){showDialogue('Portal sellado ✨','Primero reúne los cinco recuerdos brillantes de esta región. El portal se abrirá cuando completes la misión.');return}nextLevel();return}if(near.userData.kind==='npc'){if(near.userData.genesy)showDialogue('Genesy ♡','¿Seguimos nuestra aventura juntos? Cada recuerdo nos acerca más.',[['Prometerlo',()=>{state.coins+=10;state.xp+=15;closeDialogue();updateUI();save();toast('Genesy sonríe · +10 monedas')}],['Preguntar por la misión',()=>showDialogue('La misión','Encuentra los cinco cristales brillantes de esta región. ¡Yo creo en ti!')],['Darle una flor 🌸',()=>{if(state.coins>=5){state.coins-=5;state.xp+=10;showDialogue('Genesy ♡','¡Es preciosa! La guardaré como uno de nuestros recuerdos.');updateUI()}else showDialogue('Genesy','Guarda unas monedas para comprar una flor.')}]]);else showDialogue('Guardián de regiones','El portal te lleva a diez lugares diferentes. Encuentra todos los recuerdos para ganar recompensas.')}}
@@ -358,7 +379,7 @@ function upgradeWorldVisuals(){
   if(!world)return;
   // Add luminous flowers and a few stylized stones around the trail.
   const glowMat=new THREE.MeshStandardMaterial({color:0xffb4e6,emissive:0xf04db7,emissiveIntensity:1.1,roughness:.3});
-  for(let i=0;i<30;i++){
+  for(let i=0;i<14;i++){
     const x=Math.sin(i*7.7)*7.4, z=22-i*1.55;
     const flower=new THREE.Group();flower.position.set(x,.04,z);world.add(flower);
     addMesh(flower,new THREE.CylinderGeometry(.025,.035,.28,5),material(0x3f8a64),[0,.14,0]);
@@ -380,17 +401,17 @@ function upgradeWorldVisuals(){
     addMesh(pillar,new THREE.BoxGeometry(1.04,.2,.88),stoneMat,[0,h,0]);
     const rune=addMesh(pillar,new THREE.TorusGeometry(.17,.035,6,14),new THREE.MeshStandardMaterial({color:0x91eaff,emissive:0x32bde9,emissiveIntensity:.85}),[0,h*.66,.36]);rune.rotation.x=Math.PI/2;
   }
-  for(let i=0;i<54;i++){
+  for(let i=0;i<24;i++){
     const side=i%2?1:-1,x=side*(7.8+(i*13.73)%23),z=25-(i*9.27)%57;
     const tuft=new THREE.Group();tuft.position.set(x,0,z);tuft.rotation.y=(i*1.7)%6.28;world.add(tuft);
     for(let k=0;k<3;k++){const blade=addMesh(tuft,new THREE.ConeGeometry(.11,.42+(k%2)*.2,4),material(i%3?palette[1]:0x69b89b),[(k-1)*.13,.2,(k%2)*.1]);blade.rotation.z=(k-1)*.28}
   }
-  for(let i=0;i<10;i++){
+  for(let i=0;i<7;i++){
     const x=(i%2?1:-1)*(13+(i*3.1)%8),z=18-i*4.1;
     const crystal=addMesh(world,new THREE.OctahedronGeometry(.8+(i%3)*.18,0),new THREE.MeshStandardMaterial({color:[0x75d9ff,0x9c86ff,0xff9fd7][i%3],emissive:[0x1c83bd,0x4d2bb0,0xb52c7e][i%3],emissiveIntensity:.48,metalness:.25,roughness:.32}),[x,.7,z],[.72,1.65,.72]);crystal.rotation.z=.16;
   }
   const motes=new THREE.Group();world.add(motes);const moteMat=new THREE.MeshBasicMaterial({color:0xc4eaff,transparent:true,opacity:.6});
-  for(let i=0;i<34;i++){const mote=new THREE.Mesh(new THREE.SphereGeometry(.032,5,4),moteMat);mote.position.set(Math.sin(i*13.2)*27,.7+(i%6)*.48,Math.cos(i*7.7)*29);motes.add(mote)}
+  for(let i=0;i<16;i++){const mote=new THREE.Mesh(new THREE.SphereGeometry(.032,5,4),moteMat);mote.position.set(Math.sin(i*13.2)*27,.7+(i%6)*.48,Math.cos(i*7.7)*29);motes.add(mote)}
   // Landmark silhouettes change by region so the ten portals feel like different places.
   if(lv===3){const water=addMesh(world,new THREE.PlaneGeometry(15,23),new THREE.MeshStandardMaterial({color:0x348ba7,transparent:true,opacity:.72,roughness:.22,metalness:.22}),[21,.005,-7]);water.rotation.x=-Math.PI/2;for(let i=0;i<8;i++)addMesh(world,new THREE.DodecahedronGeometry(.65),material(0x9aa4b7),[13+i*2.2,.1,-18+(i%3)*4],[1,.22,1.1])}
   if(lv===5){for(let i=0;i<5;i++){const palm=new THREE.Group();palm.position.set(i%2?18:-18,0,14-i*9);world.add(palm);addMesh(palm,new THREE.CylinderGeometry(.17,.28,3.5,7),material(0x8d6241),[0,1.75,0]);for(let j=0;j<5;j++){const leaf=addMesh(palm,new THREE.ConeGeometry(.28,2.1,5),material(0x387b58),[Math.sin(j*1.26)*.85,3.45,Math.cos(j*1.26)*.85]);leaf.rotation.z=Math.sin(j*1.26)*.75;leaf.rotation.x=Math.cos(j*1.26)*.75}}}
@@ -488,7 +509,15 @@ function addStoryObjects(){
  const skin=material([0x39375e,0x31535b,0x493553,0x37576c][(lv-1)%4],.55,.15),dark=material(0x211c31,.65,.15),glowMat=new THREE.MeshStandardMaterial({color:0xff596e,emissive:0xff193b,emissiveIntensity:2.2});
  addMesh(enemy,new THREE.CapsuleGeometry(.48,.88,5,9),skin,[0,1.03,0]);addMesh(enemy,new THREE.SphereGeometry(.38,12,10),dark,[0,2.02,0]);
  for(const side of [-1,1])addMesh(enemy,new THREE.SphereGeometry(.075,8,8),glowMat,[side*.145,2.06,-.32]);
- for(const side of [-1,1]){const horn=addMesh(enemy,new THREE.ConeGeometry(.15,.52,6),dark,[side*.27,2.36,0]);horn.rotation.z=side*-.42}
+ for(const side of [-1,1]){const horn=addMesh(enemy,new THREE.ConeGeometry(.15,.52,6),dark,[side*.27,2.36,0]);horn.rotation.z=side*-.42;
+  // Jagged shoulder plates and long uneven arms give each creature a less toy-like outline.
+  const plate=addMesh(enemy,new THREE.DodecahedronGeometry(.28,0),material([0x5d394d,0x31535b,0x58436b,0x39536a][(lv-1)%4],.72,.2),[side*.48,1.48,0],[1.15,.72,1]);
+  let arm=addMesh(enemy,new THREE.CapsuleGeometry(.13,.54,4,7),skin,[side*.57,1.02,.02]);arm.rotation.z=side*-.22;
+  addMesh(enemy,new THREE.ConeGeometry(.11,.28,5),dark,[side*.65,.65,.05]);
+ }
+ // Mouth/jaw scars and asymmetrical armor mark the boss of each region.
+ addMesh(enemy,new THREE.BoxGeometry(.23,.065,.07),material(0x130f1a),[0,1.87,-.33]);
+ addMesh(enemy,new THREE.DodecahedronGeometry(.25,0),new THREE.MeshStandardMaterial({color:0x8b344b,emissive:0x501025,emissiveIntensity:.4}),[.22,1.2,.31],[1.3,.75,.35]);
  const aura=new THREE.PointLight(0xff365f,1.25,5);aura.position.y=1.7;enemy.add(aura);
  world.add(enemy);storyEnemies.push(enemy);items.push(enemy);
 }
@@ -559,7 +588,7 @@ proximity=function(){
 const cinematicBind=bind;
 bind=function(){
  cinematicBind();
- $('restart').onclick=()=>{state.level=1;state.maxLevel=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='rose';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;updateUI();save()};
+ $('restart').onclick=()=>{state.level=1;state.maxLevel=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='blue';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;updateUI();save()};
  addEventListener('keydown',e=>{if(!e.repeat&&e.key.toLowerCase()==='f')playerAttack()});
  renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===0&&started&&!paused)playerAttack()});
  const mobile=$('mobile');if(mobile&&!$('attackMobile')){const btn=document.createElement('button');btn.id='attackMobile';btn.textContent='⚔ ATACAR';btn.addEventListener('click',playerAttack);mobile.appendChild(btn)}
@@ -599,7 +628,7 @@ const zombieNames=[
 const missionMatColors=[0xffc45d,0x70e5ff,0x6fffc2,0x91a9ff,0xffa36d,0xc8a4ff,0x9ce7ff,0xffd76a,0xff7e9e,0xe9a9ff];
 function makeDetailedAvatar(){
  avatar=new THREE.Group();player.add(avatar);
- const skin=material(0xdca987,.72),hair=material(0x302034,.78),cloth=material(0xf05cae,.68),dark=material(0x25243b,.8),gold=material(0xdab66c,.35,.45),white=material(0xfff4ec,.35),iris=material(0x443b75,.3);
+ const skin=material(0xe8b99a,.68),hair=material(0x2a1b20,.76),cloth=material(0x1688e8,.62),dark=material(0x182b43,.78),gold=material(0xdab66c,.35,.45),white=material(0xfff4ec,.35),iris=material(0x443b75,.3);
  // Keep the first three meshes in the expected order for the outfit system.
  addMesh(avatar,new THREE.CapsuleGeometry(.31,.62,5,10),cloth,[0,1.08,0]);
  addMesh(avatar,new THREE.SphereGeometry(.285,16,12),skin,[0,1.83,0]);
@@ -621,6 +650,12 @@ function makeDetailedAvatar(){
  }
  addMesh(avatar,new THREE.ConeGeometry(.032,.065,7),skin,[0,1.79,-.31]);
  addMesh(avatar,new THREE.BoxGeometry(.09,.014,.014),material(0x8e4b62),[0,1.72,-.29]);
+ // Extra face and layered hair details for a more expressive anime-inspired hero.
+ addMesh(avatar,new THREE.SphereGeometry(.018,7,6),material(0xffffff,.2),[-.115,1.855,-.319]);
+ addMesh(avatar,new THREE.SphereGeometry(.018,7,6),material(0xffffff,.2),[.095,1.855,-.319]);
+ for(let j=0;j<3;j++){const strand=addMesh(avatar,new THREE.ConeGeometry(.075,.30+j*.035,7),hair,[-.24+j*.13,1.98,-.18]);strand.rotation.z=-.22+j*.17;}
+ addMesh(avatar,new THREE.SphereGeometry(.052,9,7),material(0xe99a91,.7),[-.19,1.76,-.26],[1,.55,.25]);
+ addMesh(avatar,new THREE.SphereGeometry(.052,9,7),material(0xe99a91,.7),[.19,1.76,-.26],[1,.55,.25]);
  addMesh(avatar,new THREE.BoxGeometry(.52,.09,.34),gold,[0,.78,0]);
  addMesh(avatar,new THREE.BoxGeometry(.32,.32,.18),material(0x5a4777),[0,1.18,.30]);
  addMesh(avatar,new THREE.TorusGeometry(.12,.03,6,14),gold,[0,.8,-.03]);
@@ -708,7 +743,7 @@ function addRegionLandmarks(){
  const lv=state.level;
  const stone=material(lv===6?0x4b3b3b:lv===7?0x7e8b9d:0x71687e,.95), glow=new THREE.MeshStandardMaterial({color:missionMatColors[lv-1],emissive:missionMatColors[lv-1],emissiveIntensity:.75});
  if(lv===2||lv===6||lv===9){ // cemetery / haunted ruins / castle graveyard
-  for(let i=0;i<12;i++){const x=(i%2?1:-1)*(5+(i*3.3)%19),z=22-(i*5.7)%48;const g=new THREE.Group();g.position.set(x,0,z);world.add(g);addMesh(g,new THREE.BoxGeometry(.72,.9,.2),stone,[0,.5,0]);addMesh(g,new THREE.BoxGeometry(.18,.5,.24),stone,[0,1.05,0]);addMesh(g,new THREE.BoxGeometry(.52,.16,.24),stone,[0,1.13,0]);const light=new THREE.PointLight(lv===2?0x9dffdc:0xb18bff,.28,3);light.position.y=1.2;g.add(light)}
+  for(let i=0;i<8;i++){const x=(i%2?1:-1)*(5+(i*3.3)%19),z=22-(i*5.7)%48;const g=new THREE.Group();g.position.set(x,0,z);world.add(g);addMesh(g,new THREE.BoxGeometry(.72,.9,.2),stone,[0,.5,0]);addMesh(g,new THREE.BoxGeometry(.18,.5,.24),stone,[0,1.05,0]);addMesh(g,new THREE.BoxGeometry(.52,.16,.24),stone,[0,1.13,0]);const light=new THREE.PointLight(lv===2?0x9dffdc:0xb18bff,.28,3);light.position.y=1.2;g.add(light)}
  }
  if(lv===4){for(let i=0;i<9;i++){const x=(i%3-1)*7,z=-5-Math.floor(i/3)*7;const pillar=addMesh(world,new THREE.OctahedronGeometry(.9),glow,[x,1.5,z],[.8,2.4,.8]);pillar.rotation.z=.2}}
  if(lv===5){for(let i=0;i<7;i++){const x=(i-3)*6,z=20-(i%3)*14;addMesh(world,new THREE.ConeGeometry(2.6,1.3,7),material(0xd8c18b),[x,.35,z],[1.5,.55,1.2])}const ship=new THREE.Group();ship.position.set(20,0,-18);world.add(ship);addMesh(ship,new THREE.BoxGeometry(5,.8,2),material(0x5d3f35),[0,.9,0]);for(let x of [-1.4,1.4])addMesh(ship,new THREE.CylinderGeometry(.09,.12,4,7),material(0x543a31),[x,2.8,0]);addMesh(ship,new THREE.BoxGeometry(2.6,2,.08),material(0xc4b8a4),[0,3,0])}
@@ -753,7 +788,7 @@ updateBattle=function(dt){oldUpdateBattleFinal(dt);for(const e of storyEnemies){
 const oldUpdateUIFinal=updateUI;
 updateUI=function(){oldUpdateUIFinal();const lv=state.level,m=regionMissions[lv-1];if(m){const clues=state.collected.filter(v=>v.startsWith(lv+'-')&&!v.includes('-mission-')).length;const kills=state.defeatedEnemies.filter(id=>id.startsWith(lv+'-enemy-')).length;const objective=lv===1?(state.chrisTalked?'Chris habló contigo':'Habla con Chris'):m.token+': '+missionProgress(lv)+'/'+m.need;$('questTitle').textContent=state.treasures.includes(String(lv))?'Tesoro recuperado · portal abierto':m.title;$('questDesc').textContent=state.treasures.includes(String(lv))?'Este mundo ya está a salvo. Busca el portal.':m.task;$('questCount').textContent=`Pistas ${clues}/5 · Enemigos ${kills}/5 · ${objective}`;$('questProgress').style.width=(Math.min(1,(clues/5+kills/5+(missionDone(lv)?1:0))/3)*100)+'%';$('level').textContent=lv;$('levelBanner')?.querySelector('span')?.replaceChildren(document.createTextNode('CAPÍTULO '+lv+' / 10'))}};
 const oldBindFinal=bind;
-bind=function(){oldBindFinal();$('play').onclick=()=>{state.level=1;state.maxLevel=1;state.health=100;state.lives=3;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.character='explorer';state.outfit='rose';state.pet='cat';state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};makeWorld();updateUI();started=true;$('start').classList.remove('open');showDialogue('PRÓLOGO · LA NOCHE EN QUE TODO CAMBIÓ','La lluvia caía sobre el pueblo cuando el cielo se abrió en diez grietas. De ellas salieron criaturas que parecían personas, pero ya no recordaban sus nombres. Genesy despertó junto a un portal apagado y una espada que no reconocía. En su bolsillo había una nota escrita por Chris: “Si todavía recuerdas quién eres, ven a buscarme. No abras el décimo portal”.\n\nAhora Genesy debe cruzar diez mundos, descubrir qué convirtió a los vivos en zombis y recuperar los recuerdos robados. Cada mundo tiene una misión distinta, cinco enemigos y un tesoro que revela una parte de la verdad. La última página de la historia todavía no está escrita.');save()};$('continue').textContent='CONTINUAR PARTIDA';};
+bind=function(){oldBindFinal();$('play').onclick=()=>{state.level=1;state.maxLevel=1;state.health=100;state.lives=3;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.character='explorer';state.outfit='blue';state.pet='cat';state.owned={character:['explorer'],outfit:['blue','rose'],pets:['cat']};makeWorld();updateUI();started=true;$('start').classList.remove('open');showDialogue('PRÓLOGO · LA NOCHE EN QUE TODO CAMBIÓ','La lluvia caía sobre el pueblo cuando el cielo se abrió en diez grietas. De ellas salieron criaturas que parecían personas, pero ya no recordaban sus nombres. Genesy despertó junto a un portal apagado y una espada que no reconocía. En su bolsillo había una nota escrita por Chris: “Si todavía recuerdas quién eres, ven a buscarme. No abras el décimo portal”.\n\nAhora Genesy debe cruzar diez mundos, descubrir qué convirtió a los vivos en zombis y recuperar los recuerdos robados. Cada mundo tiene una misión distinta, cinco enemigos y un tesoro que revela una parte de la verdad. La última página de la historia todavía no está escrita.');save()};$('continue').textContent='CONTINUAR PARTIDA';};
 // Narrative copy and character identity in the start screen.
 $('start').querySelector('.eyebrow').textContent='PRÓLOGO · DIEZ MUNDOS · UNA VERDAD OCULTA';
 $('start').querySelector('.heroart').textContent='🗡️ 🧟 🌑 🔮';
@@ -785,7 +820,7 @@ function resetCampaignAfterInfection(){
  if(infectionResetTimer){clearTimeout(infectionResetTimer);infectionResetTimer=null;}
  infectionEnding=false;paused=false;started=false;
  try{localStorage.removeItem('npmm-web-save')}catch(e){}
- state.coins=40;state.lives=3;state.health=100;state.infection=0;state.xp=0;state.level=1;state.maxLevel=1;state.character='explorer';state.outfit='rose';state.pet='cat';state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;
+ state.coins=40;state.lives=3;state.health=100;state.infection=0;state.xp=0;state.level=1;state.maxLevel=1;state.character='explorer';state.outfit='blue';state.pet='cat';state.owned={character:['explorer'],outfit:['blue','rose'],pets:['cat']};state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;
  makeWorld();updateAvatar();updateUI();renderInfection();$('infectionOver').classList.remove('open');$('start').classList.add('open');
 }
 function infectionGameOver(){if(infectionEnding)return;infectionEnding=true;paused=true;started=false;$('infectionOver').classList.add('open');$('restartAfterInfection').onclick=resetCampaignAfterInfection;combatText('GENESY HA SIDO INFECTADA');infectionResetTimer=setTimeout(resetCampaignAfterInfection,5000);}
@@ -797,34 +832,37 @@ move=function(dt){
 };
 const survivalMakeWorldBase=makeWorld;
 function addLargeWorldLayer(){
+ const decorScale=(state.level===1)?1:0.34;
+
  if(!world)return;
  // Add a wider ground beneath the original terrain and a connected, readable trail network.
  const ground=new THREE.Mesh(new THREE.PlaneGeometry(142,142),material(levels[state.level-1][1],.98));ground.rotation.x=-Math.PI/2;ground.position.y=-.16;ground.receiveShadow=true;world.add(ground);
  const pathMat=material(state.level===5?0xb7a17b:state.level===6?0x3b3036:0x8c8490,.98);
- for(let i=0;i<18;i++){
+ for(let i=0;i<Math.max(2,Math.ceil(12*decorScale));i++){
    const z=34-i*4.2,x=Math.sin(i*.46)*8;
    const path=addMesh(world,new THREE.BoxGeometry(5.2,.035,3.7),pathMat,[x,-.105,z]);path.rotation.y=Math.sin(i*.46)*.16;
  }
  // Outer landmarks make the expanded map feel like a place to explore, not a small combat room.
  const rockMat=material(state.level===7?0xb8c6d8:state.level===6?0x39333a:0x52655c,.98);
- for(let i=0;i<46;i++){
+ for(let i=0;i<Math.max(2,Math.ceil(26*decorScale));i++){
    const a=i*2.39996,r=28+(i%7)*2.5,x=Math.cos(a)*r,z=Math.sin(a)*r;
    const rock=addMesh(world,new THREE.DodecahedronGeometry(.7+(i%4)*.32,0),rockMat,[x,.15,z],[1.3,1.0+(i%3)*.6,1.15]);rock.rotation.set(i*.2,i*.7,i*.13);
  }
  // Distinct map feature according to chapter.
  if(state.level===1||state.level===2||state.level===9){
-   for(let i=0;i<16;i++){const x=(i%4-1.5)*10,z=22-Math.floor(i/4)*15;const g=new THREE.Group();g.position.set(x,0,z);world.add(g);addMesh(g,new THREE.BoxGeometry(.9,1.25,.22),rockMat,[0,.65,0]);addMesh(g,new THREE.BoxGeometry(.18,.7,.26),rockMat,[0,1.35,0]);if(state.level===2||state.level===9){const glow=new THREE.PointLight(0x87ffc7,.3,4);glow.position.y=1.5;g.add(glow)}}
+   for(let i=0;i<Math.max(2,Math.ceil(16*decorScale));i++){const x=(i%4-1.5)*10,z=22-Math.floor(i/4)*15;const g=new THREE.Group();g.position.set(x,0,z);world.add(g);addMesh(g,new THREE.BoxGeometry(.9,1.25,.22),rockMat,[0,.65,0]);addMesh(g,new THREE.BoxGeometry(.18,.7,.26),rockMat,[0,1.35,0]);if(state.level===2||state.level===9){const glow=new THREE.PointLight(0x87ffc7,.3,4);glow.position.y=1.5;g.add(glow)}}
  }
  // Strong landmarks visible from afar help navigation.
  const beaconMat=new THREE.MeshStandardMaterial({color:missionMatColors[state.level-1],emissive:missionMatColors[state.level-1],emissiveIntensity:1.3,metalness:.2,roughness:.25});
- for(let i=0;i<4;i++){const x=(i%2?1:-1)*(30+(i%3)*3),z=(i<2?-1:1)*(24+(i*3));const ob=addMesh(world,new THREE.OctahedronGeometry(1.05),beaconMat,[x,2.1,z],[.75,2.4,.75]);ob.rotation.z=.2;const l=new THREE.PointLight(missionMatColors[state.level-1],.8,8);l.position.copy(ob.position);world.add(l)}
+ for(let i=0;i<Math.max(2,Math.ceil(4*decorScale));i++){const x=(i%2?1:-1)*(30+(i%3)*3),z=(i<2?-1:1)*(24+(i*3));const ob=addMesh(world,new THREE.OctahedronGeometry(1.05),beaconMat,[x,2.1,z],[.75,2.4,.75]);ob.rotation.z=.2;const l=new THREE.PointLight(missionMatColors[state.level-1],.8,8);l.position.copy(ob.position);world.add(l)}
 }
 function addHorde(){
  if(!world)return;
  const lv=state.level;
  const hordeNames=['Zombi errante','Infectado veloz','Zombi acorazado','Acechador','Carroñero'];
  const skinColors=[0x52664b,0x43584c,0x3c6b68,0x6a5a70,0x5b484e,0x4e456a,0x596d80,0x54664d,0x534752,0x574260];
- for(let i=0;i<14;i++){
+ const hordeCount=lv===1?6:2;
+ for(let i=0;i<hordeCount;i++){
    const id=`${lv}-horde-${i}`;if(state.defeatedEnemies.includes(id))continue;
    // Keep a safe spawn radius so the player isn't instantly surrounded.
    const a=i*2.39996+lv*.41,r=18+(i%5)*4.5,x=Math.cos(a)*r,z=Math.sin(a)*r;
@@ -835,9 +873,9 @@ function addHorde(){
    const scale=boss?1.24:armored?1.05:.78+Math.random()*.12;
    const rag=material(armored?0x343a42:[0x453b40,0x34443b,0x4b454a,0x4c3e46][i%4],.97),flesh=material(skinColors[(lv-1)%skinColors.length],.98),bone=material(0xb4b09a,.9);
    const eye=new THREE.MeshStandardMaterial({color:boss?0xffb13d:0xff314f,emissive:boss?0xff701f:0xc91031,emissiveIntensity:2.2});
-   addMesh(enemy,new THREE.CapsuleGeometry(.34*scale,.66*scale,5,9),rag,[0,.9*scale,0]);
-   addMesh(enemy,new THREE.SphereGeometry(.285*scale,14,11),flesh,[0,1.63*scale,0]);
-   addMesh(enemy,new THREE.SphereGeometry(.30*scale,12,9),rag,[0,1.81*scale,.025],[1,.42,1]);
+   addMesh(enemy,new THREE.CapsuleGeometry(.34*scale,.66*scale,3,7),rag,[0,.9*scale,0]);
+   addMesh(enemy,new THREE.SphereGeometry(.285*scale,10,8),flesh,[0,1.63*scale,0]);
+   addMesh(enemy,new THREE.SphereGeometry(.30*scale,9,7),rag,[0,1.81*scale,.025],[1,.42,1]);
    for(const side of [-1,1]){
      addMesh(enemy,new THREE.SphereGeometry(.05*scale,8,6),eye,[side*.105*scale,1.65*scale,-.235*scale]);
      const arm=addMesh(enemy,new THREE.CapsuleGeometry(.085*scale,.46*scale,4,7),flesh,[side*.42*scale,1.04*scale,0]);arm.rotation.z=side*(fast?.72:.45);
@@ -927,7 +965,7 @@ loadSave=function(){survivalLoadBase();state.infection=Math.max(0,Math.min(100,N
 $('restartAfterInfection').onclick=resetCampaignAfterInfection;
 const finalPlayButton=$('play');
 finalPlayButton.onclick=()=>{
- state.level=1;state.maxLevel=1;state.health=100;state.infection=0;state.lives=3;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.character='explorer';state.outfit='rose';state.pet='cat';state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};
+ state.level=1;state.maxLevel=1;state.health=100;state.infection=0;state.lives=3;state.coins=40;state.xp=0;state.collected=[];state.treasures=[];state.cluesRead=[];state.regionObjectives={};state.defeatedEnemies=[];state.chrisTalked=false;state.questDone=false;state.character='explorer';state.outfit='blue';state.pet='cat';state.owned={character:['explorer'],outfit:['blue','rose'],pets:['cat']};
  makeWorld();updateAvatar();updateUI();renderInfection();started=true;paused=false;infectionEnding=false;$('infectionOver').classList.remove('open');$('start').classList.remove('open');showDialogue('PRÓLOGO · LA ÚLTIMA ESPERANZA','La ciudad está perdida y las calles se llenan de zombis. Genesy, encuentra a Chris, reúne las pistas y salva los diez mundos. Si la infección llega al 100%, perderás y la partida volverá al principio. Tu mascota te ayudará a combatir, pero no puede salvarte de todas las mordidas. Busca antídotos, explora el mapa y no dejes que te rodeen.');save();
 };
 // Draw the expanded terrain on the minimap; the player and horde positions are updated live.
@@ -989,6 +1027,8 @@ const polishedMakeWorld=makeWorld;
 makeWorld=function(){polishedMakeWorld();addChrisLetter();drawMiniMap();};
 // Each level receives its own palette, weather, and landmark silhouette so portals feel like different places.
 function polishBiome(){
+ const decorScale=(state.level===1)?1:0.34;
+
  if(!scene||!world)return;const lv=state.level;
  const skies=[0x9cb9df,0x26384a,0x477d91,0x9d9cbd,0xd8b98c,0x241e3a,0x9cb7d2,0x315d4d,0x30243c,0x33244d];
  const fogs=[0x9cb9df,0x26384a,0x477d91,0x9d9cbd,0xd8b98c,0x241e3a,0x9cb7d2,0x315d4d,0x30243c,0x33244d];
@@ -996,13 +1036,13 @@ function polishBiome(){
  // Landmark sets: ruins, swamp pools, crystal arches, shipwreck, lava, ice spires, giant flowers, castle towers, portal rings.
  const rock=material(lv===6?0x39333c:lv===7?0xc7d8e8:lv===5?0x9a7654:0x62576d,.96);
  const accent=new THREE.MeshStandardMaterial({color:missionMatColors[lv-1],emissive:missionMatColors[lv-1],emissiveIntensity:lv===10?1.8:.65,roughness:.32,metalness:.15});
- if(lv===2){for(let i=0;i<16;i++){let x=Math.sin(i*4.1)*34,z=Math.cos(i*2.3)*32;const pool=addMesh(world,new THREE.CylinderGeometry(1.3,1.7,.08,12),new THREE.MeshStandardMaterial({color:0x193e45,metalness:.2,roughness:.2,emissive:0x102d35}),[x,.015,z],[1.4,1,1]);pool.rotation.y=i*.4}}
- if(lv===3){for(let i=0;i<10;i++){const x=(i%5-2)*11,z=18-Math.floor(i/5)*28;const arch=new THREE.TorusGeometry(1.6,.18,8,18);const a=addMesh(world,arch,accent,[x,2,z]);a.rotation.y=Math.PI/2;const light=new THREE.PointLight(missionMatColors[lv-1],.35,7);light.position.set(x,2,z);world.add(light)}}
- if(lv===6){for(let i=0;i<16;i++){const x=Math.sin(i*3.7)*36,z=Math.cos(i*2.8)*36;addMesh(world,new THREE.ConeGeometry(1.5+Math.random(),4+Math.random()*5,5),rock,[x,2,z]);const crack=addMesh(world,new THREE.BoxGeometry(.2, .03, 3+Math.random()*3),new THREE.MeshStandardMaterial({color:0xff542c,emissive:0xff2a0c,emissiveIntensity:1.8}),[x,.03,z]);crack.rotation.y=i*.8}}
- if(lv===7){for(let i=0;i<18;i++){const x=Math.sin(i*2.4)*38,z=Math.cos(i*2.4)*38;const cone=addMesh(world,new THREE.ConeGeometry(2.2,7+(i%4),6),rock,[x,3.4,z]);cone.rotation.z=Math.sin(i)*.12}}
- if(lv===8){for(let i=0;i<14;i++){const x=Math.sin(i*1.9)*31,z=Math.cos(i*2.2)*31;const stem=addMesh(world,new THREE.CylinderGeometry(.12,.22,2.6,7),material(0x35734c),[x,1.3,z]);const bloom=addMesh(world,new THREE.SphereGeometry(1.1,10,8),accent,[x,2.8,z],[1.2,.7,1.2]);bloom.rotation.y=i*.5}}
- if(lv===9){for(let i=0;i<8;i++){const x=(i%2?1:-1)*(13+(i%4)*4),z=23-i*6;addMesh(world,new THREE.BoxGeometry(2.4,8+(i%3)*2,2.4),rock,[x,4,z]);const cap=addMesh(world,new THREE.ConeGeometry(2,2.2,4),accent,[x,9+(i%3),z]);cap.rotation.y=Math.PI/4}}
- if(lv===10){for(let i=0;i<7;i++){const ring=addMesh(world,new THREE.TorusGeometry(3+i*1.5,.09,8,48),accent,[Math.sin(i*1.2)*15,3+i*.45,-18-Math.cos(i)*12]);ring.rotation.set(i*.2,i*.35,i*.25)}}
+ if(lv===2){for(let i=0;i<Math.max(2,Math.ceil(16*decorScale));i++){let x=Math.sin(i*4.1)*34,z=Math.cos(i*2.3)*32;const pool=addMesh(world,new THREE.CylinderGeometry(1.3,1.7,.08,12),new THREE.MeshStandardMaterial({color:0x193e45,metalness:.2,roughness:.2,emissive:0x102d35}),[x,.015,z],[1.4,1,1]);pool.rotation.y=i*.4}}
+ if(lv===3){for(let i=0;i<Math.max(2,Math.ceil(10*decorScale));i++){const x=(i%5-2)*11,z=18-Math.floor(i/5)*28;const arch=new THREE.TorusGeometry(1.6,.18,8,18);const a=addMesh(world,arch,accent,[x,2,z]);a.rotation.y=Math.PI/2;const light=new THREE.PointLight(missionMatColors[lv-1],.35,7);light.position.set(x,2,z);world.add(light)}}
+ if(lv===6){for(let i=0;i<Math.max(2,Math.ceil(16*decorScale));i++){const x=Math.sin(i*3.7)*36,z=Math.cos(i*2.8)*36;addMesh(world,new THREE.ConeGeometry(1.5+Math.random(),4+Math.random()*5,5),rock,[x,2,z]);const crack=addMesh(world,new THREE.BoxGeometry(.2, .03, 3+Math.random()*3),new THREE.MeshStandardMaterial({color:0xff542c,emissive:0xff2a0c,emissiveIntensity:1.8}),[x,.03,z]);crack.rotation.y=i*.8}}
+ if(lv===7){for(let i=0;i<Math.max(2,Math.ceil(18*decorScale));i++){const x=Math.sin(i*2.4)*38,z=Math.cos(i*2.4)*38;const cone=addMesh(world,new THREE.ConeGeometry(2.2,7+(i%4),6),rock,[x,3.4,z]);cone.rotation.z=Math.sin(i)*.12}}
+ if(lv===8){for(let i=0;i<Math.max(2,Math.ceil(14*decorScale));i++){const x=Math.sin(i*1.9)*31,z=Math.cos(i*2.2)*31;const stem=addMesh(world,new THREE.CylinderGeometry(.12,.22,2.6,7),material(0x35734c),[x,1.3,z]);const bloom=addMesh(world,new THREE.SphereGeometry(1.1,10,8),accent,[x,2.8,z],[1.2,.7,1.2]);bloom.rotation.y=i*.5}}
+ if(lv===9){for(let i=0;i<Math.max(2,Math.ceil(8*decorScale));i++){const x=(i%2?1:-1)*(13+(i%4)*4),z=23-i*6;addMesh(world,new THREE.BoxGeometry(2.4,8+(i%3)*2,2.4),rock,[x,4,z]);const cap=addMesh(world,new THREE.ConeGeometry(2,2.2,4),accent,[x,9+(i%3),z]);cap.rotation.y=Math.PI/4}}
+ if(lv===10){for(let i=0;i<Math.max(2,Math.ceil(7*decorScale));i++){const ring=addMesh(world,new THREE.TorusGeometry(3+i*1.5,.09,8,48),accent,[Math.sin(i*1.2)*15,3+i*.45,-18-Math.cos(i)*12]);ring.rotation.set(i*.2,i*.35,i*.25)}}
 }
 const polishWorldWithBiome=makeWorld;
 makeWorld=function(){polishWorldWithBiome();polishBiome();};
@@ -1121,7 +1161,7 @@ init=function(){
   const mat=new THREE.PointsMaterial({size:.17,vertexColors:true,transparent:true,opacity:.68,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true});
   celestialMotes=new THREE.Points(geo,mat);celestialMotes.frustumCulled=false;scene.add(celestialMotes);
   if(!lowPower){const rim=new THREE.PointLight(0x62dfff,.65,30);rim.position.set(0,5,-7);scene.add(rim);}
-  renderer.toneMappingExposure=1.0;renderer.setPixelRatio(Math.min(devicePixelRatio,lowPower?0.72:1.0));
+  renderer.toneMappingExposure=1.0;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));
  }catch(e){console.warn('Efectos celestiales no disponibles',e)}
 };
 const animateBeforeCelestialMotes=animate;
@@ -1175,6 +1215,8 @@ const buildGenesyV2=function(){
 };
 createAvatar=buildGenesyV2;
 function addBiomeV2(){
+ const decorScale=(state.level===1)?1:0.34;
+
  const lv=state.level, palettes=[
   {sky:0x76b9f4,fog:0x9cccf0,ground:0x397a42,accent:0x62e9ff},
   {sky:0x152d55,fog:0x304b64,ground:0x173e31,accent:0x9cffb5},
@@ -1193,23 +1235,151 @@ function addBiomeV2(){
  const accent=new THREE.MeshStandardMaterial({color:palettes.accent,emissive:palettes.accent,emissiveIntensity:lv===6||lv===10?1.6:.7,roughness:.28});
  const rock=material(lv===5?0xd6bd7e:lv===6?0x302837:lv===7?0xc8e0f1:0x34465b,.95);
  // distinctive large-scale silhouettes for every realm
- if(lv===1){for(let i=0;i<22;i++){let x=Math.sin(i*8.7)*34,z=-8-(i*7)%70;tree(world,x,z,i+3)}
-  for(let i=0;i<7;i++){const hill=addMesh(world,new THREE.SphereGeometry(1,12,9),material(i%2?0x4f9b57:0x6ab86a),[(i-3)*11,.4,-36-(i%3)*8],[6,2.2,5])}}
- if(lv===2){for(let i=0;i<28;i++){let x=Math.sin(i*5.3)*31,z=-5-(i*8)%68;tree(world,x,z,i+1)}for(let i=0;i<20;i++){let x=Math.sin(i*7.1)*26,z=-i*3.2;addMesh(world,new THREE.SphereGeometry(.12,7,6),new THREE.MeshBasicMaterial({color:i%2?0x8cffcb:0x8adfff}),[x,1.4+(i%4)*.5,z])}}
- if(lv===3){const lake=addMesh(world,new THREE.CircleGeometry(16,48),new THREE.MeshStandardMaterial({color:0x249cb8,metalness:.45,roughness:.16,transparent:true,opacity:.88,emissive:0x064c68,emissiveIntensity:.35}),[0,.025,-18]);lake.rotation.x=-Math.PI/2;for(let i=0;i<14;i++){const r=17+(i%3)*2,a=i*2.399;addMesh(world,new THREE.ConeGeometry(1.4,2.3,6),rock,[Math.cos(a)*r,.8,Math.sin(a)*r-18])}}
- if(lv===4){for(let i=0;i<14;i++){const x=(i%4-1.5)*8,z=-5-Math.floor(i/4)*13;const crystalTower=addMesh(world,new THREE.OctahedronGeometry(1.2),accent,[x,2.4,z],[.8,2.7,.8]);crystalTower.rotation.z=.12*i;addMesh(world,new THREE.BoxGeometry(1.8,.25,1.8),rock,[x,.2,z])}}
- if(lv===5){for(let i=0;i<11;i++){let x=(i-5)*6,z=-8-(i%3)*16;addMesh(world,new THREE.ConeGeometry(3.2,1.6,7),material(0xe4c47d),[x,.45,z],[1.5,.5,1.2]);}const sun=new THREE.Mesh(new THREE.SphereGeometry(4,16,12),new THREE.MeshBasicMaterial({color:0xffd18a}));sun.position.set(-22,19,-55);world.add(sun)}
- if(lv===6){for(let i=0;i<14;i++){const x=(i-7)*4.4,z=-7-(i%4)*12;const lava=addMesh(world,new THREE.PlaneGeometry(2.4,9),new THREE.MeshStandardMaterial({color:0xff3b20,emissive:0xff2600,emissiveIntensity:2.3,roughness:.2}),[x,.04,z]);lava.rotation.x=-Math.PI/2;const spire=addMesh(world,new THREE.ConeGeometry(2.1,5+(i%4)*1.5,5),rock,[x,2,z-2]);spire.rotation.z=(i%2?.15:-.15)}}
- if(lv===7){for(let i=0;i<18;i++){const x=(i-9)*4.5,z=-12-(i%4)*12;const peak=addMesh(world,new THREE.ConeGeometry(2.8,8+(i%5)*2,6),rock,[x,4,z]);peak.rotation.z=(i%2)*.08}}
- if(lv===8){for(let i=0;i<36;i++){const x=Math.sin(i*2.4)*31,z=-i*2;tree(world,x,z,i+8);const orb=addMesh(world,new THREE.SphereGeometry(.12+(i%3)*.04,8,7),accent,[x,2.2+(i%4)*.5,z]);orb.userData.floaty=true}}
- if(lv===9){for(let i=0;i<12;i++){const x=(i%4-1.5)*9,z=-10-Math.floor(i/4)*17;const tower=addMesh(world,new THREE.BoxGeometry(2.3,7+(i%3)*2,2.3),rock,[x,3.5,z]);addMesh(world,new THREE.ConeGeometry(2,2.5,4),accent,[x,8+(i%3)*2,z]);for(let s of [-1,1])addMesh(world,new THREE.BoxGeometry(.3,3,.3),accent,[x+s*1.4,2,z])}}
- if(lv===10){for(let i=0;i<12;i++){const r=5+i*1.5;const ring=addMesh(world,new THREE.TorusGeometry(r,.07,6,64),new THREE.MeshStandardMaterial({color:palettes.accent,emissive:palettes.accent,emissiveIntensity:1.5,transparent:true,opacity:.72}),[0,2+i*.65,-24]);ring.rotation.set(i*.21,i*.13,i*.31)}for(let i=0;i<20;i++){const shard=addMesh(world,new THREE.OctahedronGeometry(.55),accent,[Math.sin(i*2.3)*23,1+(i%6)*1.7,-i*3]);shard.rotation.set(i*.2,i*.5,i*.3)}}
+ if(lv===1){for(let i=0;i<Math.max(2,Math.ceil(16*decorScale));i++){let x=Math.sin(i*8.7)*34,z=-8-(i*7)%70;tree(world,x,z,i+3)}
+  for(let i=0;i<Math.max(2,Math.ceil(7*decorScale));i++){const hill=addMesh(world,new THREE.SphereGeometry(1,12,9),material(i%2?0x4f9b57:0x6ab86a),[(i-3)*11,.4,-36-(i%3)*8],[6,2.2,5])}}
+ if(lv===2){for(let i=0;i<Math.max(2,Math.ceil(18*decorScale));i++){let x=Math.sin(i*5.3)*31,z=-5-(i*8)%68;tree(world,x,z,i+1)}for(let i=0;i<Math.max(2,Math.ceil(20*decorScale));i++){let x=Math.sin(i*7.1)*26,z=-i*3.2;addMesh(world,new THREE.SphereGeometry(.12,7,6),new THREE.MeshBasicMaterial({color:i%2?0x8cffcb:0x8adfff}),[x,1.4+(i%4)*.5,z])}}
+ if(lv===3){const lake=addMesh(world,new THREE.CircleGeometry(16,48),new THREE.MeshStandardMaterial({color:0x249cb8,metalness:.45,roughness:.16,transparent:true,opacity:.88,emissive:0x064c68,emissiveIntensity:.35}),[0,.025,-18]);lake.rotation.x=-Math.PI/2;for(let i=0;i<Math.max(2,Math.ceil(14*decorScale));i++){const r=17+(i%3)*2,a=i*2.399;addMesh(world,new THREE.ConeGeometry(1.4,2.3,6),rock,[Math.cos(a)*r,.8,Math.sin(a)*r-18])}}
+ if(lv===4){for(let i=0;i<Math.max(2,Math.ceil(14*decorScale));i++){const x=(i%4-1.5)*8,z=-5-Math.floor(i/4)*13;const crystalTower=addMesh(world,new THREE.OctahedronGeometry(1.2),accent,[x,2.4,z],[.8,2.7,.8]);crystalTower.rotation.z=.12*i;addMesh(world,new THREE.BoxGeometry(1.8,.25,1.8),rock,[x,.2,z])}}
+ if(lv===5){for(let i=0;i<Math.max(2,Math.ceil(11*decorScale));i++){let x=(i-5)*6,z=-8-(i%3)*16;addMesh(world,new THREE.ConeGeometry(3.2,1.6,7),material(0xe4c47d),[x,.45,z],[1.5,.5,1.2]);}const sun=new THREE.Mesh(new THREE.SphereGeometry(4,16,12),new THREE.MeshBasicMaterial({color:0xffd18a}));sun.position.set(-22,19,-55);world.add(sun)}
+ if(lv===6){for(let i=0;i<Math.max(2,Math.ceil(14*decorScale));i++){const x=(i-7)*4.4,z=-7-(i%4)*12;const lava=addMesh(world,new THREE.PlaneGeometry(2.4,9),new THREE.MeshStandardMaterial({color:0xff3b20,emissive:0xff2600,emissiveIntensity:2.3,roughness:.2}),[x,.04,z]);lava.rotation.x=-Math.PI/2;const spire=addMesh(world,new THREE.ConeGeometry(2.1,5+(i%4)*1.5,5),rock,[x,2,z-2]);spire.rotation.z=(i%2?.15:-.15)}}
+ if(lv===7){for(let i=0;i<Math.max(2,Math.ceil(18*decorScale));i++){const x=(i-9)*4.5,z=-12-(i%4)*12;const peak=addMesh(world,new THREE.ConeGeometry(2.8,8+(i%5)*2,6),rock,[x,4,z]);peak.rotation.z=(i%2)*.08}}
+ if(lv===8){for(let i=0;i<Math.max(2,Math.ceil(22*decorScale));i++){const x=Math.sin(i*2.4)*31,z=-i*2;tree(world,x,z,i+8);const orb=addMesh(world,new THREE.SphereGeometry(.12+(i%3)*.04,8,7),accent,[x,2.2+(i%4)*.5,z]);orb.userData.floaty=true}}
+ if(lv===9){for(let i=0;i<Math.max(2,Math.ceil(12*decorScale));i++){const x=(i%4-1.5)*9,z=-10-Math.floor(i/4)*17;const tower=addMesh(world,new THREE.BoxGeometry(2.3,7+(i%3)*2,2.3),rock,[x,3.5,z]);addMesh(world,new THREE.ConeGeometry(2,2.5,4),accent,[x,8+(i%3)*2,z]);for(let s of [-1,1])addMesh(world,new THREE.BoxGeometry(.3,3,.3),accent,[x+s*1.4,2,z])}}
+ if(lv===10){for(let i=0;i<Math.max(2,Math.ceil(12*decorScale));i++){const r=5+i*1.5;const ring=addMesh(world,new THREE.TorusGeometry(r,.07,6,64),new THREE.MeshStandardMaterial({color:palettes.accent,emissive:palettes.accent,emissiveIntensity:1.5,transparent:true,opacity:.72}),[0,2+i*.65,-24]);ring.rotation.set(i*.21,i*.13,i*.31)}for(let i=0;i<Math.max(2,Math.ceil(20*decorScale));i++){const shard=addMesh(world,new THREE.OctahedronGeometry(.55),accent,[Math.sin(i*2.3)*23,1+(i%6)*1.7,-i*3]);shard.rotation.set(i*.2,i*.5,i*.3)}}
  // Add a perimeter of varied cliffs so every realm reads as a place, not a flat blue plane.
- if(lv===1||lv===3||lv===5||lv===7||lv===10){for(let i=0;i<18;i++){const a=i*Math.PI*2/18,r=39;addMesh(world,new THREE.ConeGeometry(2.4,5+(i%4)*2,6),rock,[Math.cos(a)*r,1.5,Math.sin(a)*r],[1.4,1,1.3])}}
+ if(lv===1||lv===3||lv===5||lv===7||lv===10){for(let i=0;i<Math.max(2,Math.ceil(10*decorScale));i++){const a=i*Math.PI*2/18,r=39;addMesh(world,new THREE.ConeGeometry(2.4,5+(i%4)*2,6),rock,[Math.cos(a)*r,1.5,Math.sin(a)*r],[1.4,1,1.3])}}
 }
 const makeWorldBeforeBiomeV2=makeWorld;
 makeWorld=function(){makeWorldBeforeBiomeV2();addBiomeV2();};
 
+// Combat UX: enemy defeat is acknowledged automatically; no blocking Continue dialog.
+const defeatEnemyAutoToast=defeatEnemy;
+defeatEnemy=function(enemy){
+ if(!enemy||enemy.userData?.hp>0)return;
+ const enemyName=enemy.userData?.name||'zombi';
+ defeatEnemyAutoToast(enemy);
+ const dialog=$('dialogue'); if(dialog)dialog.classList.remove('open');
+ const panel=$('panel'); if(panel)panel.classList.remove('open'); paused=false;
+ toast('☠ ¡ZOMBI ELIMINADO! '+enemyName+' · Recompensas añadidas');
+};
+
+// Smooth frame pacing on mobile: cap render resolution by device class and keep animation delta bounded.
+const mobileDevice=matchMedia('(max-width:760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+if(mobileDevice&&renderer){renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,.55));renderer.shadowMap.enabled=false;}
+
+
+
+
+// ===== PERFORMANCE + FRIENDLY CHARACTERS PATCH =====
+// The later chapters originally rendered many decorative objects and 14 extra horde enemies
+// on top of the five mission enemies. Keep the regions varied while reducing overdraw.
+const helperAdviceByLevel = [
+ 'Sigue el sendero de piedra y recoge cinco recuerdos brillantes. Chris puede orientarte si te pierdes.',
+ 'En el bosque no persigas cada luz: algunas marcan el camino y otras solo decoran los árboles.',
+ 'Camina por la orilla del lago; los recuerdos están repartidos entre las rocas y el sendero.',
+ 'Los cristales reflejan el camino correcto. Busca los destellos cerca de las torres.',
+ 'Mantente cerca de la costa y revisa los restos del barco. No te acerques a todos los zombis a la vez.',
+ 'Las ruinas esconden antídotos. Si la infección sube, busca las botellas verdes.',
+ 'Avanza entre las montañas con cuidado y evita quedarte rodeado por los enemigos.',
+ 'Las luces del jardín señalan zonas de interés. Recoge los recuerdos antes de abrir el portal.',
+ 'El castillo tiene caminos estrechos. Usa el salto y esquiva cuando el enemigo prepare un golpe.',
+ 'Este es el último mundo. Reúne los recuerdos, derrota a los guardianes y busca el portal final.'
+];
+const helperNamesByLevel = [
+ ['Lina, exploradora','Mara, sanadora'], ['Nara, rastreadora','Ivo, herbolario'],
+ ['Ayla, guardalagos','Timo, boticario'], ['Vera, archivista','Noel, curandero'],
+ ['Sol, navegante','Bruno, médico'], ['Lua, vigía lunar','Damián, alquimista'],
+ ['Alma, montañista','Teo, sanador'], ['Iris, jardinera','Gael, herbolario'],
+ ['Mila, exploradora','Rui, boticario'], ['Ayla, última guardiana','Chris, aliado']
+];
+function addHelperCharacter(name, role, x, z, shirtHex, accentHex){
+  const g=new THREE.Group();g.position.set(x,0,z);
+  g.userData={kind:'npc',name,genesy:false,helperRole:role};
+  // Compact low-poly characters: fewer draw calls than the elaborate story characters.
+  const skin=new THREE.MeshStandardMaterial({color:0xe8b99a,roughness:.86});
+  const hair=new THREE.MeshStandardMaterial({color:role==='scout'?0x33273a:0x49362a,roughness:.95});
+  const clothes=new THREE.MeshStandardMaterial({color:shirtHex,roughness:.9});
+  const accent=new THREE.MeshStandardMaterial({color:accentHex,roughness:.65,metalness:.12});
+  const body=addMesh(g,new THREE.CapsuleGeometry(.29,.54,3,6),clothes,[0,1.02,0]);
+  addMesh(g,new THREE.SphereGeometry(.29,10,8),skin,[0,1.78,0],[.92,1.08,.88]);
+  addMesh(g,new THREE.SphereGeometry(.30,9,7),hair,[0,1.96,.025],[1.04,.63,.98]);
+  addMesh(g,new THREE.BoxGeometry(.36,.18,.12),accent,[0,1.22,-.27]);
+  addMesh(g,new THREE.CapsuleGeometry(.085,.34,2,5),clothes,[-.36,1.0,0]);
+  addMesh(g,new THREE.CapsuleGeometry(.085,.34,2,5),clothes,[.36,1.0,0]);
+  // A colored shoulder strap and a small tool identify their role at a glance.
+  addMesh(g,new THREE.BoxGeometry(.09,.52,.08),accent,[.19,1.12,.18]).rotation.z=-.24;
+  if(role==='healer') addMesh(g,new THREE.CylinderGeometry(.09,.12,.25,7),accent,[.48,.62,-.02]);
+  else addMesh(g,new THREE.BoxGeometry(.12,.46,.12),accent,[-.48,.78,0]);
+  world.add(g);npcs.push(g);
+}
+function addLevelHelpers(){
+  if(!world||!Array.isArray(npcs))return;
+  const lv=Math.max(1,Math.min(10,Number(state.level)||1));
+  const names=helperNamesByLevel[lv-1]||['Explorador','Sanadora'];
+  const palettes=[0x2e9870,0x547b4d,0x278b9d,0x8862b4,0xb68142,0x65516f,0x597f9e,0x438e73,0x75527e,0x287f9d];
+  const shirt=palettes[lv-1];
+  addHelperCharacter(names[0],'scout',-13,4,shirt,0xe7d49a);
+  addHelperCharacter(names[1],'healer',13,-3,lv===5?0x3d827a:0x8c536e,0x7df0c5);
+}
+const makeWorldBeforeHelpers=makeWorld;
+makeWorld=function(){makeWorldBeforeHelpers();addLevelHelpers();applyHardPerformanceMode();};
+
+// HARD PERFORMANCE MODE: remove costly decorative point lights and simplify materials
+// after each portal is built. Emissive meshes still provide color and glow-like visuals.
+function applyHardPerformanceMode(){
+ if(!world)return;
+ world.traverse(o=>{
+   if(o.isLight && o.type==='PointLight'){o.visible=false;}
+   if(o.isMesh){o.frustumCulled=true; if(o.material && !Array.isArray(o.material) && o.material.isMeshStandardMaterial){o.material.roughness=Math.max(o.material.roughness||0,.72);}}
+ });
+ if(renderer){renderer.shadowMap.enabled=false;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,.68));}
+}
+
+const interactBeforeHelpers=interact;
+interact=function(){
+  if(!started)return;
+  const helper=near&&near.userData&&near.userData.helperRole;
+  if(helper){
+    const lv=Math.max(1,Math.min(10,Number(state.level)||1));
+    const key=lv+'-'+helper;
+    if(helper==='healer'){
+      showDialogue(near.userData.name+' · Ayuda de campo',
+        'Has llegado lejos. Puedo curarte y reducir un poco la infección antes de que sigas.',[
+          ['RECIBIR AYUDA',()=>{
+            state.helperRewards=Array.isArray(state.helperRewards)?state.helperRewards:[];
+            if(state.helperRewards.includes(key)){
+              showDialogue(near.userData.name,'Ya usaste mi ayuda en esta región. Busca antídotos verdes y evita las mordidas.');
+              return;
+            }
+            state.helperRewards.push(key);state.health=Math.min(100,(Number(state.health)||0)+30);
+            state.infection=Math.max(0,(Number(state.infection)||0)-12);state.coins=(Number(state.coins)||0)+5;
+            closeDialogue();updateUI();renderInfection();save();toast('Ayuda recibida: +salud · infección reducida · +5 monedas');
+          }],
+          ['¿QUÉ DEBO HACER?',()=>showDialogue('Consejo de '+near.userData.name,helperAdviceByLevel[lv-1])]
+        ]);
+    }else{
+      showDialogue(near.userData.name+' · Explorador aliado',helperAdviceByLevel[lv-1],[
+        ['¿DÓNDE ESTÁ EL OBJETIVO?',()=>showDialogue('Pista de la región','Busca los cristales brillantes y revisa el mapa. Cuando completes la misión, acércate al portal violeta.')],
+        ['ENTENDIDO',closeDialogue]
+      ]);
+    }
+    return;
+  }
+  interactBeforeHelpers();
+};
+// Cull distant horde models from rendering and AI updates until the player approaches.
+// They remain part of the level and become visible/active when the player gets near.
+const updateWorldBeforeDistanceCulling=updateWorld;
+updateWorld=function(dt){
+  if(player&&Array.isArray(storyEnemies)){
+    for(const enemy of storyEnemies){
+      if(!enemy||!enemy.userData||!enemy.userData.horde||enemy.userData.hp<=0)continue;
+      const d=player.position.distanceTo(enemy.position);
+      enemy.visible=d<43;
+    }
+  }
+  updateWorldBeforeDistanceCulling(dt);
+};
 
 renderInfection();
 
