@@ -312,6 +312,87 @@ html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none
 
 </style>
 
+
+<style id="pro-mobile-controls-final">
+/* Mobile controls: compact, game-like, never stretch across the screen */
+@media (pointer:coarse), (max-width:760px) {
+  #mobile{
+    position:fixed!important; left:10px!important; right:auto!important;
+    bottom:calc(12px + env(safe-area-inset-bottom,0px))!important;
+    width:max-content!important; max-width:calc(100vw - 20px)!important;
+    display:flex!important; flex-direction:row!important; align-items:flex-end!important;
+    justify-content:flex-start!important; gap:10px!important; padding:0!important;
+    background:transparent!important; border:0!important; box-shadow:none!important;
+    z-index:60!important; pointer-events:none!important;
+  }
+  #mobile .dpad, #mobile .mobact{pointer-events:auto!important; flex:0 0 auto!important; width:max-content!important; max-width:none!important;}
+  #mobile .dpad{
+    display:grid!important; grid-template-columns:repeat(3,36px)!important;
+    grid-template-rows:repeat(2,36px)!important; gap:4px!important;
+    padding:5px!important; border-radius:15px!important;
+    background:#081326a8!important; border:1px solid #a4eaff65!important;
+    box-shadow:0 5px 16px #0007!important; backdrop-filter:blur(5px)!important;
+  }
+  #mobile .dpad button{
+    position:static!important; inset:auto!important; display:grid!important;
+    place-items:center!important; width:36px!important; height:36px!important;
+    min-width:0!important; min-height:0!important; max-width:36px!important;
+    margin:0!important; padding:0!important; font-size:17px!important;
+    line-height:1!important; border-radius:10px!important;
+    color:#effbff!important; background:linear-gradient(145deg,#24456aee,#101d36ee)!important;
+    border:1px solid #9adfff8c!important; box-shadow:inset 0 1px #ffffff24,0 2px 5px #0005!important;
+  }
+  #mobile .dpad .up{grid-column:2!important;grid-row:1!important}
+  #mobile .dpad .left{grid-column:1!important;grid-row:2!important}
+  #mobile .dpad .down{grid-column:2!important;grid-row:2!important}
+  #mobile .dpad .right{grid-column:3!important;grid-row:2!important}
+  #mobile .mobact{
+    display:grid!important; grid-template-columns:repeat(2,58px)!important;
+    grid-auto-rows:40px!important; gap:4px!important;
+    padding:5px!important; border-radius:15px!important;
+    background:#081326a8!important; border:1px solid #a4eaff65!important;
+    box-shadow:0 5px 16px #0007!important; backdrop-filter:blur(5px)!important;
+  }
+  #mobile .mobact button{
+    position:static!important; inset:auto!important; display:flex!important;
+    align-items:center!important; justify-content:center!important;
+    width:58px!important; height:40px!important; min-width:0!important; min-height:0!important;
+    max-width:58px!important; margin:0!important; padding:2px!important;
+    font-size:8px!important; font-weight:800!important; line-height:1.05!important;
+    white-space:normal!important; text-align:center!important; overflow:hidden!important;
+    border-radius:9px!important; color:#f5f8ff!important;
+    background:linear-gradient(145deg,#293b66f2,#171b3af2)!important;
+    border:1px solid #a8caff80!important; box-shadow:inset 0 1px #ffffff20,0 2px 5px #0005!important;
+  }
+  #mobile button:active{transform:scale(.94)!important;filter:brightness(1.25)!important}
+  #petOrderDesktop,#fullScreenDesktop,.help{display:none!important}
+  #powerBar{right:8px!important;bottom:calc(12px + env(safe-area-inset-bottom,0px))!important;
+    max-width:43vw!important;gap:4px!important;flex-direction:row!important}
+  #powerBar button{min-width:0!important;min-height:34px!important;height:36px!important;
+    padding:5px 7px!important;font-size:8px!important;border-radius:10px!important}
+  #powerBar small{width:14px!important;height:14px!important;font-size:8px!important}
+  #miniMap{width:48px!important;height:48px!important;right:6px!important;
+    bottom:calc(54px + env(safe-area-inset-bottom,0px))!important}
+  #prompt{bottom:calc(100px + env(safe-area-inset-bottom,0px))!important;max-width:58vw!important}
+  #extraTools{top:calc(48px + env(safe-area-inset-top,0px))!important;bottom:auto!important;right:6px!important}
+}
+@media (pointer:coarse) and (orientation:portrait){
+  #mobile{bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;gap:7px!important}
+  #mobile .dpad{grid-template-columns:repeat(3,32px)!important;grid-template-rows:repeat(2,32px)!important}
+  #mobile .dpad button{width:32px!important;height:32px!important;max-width:32px!important;font-size:15px!important}
+  #mobile .mobact{grid-template-columns:repeat(2,52px)!important;grid-auto-rows:36px!important}
+  #mobile .mobact button{width:52px!important;max-width:52px!important;height:36px!important;font-size:7px!important}
+  #powerBar{bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;right:6px!important;max-width:40vw!important}
+  #powerBar button{height:32px!important;padding:4px!important;font-size:7px!important}
+  .top{max-height:74px!important;overflow:hidden!important}
+  .left{max-height:24dvh!important}
+}
+@media (hover:hover) and (pointer:fine) and (min-width:761px){
+  #mobile{display:none!important}
+  #petOrderDesktop,#fullScreenDesktop,.help{display:initial}
+}
+</style>
+
 </head>
 <body><div id="game"></div><div class="vignette"></div>
 <header class="top"><div class="brand">♡ NUESTRO <em>PEQUEÑO MUNDO</em><small>GENESY Y CHRIS · LOS 10 PORTALES</small></div><div class="stats"><div class="stat">♥ <b id="healthText">100</b>%</div><div class="stat">✦ <b id="coins">40</b> <span class="gold">MONEDAS</span></div><div class="stat">☘ <b id="lives">3</b> <span class="pink">VIDAS</span></div><div class="stat">★ NIVEL <b id="level">1</b>/10</div><div class="stat hide" id="time">☼ 08:00</div></div><button class="icon" id="pause">Ⅱ</button></header>
