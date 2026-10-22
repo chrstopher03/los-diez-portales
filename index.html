@@ -190,6 +190,46 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opaci
   #attackMobile{bottom:48px}
 }
 
+
+/* FINAL DEVICE-SPECIFIC CONTROLS PATCH */
+@media (pointer:coarse), (max-width:900px) and (max-height:600px) {
+  html,body,#game { width:100%; height:100%; height:100dvh; overflow:hidden; }
+  #mobile { display:flex!important; }
+  .help,#petOrderDesktop,#fullScreenDesktop { display:none!important; }
+  #mobile { bottom:calc(7px + env(safe-area-inset-bottom,0px))!important; left:8px!important; right:8px!important; gap:10px!important; align-items:flex-end!important; }
+  #mobile .dpad { display:grid!important; grid-template-columns:clamp(35px,7vw,52px) clamp(35px,7vw,52px) clamp(35px,7vw,52px)!important; grid-template-rows:clamp(35px,7vw,52px) clamp(35px,7vw,52px)!important; gap:4px!important; }
+  #mobile .dpad button { position:static!important; inset:auto!important; width:100%!important; height:100%!important; min-width:0!important; min-height:0!important; padding:0!important; border-radius:12px!important; font-size:clamp(15px,3vw,23px)!important; color:#f5fbff!important; background:linear-gradient(145deg,#152b48ee,#17142fee)!important; border:1px solid #8de7ff88!important; box-shadow:0 4px 14px #0008,inset 0 1px #ffffff22!important; touch-action:none!important; }
+  #mobile .mobact { display:grid!important; grid-template-columns:repeat(2,minmax(58px,clamp(58px,12vw,88px)))!important; gap:5px!important; }
+  #mobile .mobact button { width:100%!important; height:clamp(38px,8vh,54px)!important; padding:3px!important; font-size:clamp(8px,1.8vw,11px)!important; line-height:1.1!important; color:#fff!important; background:linear-gradient(145deg,#203b60f2,#261b45f2)!important; border:1px solid #9adfff88!important; border-radius:12px!important; box-shadow:0 4px 14px #0008!important; touch-action:none!important; }
+  #mobile .dpad button:active,#mobile .mobact button:active { transform:scale(.94)!important; filter:brightness(1.35)!important; }
+  .top { left:5px!important; right:5px!important; top:5px!important; padding:5px!important; gap:4px!important; }
+  .brand { font-size:clamp(8px,1.7vw,13px)!important; }
+  .brand small { font-size:clamp(6px,1.1vw,9px)!important; }
+  .stats { gap:3px!important; }
+  .stat { font-size:clamp(7px,1.35vw,10px)!important; padding:4px 5px!important; }
+  .left { top:calc(52px + env(safe-area-inset-top,0px))!important; left:5px!important; width:clamp(125px,25vw,205px)!important; max-height:34dvh!important; overflow:auto!important; }
+  .left .actions { display:none!important; }
+  .quest { padding:7px!important; }
+  .quest h3 { font-size:clamp(10px,1.7vw,14px)!important; }
+  .quest p { font-size:clamp(8px,1.35vw,11px)!important; }
+  #worldLabel { top:51px!important; font-size:clamp(8px,1.6vw,12px)!important; max-width:38vw!important; }
+  #battleHud { top:calc(54px + env(safe-area-inset-top,0px))!important; right:5px!important; width:clamp(125px,24vw,195px)!important; padding:6px!important; }
+  #survivalHud { top:auto!important; bottom:calc(115px + env(safe-area-inset-bottom,0px))!important; left:5px!important; width:clamp(125px,23vw,180px)!important; max-height:19dvh!important; overflow:hidden!important; }
+  #powerBar { right:5px!important; bottom:calc(116px + env(safe-area-inset-bottom,0px))!important; gap:4px!important; }
+  #powerBar button { min-height:36px!important; padding:6px!important; font-size:clamp(8px,1.5vw,11px)!important; }
+  #miniMap { width:clamp(48px,10vw,68px)!important; height:clamp(48px,10vw,68px)!important; right:5px!important; bottom:calc(5px + env(safe-area-inset-bottom,0px))!important; }
+  #prompt { bottom:calc(110px + env(safe-area-inset-bottom,0px))!important; max-width:65vw!important; font-size:11px!important; }
+  #ambientBadge { display:none!important; }
+}
+@media (pointer:coarse) and (orientation:portrait) {
+  #mobile { align-items:flex-end!important; }
+  #mobile .dpad { grid-template-columns:38px 38px 38px!important; grid-template-rows:38px 38px!important; }
+  #mobile .mobact { grid-template-columns:repeat(2,minmax(58px,70px))!important; }
+  #powerBar { bottom:calc(112px + env(safe-area-inset-bottom,0px))!important; }
+  #survivalHud { bottom:calc(110px + env(safe-area-inset-bottom,0px))!important; }
+  #worldLabel { display:none!important; }
+}
+
 </style>
 <style id="anime-performance-patch">
 html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none} @media(max-width:760px){#game canvas{image-rendering:auto}*{scrollbar-width:none}} @media(prefers-reduced-motion:reduce){.hero *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
