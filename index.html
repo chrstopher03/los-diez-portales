@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><title>Los 10 Portales — Aventura 3D</title>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#090b18"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Los 10 Portales"><link rel="manifest" href="./manifest.webmanifest"><link rel="apple-touch-icon" href="./icons/icon-192.png"><title>Los 10 Portales — Aventura 3D</title>
         <link rel="icon" href="1.jpeg">
 
 <style>
@@ -138,6 +138,58 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opaci
 #start .subtitle{color:#fff0bd;font-size:clamp(9px,1.4vw,13px);letter-spacing:2px}
 #start .hero p{color:#eef5ff;text-shadow:0 2px 6px #000;font-size:clamp(12px,1.5vw,15px);max-width:660px;margin-left:auto;margin-right:auto}
 @media(max-width:600px){#start{padding:8px;background-position:center;background-size:cover}#start .hero{padding:18px 13px;background:#07101de8}#start .logo{font-size:clamp(30px,9vw,48px)}#start .hero p{font-size:11px;line-height:1.45}}
+
+/* MOBILE FIT PATCH: interface stays inside the safe screen area */
+@media (max-width:760px){
+  :root{--mobile-safe-bottom:env(safe-area-inset-bottom,0px)}
+  html,body{width:100%;height:100%;height:100dvh;min-height:0;overflow:hidden}
+  #game{inset:0;width:100%;height:100%;height:100dvh}
+  #game canvas{width:100%!important;height:100%!important}
+  .top{max-width:calc(100vw - 10px);right:5px;left:5px;top:calc(5px + env(safe-area-inset-top,0px));min-height:34px}
+  .brand{max-width:80px;overflow:hidden;text-overflow:ellipsis}
+  .stats{flex-wrap:nowrap;overflow:hidden;justify-content:flex-start}
+  .stat{font-size:7px;padding:3px 4px}
+  .left{top:48px;left:5px;width:clamp(112px,35vw,145px)!important;max-height:34dvh;overflow:auto;scrollbar-width:none}
+  .quest{padding:6px}
+  .quest h3{font-size:9px}
+  .quest p{font-size:7px;line-height:1.2}
+  .actions{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .action{min-height:35px;font-size:6px;padding:3px 2px}
+  .action span{font-size:12px}
+  #worldLabel{top:48px;max-width:40vw;padding:4px 6px;font-size:6px}
+  #battleHud{top:49px;right:5px;width:clamp(104px,30vw,128px)}
+  #survivalHud{left:5px;bottom:calc(98px + var(--mobile-safe-bottom));width:clamp(112px,34vw,140px);max-height:19dvh;overflow:hidden}
+  #miniMap{width:clamp(48px,15vw,62px)!important;height:clamp(48px,15vw,62px)!important;right:5px;bottom:calc(5px + var(--mobile-safe-bottom))}
+  #mobile{bottom:calc(5px + var(--mobile-safe-bottom));left:5px;right:5px}
+  .dpad{grid-template-columns:clamp(29px,9vw,35px) clamp(29px,9vw,35px) clamp(29px,9vw,35px);grid-template-rows:clamp(29px,9vw,35px) clamp(29px,9vw,35px)}
+  .mobact{grid-template-columns:repeat(2,clamp(34px,11vw,42px))}
+  .mobact button{height:clamp(32px,10vw,39px);font-size:6px}
+  #attackMobile{width:clamp(44px,13vw,52px);height:clamp(44px,13vw,52px);right:6px;bottom:calc(70px + var(--mobile-safe-bottom))}
+  #powerBar{right:5px;bottom:calc(123px + var(--mobile-safe-bottom));max-width:46vw}
+  #extraTools{top:auto;bottom:calc(5px + var(--mobile-safe-bottom));right:5px;max-width:48vw;gap:3px}
+  #installApp,#soundToggle{font-size:7px;padding:5px 6px}
+  #prompt{bottom:calc(82px + var(--mobile-safe-bottom));max-width:82vw}
+  .overlay{padding:7px;align-items:center}
+  .modal{width:100%;max-height:calc(100dvh - 14px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));overflow-y:auto;padding:14px 11px}
+  .hero{padding:14px 9px}
+  .logo{font-size:clamp(25px,7.5vw,40px);line-height:1.02}
+  .heroart{font-size:25px;margin:6px}
+  .subtitle{font-size:7px;letter-spacing:1px;margin:8px}
+  .modal p{font-size:11px;line-height:1.45}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (orientation:landscape) and (max-width:900px){
+  .left{top:45px;width:clamp(105px,22vw,145px)!important;max-height:55dvh}
+  .quest p{font-size:7px}
+  .actions{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #survivalHud{bottom:48px;width:125px}
+  #mobile{bottom:4px}
+  #extraTools{top:45px;bottom:auto}
+  #miniMap{width:48px!important;height:48px!important}
+  #powerBar{bottom:4px;right:105px}
+  #attackMobile{bottom:48px}
+}
+
 </style>
 <style id="anime-performance-patch">
 html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none} @media(max-width:760px){#game canvas{image-rendering:auto}*{scrollbar-width:none}} @media(prefers-reduced-motion:reduce){.hero *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
@@ -171,6 +223,53 @@ html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none
 @media(max-width:760px){#extraTools{top:48px;right:5px;gap:4px}#installApp,#soundToggle{padding:6px 7px;font-size:8px}}
 #toast{font-size:13px;max-width:min(92vw,520px);text-align:center;box-shadow:0 10px 35px #0008,0 0 22px #78dcff35}
 @media(max-width:760px){#toast{top:42px;padding:9px 12px;font-size:11px}.left{max-width:43vw}.top .stat{font-size:7px}}
+/* RESPONSIVE HOTFIX: teléfonos táctiles aunque el navegador anuncie ancho de escritorio */
+@media (pointer:coarse), (max-width:760px), (max-height:520px) and (orientation:landscape){
+  html,body{margin:0!important;padding:0!important;width:100%!important;height:100%!important;height:100dvh!important;min-height:0!important;overflow:hidden!important;overscroll-behavior:none}
+  #game{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;overflow:hidden!important}
+  #game canvas{display:block!important;position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:fill}
+  .top{left:6px!important;right:6px!important;top:calc(5px + env(safe-area-inset-top,0px))!important;width:auto!important;max-width:none!important;min-height:34px!important;padding:5px 7px!important;gap:5px!important;box-sizing:border-box!important;z-index:20!important}
+  .brand{max-width:35vw!important;font-size:clamp(10px,2.5vw,16px)!important;line-height:1.1!important;white-space:normal!important}
+  .stats{max-width:57vw!important;overflow-x:auto!important;flex:1 1 auto!important;gap:3px!important}
+  .stat{font-size:clamp(7px,1.7vw,10px)!important;padding:3px 4px!important;white-space:nowrap!important}
+  .left{left:6px!important;top:calc(48px + env(safe-area-inset-top,0px))!important;width:clamp(118px,29vw,190px)!important;max-height:32dvh!important;overflow:auto!important;z-index:15!important}
+  .quest{padding:7px!important}.quest h3{font-size:clamp(10px,2vw,14px)!important}.quest p{font-size:clamp(9px,1.65vw,12px)!important;line-height:1.25!important}
+  .actions{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:4px!important}
+  .action{min-width:0!important;min-height:38px!important;font-size:clamp(8px,1.4vw,11px)!important;padding:4px!important;overflow:hidden!important}
+  #worldLabel{top:calc(49px + env(safe-area-inset-top,0px))!important;left:50%!important;transform:translateX(-50%)!important;width:max-content!important;max-width:38vw!important;font-size:clamp(8px,1.8vw,12px)!important;padding:5px 8px!important;white-space:nowrap!important}
+  #battleHud{top:calc(52px + env(safe-area-inset-top,0px))!important;right:6px!important;width:clamp(110px,26vw,175px)!important;z-index:14!important}
+  #survivalHud{right:6px!important;left:auto!important;top:145px!important;bottom:auto!important;width:clamp(110px,26vw,175px)!important;max-height:22dvh!important;padding:7px!important;box-sizing:border-box!important}
+  #miniMap{right:7px!important;bottom:calc(7px + env(safe-area-inset-bottom,0px))!important;width:clamp(48px,12vw,72px)!important;height:clamp(48px,12vw,72px)!important}
+  #mobile{left:6px!important;right:6px!important;bottom:calc(6px + env(safe-area-inset-bottom,0px))!important;z-index:25!important}
+  .dpad{grid-template-columns:repeat(3,clamp(30px,7vw,43px))!important;grid-template-rows:repeat(2,clamp(30px,7vw,43px))!important;gap:3px!important}
+  .mobact{grid-template-columns:repeat(2,clamp(36px,8vw,50px))!important;gap:3px!important}
+  .mobact button{height:clamp(34px,7.5vw,45px)!important;font-size:clamp(7px,1.4vw,10px)!important}
+  #attackMobile{width:clamp(46px,10vw,64px)!important;height:clamp(46px,10vw,64px)!important;right:7px!important;bottom:calc(65px + env(safe-area-inset-bottom,0px))!important}
+  #powerBar{right:7px!important;bottom:calc(75px + env(safe-area-inset-bottom,0px))!important;max-width:42vw!important}
+  #extraTools{top:auto!important;bottom:calc(6px + env(safe-area-inset-bottom,0px))!important;right:6px!important;max-width:45vw!important;gap:4px!important;z-index:30!important}
+  #installApp,#soundToggle{font-size:clamp(8px,1.5vw,11px)!important;padding:5px 7px!important}
+  #prompt{bottom:calc(75px + env(safe-area-inset-bottom,0px))!important;max-width:72vw!important;font-size:clamp(10px,1.7vw,13px)!important}
+  .overlay{position:fixed!important;inset:0!important;padding:8px!important;box-sizing:border-box!important;overflow:auto!important;z-index:100!important}
+  .modal{width:min(94vw,620px)!important;max-height:calc(100dvh - 16px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))!important;overflow-y:auto!important;padding:14px!important;box-sizing:border-box!important}
+}
+@media (pointer:coarse) and (orientation:portrait){
+  .top{align-items:flex-start!important;flex-wrap:wrap!important;min-height:0!important}
+  .brand{max-width:52vw!important}
+  .stats{max-width:100%!important;width:100%!important;order:2!important}
+  .left{top:94px!important;width:min(42vw,165px)!important;max-height:27dvh!important}
+  #worldLabel{top:94px!important;max-width:48vw!important}
+  #battleHud{top:132px!important;width:min(40vw,155px)!important}
+  #survivalHud{top:auto!important;bottom:calc(90px + env(safe-area-inset-bottom,0px))!important;right:6px!important;width:min(40vw,155px)!important;max-height:17dvh!important}
+  #miniMap{width:48px!important;height:48px!important}
+  #prompt{left:50%!important;transform:translateX(-50%)!important;bottom:calc(100px + env(safe-area-inset-bottom,0px))!important}
+}
+@media (pointer:coarse) and (orientation:landscape){
+  .top{flex-wrap:nowrap!important}.stats{width:auto!important;order:initial!important}
+  .left{top:48px!important;max-height:38dvh!important}
+  #worldLabel{top:49px!important}
+  #battleHud{top:52px!important}
+}
+
 </style>
 
 </head>
@@ -320,8 +419,8 @@ if(biome===8){for(let i=0;i<5;i++){let x=-16+i*8;addMesh(world,new THREE.BoxGeom
 if(biome===9){for(let i=0;i<16;i++){let x=Math.sin(i*2.7)*24,z=-30+(i*4.3)%58;let crystal=addMesh(world,new THREE.OctahedronGeometry(.9+(i%3)*.25),new THREE.MeshStandardMaterial({color:palettes[i%palettes.length],emissive:palettes[i%palettes.length],emissiveIntensity:.9,metalness:.25,roughness:.22}),[x,.9+(i%2)*.3,z],[.8,1.8,.8]);}}
 
 for(let i=0;i<5;i++){let id=`${state.level}-${i}`;if(!state.collected.includes(id))crystal(world,[Math.sin(i*4.4)*10,0,13-i*5.5],id)}portal(world);player.position.set(0,.1,8);player.rotation.set(0,0,0);updateAvatar();updateUI()}
-function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x8caed1);camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,200);const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer=new THREE.WebGLRenderer({antialias:false, powerPreference:'high-performance', alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(innerWidth,innerHeight);renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;renderer.toneMappingExposure=1.0;$('game').appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xcbd8ff,0x29314a,2));let sun=new THREE.DirectionalLight(0xffe4d1,2.4);sun.position.set(-18,30,12);sun.castShadow=false;scene.add(sun);player=new THREE.Group();scene.add(player);createAvatar();makeWorld();bind();loadSave();animate()}
-function bind(){addEventListener('resize',()=>{camera.aspect=innerWidth/Math.max(1,innerHeight);camera.updateProjectionMatrix();const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(innerWidth,innerHeight,false);});addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault();if(e.repeat)return;if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='shift')keys.sprint=true});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key.toLowerCase()==='shift')keys.sprint=false});renderer.domElement.addEventListener('wheel',e=>{cameraDistance=THREE.MathUtils.clamp(cameraDistance+Math.sign(e.deltaY)*.8,4.5,13);},{passive:true});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===2){drag=true;lastX=e.clientX;lastY=e.clientY}});addEventListener('pointerup',()=>drag=false);addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.005;pitch=Math.max(-.2,Math.min(.7,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY}});
+function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x8caed1);camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,200);const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer=new THREE.WebGLRenderer({antialias:false, powerPreference:'high-performance', alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(Math.max(1,document.documentElement.clientWidth),Math.max(1,document.documentElement.clientHeight));renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;renderer.toneMappingExposure=1.0;$('game').appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xcbd8ff,0x29314a,2));let sun=new THREE.DirectionalLight(0xffe4d1,2.4);sun.position.set(-18,30,12);sun.castShadow=false;scene.add(sun);player=new THREE.Group();scene.add(player);createAvatar();makeWorld();bind();loadSave();animate()}
+function bind(){addEventListener('resize',()=>{const vw=Math.max(1,document.documentElement.clientWidth),vh=Math.max(1,document.documentElement.clientHeight);camera.aspect=vw/vh;camera.updateProjectionMatrix();const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(vw,vh,false);});addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault();if(e.repeat)return;if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='shift')keys.sprint=true});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key.toLowerCase()==='shift')keys.sprint=false});renderer.domElement.addEventListener('wheel',e=>{cameraDistance=THREE.MathUtils.clamp(cameraDistance+Math.sign(e.deltaY)*.8,4.5,13);},{passive:true});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===2){drag=true;lastX=e.clientX;lastY=e.clientY}});addEventListener('pointerup',()=>drag=false);addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.005;pitch=Math.max(-.2,Math.min(.7,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY}});
 $('play').onclick=()=>{started=true;$('start').classList.remove('open');toast('¡La aventura comienza! Busca los cristales.');save()};$('continue').onclick=()=>{loadSave();started=true;$('start').classList.remove('open');toast('¡Qué bueno tenerte de vuelta!')};$('pause').onclick=()=>showDialogue('Aventura en pausa','Tómate un respiro. Cuando estés listo, continúa.',[['CONTINUAR',closeDialogue],['GUARDAR PARTIDA',()=>{save();closeDialogue();toast('Partida guardada correctamente.')}],['SONIDO: '+(soundOn?'ACTIVADO':'DESACTIVADO'),()=>{soundOn=!soundOn;if(soundOn){try{audioCtx=audioCtx||new AudioContext();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=220;g.gain.value=.015;o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.18)}catch(e){}}closeDialogue();toast('Sonido '+(soundOn?'activado':'desactivado')+'.')}],['REINICIAR REGIÓN',()=>{makeWorld();closeDialogue()}]]);document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('close').onclick=closePanel;$('back').onclick=closePanel;$('equip').onclick=()=>{if(pending)choose(pending.type,pending.item)};$('dialogClose').onclick=closeDialogue;$('dialogContinue').onclick=closeDialogue;$('revive').onclick=()=>{if(state.coins<20){toast('Necesitas 20 monedas para revivir.');return}state.coins-=20;state.lives=3;state.health=100;player.position.set(0,.1,8);$('death').classList.remove('open');paused=false;updateUI();save()};$('restart').onclick=()=>{state.level=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='blue';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;save()};document.querySelectorAll('[data-move]').forEach(b=>{let k=b.dataset.move;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false));b.addEventListener('lostpointercapture',()=>keys[k]=false)});$('jump').onclick=()=>{if(onGround){jumpV=5.5;onGround=false}};$('talk').onclick=interact}
 let lastHudAt=0,lastProximityAt=0;
 let lastGameRenderAt=0;
