@@ -230,6 +230,55 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;opaci
   #worldLabel { display:none!important; }
 }
 
+
+/* MOBILE + PERFORMANCE POLISH: compact HUD, safe areas, clearer controls */
+:root{color-scheme:dark}
+button{-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#game canvas{image-rendering:auto}
+@media(max-width:760px){
+  .top{left:max(5px,env(safe-area-inset-left));right:max(5px,env(safe-area-inset-right));top:max(5px,env(safe-area-inset-top));padding:5px 6px;min-height:36px;gap:4px}
+  .brand{max-width:28vw;overflow:hidden;text-overflow:ellipsis;font-size:8px;line-height:1.15}
+  .brand small{white-space:normal;letter-spacing:0;font-size:5px}
+  .stats{flex-wrap:nowrap;overflow:hidden;justify-content:flex-end;gap:3px}
+  .stat{font-size:7px;padding:4px 5px;line-height:1.2}
+  .left{top:48px;left:5px;width:min(142px,39vw)!important;gap:4px}
+  .quest{padding:7px}
+  .quest h3{font-size:9px;line-height:1.25}
+  .quest p{font-size:8px;line-height:1.3}
+  .actions{grid-template-columns:repeat(3,minmax(0,1fr));padding:4px;gap:3px}
+  .action{min-width:0;min-height:40px;padding:4px 1px;font-size:6px;line-height:1.1;overflow-wrap:anywhere}
+  .action span{font-size:13px}
+  #worldLabel{top:47px;max-width:35vw;font-size:7px;padding:5px 7px}
+  #survivalHud{bottom:104px;left:5px;width:min(137px,39vw);padding:6px}
+  #battleHud{top:48px;right:5px;width:min(125px,35vw);padding:6px}
+  #miniMap{right:6px;bottom:6px;width:58px!important;height:58px!important}
+  #mobile{bottom:max(5px,env(safe-area-inset-bottom));left:5px;right:5px;align-items:end;gap:5px}
+  .dpad{grid-template-columns:35px 35px 35px;grid-template-rows:35px 35px;gap:3px}
+  .dpad button{font-size:13px;border-radius:9px;touch-action:none}
+  .mobact{grid-template-columns:repeat(2,43px);gap:4px}
+  .mobact button{height:38px;font-size:7px;line-height:1.05;padding:3px;touch-action:none}
+  #attackMobile{width:54px;height:54px;right:8px;bottom:88px;font-size:8px}
+  #prompt{bottom:90px;max-width:78vw;font-size:10px}
+  .overlay{padding:8px}
+  .modal{width:100%;max-width:600px;max-height:calc(100dvh - 16px);overflow-y:auto;overscroll-behavior:contain;padding:15px 12px}
+  .choice{min-width:0}
+}
+@media(max-width:380px){
+  .brand{max-width:24vw}.stat{padding:3px;font-size:6px}
+  .left{width:126px!important}.quest p{font-size:7px}
+  #survivalHud{width:120px;bottom:100px}
+  .dpad{grid-template-columns:31px 31px 31px;grid-template-rows:31px 31px}
+  .mobact{grid-template-columns:repeat(2,36px)}.mobact button{height:34px;font-size:6px}
+  #attackMobile{width:48px;height:48px;bottom:82px}
+}
+@media(orientation:landscape) and (max-width:900px){
+  .left{top:46px;width:128px!important}.quest{padding:5px}.quest p{font-size:7px}
+  .action{min-height:31px}.actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+  #survivalHud{bottom:84px;width:120px}#miniMap{width:48px!important;height:48px!important}
+  #attackMobile{bottom:54px;width:46px;height:46px}
+  #mobile{bottom:4px}.dpad{grid-template-columns:32px 32px 32px;grid-template-rows:32px 32px}
+}
+@media(prefers-reduced-motion:reduce){.action,.choice,.primary{transition:none!important}}
 </style>
 <style id="anime-performance-patch">
 html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none} @media(max-width:760px){#game canvas{image-rendering:auto}*{scrollbar-width:none}} @media(prefers-reduced-motion:reduce){.hero *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
@@ -540,12 +589,12 @@ if(biome===8){for(let i=0;i<5;i++){let x=-16+i*8;addMesh(world,new THREE.BoxGeom
 if(biome===9){for(let i=0;i<16;i++){let x=Math.sin(i*2.7)*24,z=-30+(i*4.3)%58;let crystal=addMesh(world,new THREE.OctahedronGeometry(.9+(i%3)*.25),new THREE.MeshStandardMaterial({color:palettes[i%palettes.length],emissive:palettes[i%palettes.length],emissiveIntensity:.9,metalness:.25,roughness:.22}),[x,.9+(i%2)*.3,z],[.8,1.8,.8]);}}
 
 for(let i=0;i<5;i++){let id=`${state.level}-${i}`;if(!state.collected.includes(id))crystal(world,[Math.sin(i*4.4)*10,0,13-i*5.5],id)}portal(world);player.position.set(0,.1,8);player.rotation.set(0,0,0);updateAvatar();updateUI()}
-function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x8caed1);camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,200);const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer=new THREE.WebGLRenderer({antialias:false, powerPreference:'high-performance', alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(Math.max(1,document.documentElement.clientWidth),Math.max(1,document.documentElement.clientHeight));renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;renderer.toneMappingExposure=1.0;$('game').appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xcbd8ff,0x29314a,2));let sun=new THREE.DirectionalLight(0xffe4d1,2.4);sun.position.set(-18,30,12);sun.castShadow=false;scene.add(sun);player=new THREE.Group();scene.add(player);createAvatar();makeWorld();bind();loadSave();animate()}
-function bind(){addEventListener('resize',()=>{const vw=Math.max(1,document.documentElement.clientWidth),vh=Math.max(1,document.documentElement.clientHeight);camera.aspect=vw/vh;camera.updateProjectionMatrix();const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));renderer.setSize(vw,vh,false);});addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault();if(e.repeat)return;if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='shift')keys.sprint=true});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key.toLowerCase()==='shift')keys.sprint=false});renderer.domElement.addEventListener('wheel',e=>{cameraDistance=THREE.MathUtils.clamp(cameraDistance+Math.sign(e.deltaY)*.8,4.5,13);},{passive:true});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===2){drag=true;lastX=e.clientX;lastY=e.clientY}});addEventListener('pointerup',()=>drag=false);addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.005;pitch=Math.max(-.2,Math.min(.7,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY}});
+function init(){scene=new THREE.Scene();scene.background=new THREE.Color(0x8caed1);camera=new THREE.PerspectiveCamera(64,innerWidth/innerHeight,.1,200);const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer=new THREE.WebGLRenderer({antialias:!lowPower, powerPreference:'high-performance', alpha:false});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.82:1.15));renderer.setSize(Math.max(1,document.documentElement.clientWidth),Math.max(1,document.documentElement.clientHeight));renderer.shadowMap.enabled=false;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;renderer.toneMappingExposure=1.0;$('game').appendChild(renderer.domElement);clock=new THREE.Clock();scene.add(new THREE.HemisphereLight(0xcbd8ff,0x29314a,2));let sun=new THREE.DirectionalLight(0xffe4d1,2.4);sun.position.set(-18,30,12);sun.castShadow=false;scene.add(sun);player=new THREE.Group();scene.add(player);createAvatar();makeWorld();bind();loadSave();animate()}
+function bind(){addEventListener('resize',()=>{const vw=Math.max(1,document.documentElement.clientWidth),vh=Math.max(1,document.documentElement.clientHeight);camera.aspect=vw/vh;camera.updateProjectionMatrix();const lowPower=matchMedia('(max-width: 760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.82:1.15));renderer.setSize(vw,vh,false);});addEventListener('keydown',e=>{keys[e.key.toLowerCase()]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(e.key.toLowerCase()))e.preventDefault();if(e.repeat)return;if(e.key.toLowerCase()==='e')interact();if(e.key.toLowerCase()==='shift')keys.sprint=true});addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false;if(e.key.toLowerCase()==='shift')keys.sprint=false});renderer.domElement.addEventListener('wheel',e=>{cameraDistance=THREE.MathUtils.clamp(cameraDistance+Math.sign(e.deltaY)*.8,4.5,13);},{passive:true});renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());renderer.domElement.addEventListener('pointerdown',e=>{if(e.button===2){drag=true;lastX=e.clientX;lastY=e.clientY}});addEventListener('pointerup',()=>drag=false);addEventListener('pointermove',e=>{if(drag){yaw-=(e.clientX-lastX)*.005;pitch=Math.max(-.2,Math.min(.7,pitch+(e.clientY-lastY)*.003));lastX=e.clientX;lastY=e.clientY}});
 $('play').onclick=()=>{started=true;$('start').classList.remove('open');toast('¡La aventura comienza! Busca los cristales.');save()};$('continue').onclick=()=>{loadSave();started=true;$('start').classList.remove('open');toast('¡Qué bueno tenerte de vuelta!')};$('pause').onclick=()=>showDialogue('Aventura en pausa','Tómate un respiro. Cuando estés listo, continúa.',[['CONTINUAR',closeDialogue],['GUARDAR PARTIDA',()=>{save();closeDialogue();toast('Partida guardada correctamente.')}],['SONIDO: '+(soundOn?'ACTIVADO':'DESACTIVADO'),()=>{soundOn=!soundOn;if(soundOn){try{audioCtx=audioCtx||new AudioContext();let o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=220;g.gain.value=.015;o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.18)}catch(e){}}closeDialogue();toast('Sonido '+(soundOn?'activado':'desactivado')+'.')}],['REINICIAR REGIÓN',()=>{makeWorld();closeDialogue()}]]);document.querySelectorAll('[data-panel]').forEach(b=>b.onclick=()=>openPanel(b.dataset.panel));$('close').onclick=closePanel;$('back').onclick=closePanel;$('equip').onclick=()=>{if(pending)choose(pending.type,pending.item)};$('dialogClose').onclick=closeDialogue;$('dialogContinue').onclick=closeDialogue;$('revive').onclick=()=>{if(state.coins<20){toast('Necesitas 20 monedas para revivir.');return}state.coins-=20;state.lives=3;state.health=100;player.position.set(0,.1,8);$('death').classList.remove('open');paused=false;updateUI();save()};$('restart').onclick=()=>{state.level=1;state.lives=3;state.health=100;state.coins=40;state.xp=0;state.collected=[];state.questDone=false;state.owned={character:['explorer'],outfit:['rose'],pets:['cat']};state.character='explorer';state.outfit='blue';state.pet='cat';makeWorld();$('death').classList.remove('open');paused=false;save()};document.querySelectorAll('[data-move]').forEach(b=>{let k=b.dataset.move;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false));b.addEventListener('lostpointercapture',()=>keys[k]=false)});$('jump').onclick=()=>{if(onGround){jumpV=5.5;onGround=false}};$('talk').onclick=interact}
 let lastHudAt=0,lastProximityAt=0;
 let lastGameRenderAt=0;
-function animate(){requestAnimationFrame(animate);let dt=Math.min(clock.getDelta(),.025),t=performance.now()*.001;if(started&&!paused){state.day=(state.day+dt*.004)%1;move(dt);updateWorld(dt);if(t-lastProximityAt>.12){proximity();lastProximityAt=t}if(player.position.y < -8)die();if(state.health<=0)die()}let daylight=Math.max(.1,Math.sin(state.day*Math.PI*2-Math.PI/2)*.5+.55);if(t-lastHudAt>.25){$('time').textContent=`☼ ${String(Math.floor(state.day*24)).padStart(2,'0')}:00 · ${state.day>.27&&state.day<.8?'DÍA':'NOCHE'}`;lastHudAt=t}let target=new THREE.Vector3(player.position.x,player.position.y+1.3,player.position.z),d=cameraDistance,h=Math.cos(pitch)*d;camera.position.set(target.x+Math.sin(yaw)*h,target.y+2+Math.sin(pitch)*cameraDistance,target.z+Math.cos(yaw)*h);camera.lookAt(target);if(world){for(const o of world.children){if(o.userData?.kind==='portal'){for(const q of o.children){if(q.userData?.spin)q.rotation.z+=dt*(q.geometry?.parameters?.radius?0.22:0.12);if(q.userData?.core)q.material.opacity=.48+Math.sin(t*2)*.12;if(q.userData?.orbit!==undefined){const a=t*.65+q.userData.orbit*Math.PI/4;q.position.x=Math.cos(a)*1.12;q.position.y=2.15+Math.sin(a)*1.12}}}}}const renderNow=performance.now();const renderInterval=state.level===1?0:33; if(renderInterval===0||renderNow-lastGameRenderAt>=renderInterval){renderer.render(scene,camera);lastGameRenderAt=renderNow}}
+function animate(){requestAnimationFrame(animate);let dt=Math.min(clock.getDelta(),.025),t=performance.now()*.001;if(started&&!paused){state.day=(state.day+dt*.004)%1;move(dt);updateWorld(dt);if(t-lastProximityAt>.12){proximity();lastProximityAt=t}if(player.position.y < -8)die();if(state.health<=0)die()}let daylight=Math.max(.1,Math.sin(state.day*Math.PI*2-Math.PI/2)*.5+.55);if(t-lastHudAt>.25){$('time').textContent=`☼ ${String(Math.floor(state.day*24)).padStart(2,'0')}:00 · ${state.day>.27&&state.day<.8?'DÍA':'NOCHE'}`;lastHudAt=t}let target=new THREE.Vector3(player.position.x,player.position.y+1.3,player.position.z),d=cameraDistance,h=Math.cos(pitch)*d;camera.position.set(target.x+Math.sin(yaw)*h,target.y+2+Math.sin(pitch)*cameraDistance,target.z+Math.cos(yaw)*h);camera.lookAt(target);if(world){for(const o of world.children){if(o.userData?.kind==='portal'){for(const q of o.children){if(q.userData?.spin)q.rotation.z+=dt*(q.geometry?.parameters?.radius?0.22:0.12);if(q.userData?.core)q.material.opacity=.48+Math.sin(t*2)*.12;if(q.userData?.orbit!==undefined){const a=t*.65+q.userData.orbit*Math.PI/4;q.position.x=Math.cos(a)*1.12;q.position.y=2.15+Math.sin(a)*1.12}}}}}renderer.render(scene,camera)}
 let walkPhase=0;
 function move(dt){let f=(keys.w||keys.arrowup?1:0)-(keys.s||keys.arrowdown?1:0),r=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0),dx=Math.sin(yaw)*f+Math.cos(yaw)*r,dz=Math.cos(yaw)*f-Math.sin(yaw)*r,len=Math.hypot(dx,dz),moving=len>0.001;if(moving){dx/=len;dz/=len;let speed=keys.sprint?10.0:6.2;player.position.x+=dx*speed*dt;player.position.z+=dz*speed*dt;player.rotation.y=Math.atan2(dx,dz);walkPhase+=dt*(keys.sprint?13:9);avatar.position.y=.035+Math.abs(Math.sin(walkPhase*2))*.045;}else{avatar.position.y=THREE.MathUtils.damp(avatar.position.y,0,12,dt);walkPhase*=Math.max(0,1-dt*5)}if(avatar.userData.leftLeg){const swing=moving?Math.sin(walkPhase)*.62:0;avatar.userData.leftLeg.rotation.x=swing;avatar.userData.rightLeg.rotation.x=-swing;avatar.userData.leftArm.rotation.x=-swing*.72;avatar.userData.rightArm.rotation.x=swing*.72;}player.position.x=THREE.MathUtils.clamp(player.position.x,-34,34);player.position.z=THREE.MathUtils.clamp(player.position.z,-33,31);if(!onGround){jumpV-=12*dt;player.position.y+=jumpV*dt;if(player.position.y<=.1){player.position.y=.1;onGround=true;jumpV=0}}if(petGroup){petGroup.position.x=1.05+Math.sin(performance.now()*.002)*.18;petGroup.position.y=.1+Math.abs(Math.sin(performance.now()*.004))*.12}}
 function updateWorld(dt){let t=performance.now()*.001;for(let o of items){if(!o.parent)continue;if(o.userData.kind==='crystal'){o.rotation.y+=dt*1.2;o.position.y=.12+Math.sin(t*2.2+o.position.x)*.13}else if(o.userData.kind==='portal'){o.children[0].rotation.z+=dt*.4;o.children[1].rotation.z-=dt*.2}}}
@@ -1381,7 +1430,7 @@ init=function(){
   const mat=new THREE.PointsMaterial({size:.17,vertexColors:true,transparent:true,opacity:.68,depthWrite:false,blending:THREE.AdditiveBlending,sizeAttenuation:true});
   celestialMotes=new THREE.Points(geo,mat);celestialMotes.frustumCulled=false;scene.add(celestialMotes);
   if(!lowPower){const rim=new THREE.PointLight(0x62dfff,.65,30);rim.position.set(0,5,-7);scene.add(rim);}
-  renderer.toneMappingExposure=1.0;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.55:0.68));
+  renderer.toneMappingExposure=1.0;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,lowPower?0.82:1.15));
  }catch(e){console.warn('Efectos celestiales no disponibles',e)}
 };
 const animateBeforeCelestialMotes=animate;
@@ -1485,7 +1534,7 @@ defeatEnemy=function(enemy){
 
 // Smooth frame pacing on mobile: cap render resolution by device class and keep animation delta bounded.
 const mobileDevice=matchMedia('(max-width:760px)').matches||/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-if(mobileDevice&&renderer){renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,.55));renderer.shadowMap.enabled=false;}
+if(mobileDevice&&renderer){renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,.82));renderer.shadowMap.enabled=false;}
 
 
 
@@ -1552,7 +1601,7 @@ function applyHardPerformanceMode(){
    if(o.isLight && o.type==='PointLight'){o.visible=false;}
    if(o.isMesh){o.frustumCulled=true; if(o.material && !Array.isArray(o.material) && o.material.isMeshStandardMaterial){o.material.roughness=Math.max(o.material.roughness||0,.72);}}
  });
- if(renderer){renderer.shadowMap.enabled=false;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,.68));}
+ if(renderer){renderer.shadowMap.enabled=false;renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.15));}
 }
 
 const interactBeforeHelpers=interact;
