@@ -449,7 +449,7 @@ html,body{overscroll-behavior:none} #game canvas{display:block;touch-action:none
 <div id="battleHud"><div class="bh-top"><span id="bhName">GUARDIÁN</span><span>NIVEL <b id="bhLevel">1</b></span></div><div class="bh-sub">ENERGÍA DEL ENEMIGO · <b id="bhHealth">100%</b></div><div class="bh-track"><div id="bhBar"></div></div></div><div id="combatText"></div><div id="combatFlash"></div>
 <div class="prompt" id="prompt">Pulsa <b>E</b> para interactuar</div><div class="help"><span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> moverse · <span class="key">ESPACIO</span> saltar · <span class="key">E</span> interactuar · <span class="key">SHIFT</span> correr · <span class="key">R</span> ordenar ataque mascota · rueda zoom · clic derecho cámara</div>
 <div id="mobile"><div class="dpad"><button class="up" data-move="w">▲</button><button class="left" data-move="a">◀</button><button class="down" data-move="s">▼</button><button class="right" data-move="d">▶</button></div><div class="mobact"><button id="jump">SALTAR</button><button id="talk">HABLAR<br>/ USAR</button><button id="petOrder">MASCOTA<br>ATACA</button><button id="fullScreen">⛶<br>PANTALLA</button></div></div><button id="petOrderDesktop">🐾 ORDENAR ATAQUE</button><button id="fullScreenDesktop">⛶ PANTALLA COMPLETA</button><div id="toast"></div><div id="worldLabel">Pradera del Encuentro</div><div id="ambientBadge"><i></i> MUNDO VIVO</div><div id="miniMap"><canvas id="miniCanvas" width="180" height="180"></canvas></div><div id="levelBanner"><span>REGIÓN DESCUBIERTA</span><strong id="bannerTitle">PRADERA</strong></div><div id="screenFlash"></div>
-<div class="overlay open" id="start"><div class="modal hero"><div class="eyebrow">UNA AVENTURA HECHA DE RECUERDOS</div><div class="heroart">🌙 ✨ 🌲 💜</div><div class="logo"><span class="gradient">LOS 10 PORTALES</span></div><div class="subtitle">AVENTURA · EXPLORACIÓN · SUPERVIVENCIA</div><p>Explora mundos misteriosos, reúne cristales, enfréntate a criaturas y desbloquea diez regiones llenas de secretos.</p><div class="row"><button class="primary" id="play">COMENZAR AVENTURA →</button><button class="secondary" id="continue">CONTINUAR</button></div><p style="font-size:10px;margin-top:15px">PC y móvil · Guardado local en este dispositivo</p></div></div>
+<div class="overlay open" id="start"><div class="modal hero"><div class="eyebrow">UNA AVENTURA HECHA DE RECUERDOS</div><div class="heroart">🌙 ✨ 🌲 💜</div><div class="logo"><span class="gradient">LOS 10 PORTALES</span></div><div class="subtitle">AVENTURA · EXPLORACIÓN · SUPERVIVENCIA</div><p>Explora mundos misteriosos, reúne cristales, enfréntate a criaturas y desbloquea diez regiones llenas de secretos.</p><div class="player-name-wrap"><label for="playerName">NOMBRE DEL SUPERVIVIENTE</label><input id="playerName" maxlength="18" autocomplete="nickname" placeholder="Escribe tu nombre" value="Genesy"></div><div class="row"><button class="primary" id="play">COMENZAR AVENTURA →</button><button class="secondary" id="continue">CONTINUAR</button></div><p style="font-size:10px;margin-top:15px">PC y móvil · Guardado local en este dispositivo</p></div></div>
 <div class="overlay" id="panel"><div class="modal"><button class="close" id="close">×</button><div class="eyebrow" id="panelEyebrow">PERSONALIZACIÓN</div><h1 id="panelTitle">Escoge tu aventurero</h1><p id="panelDesc">Tu aventura, tu estilo.</p><div class="grid" id="choices"></div><div class="row"><button class="primary" id="equip">EQUIPAR / COMPRAR</button><button class="secondary" id="back">VOLVER AL JUEGO</button></div></div></div>
 <div class="overlay" id="dialogue"><div class="modal" style="width:min(520px,100%)"><button class="close" id="dialogClose">×</button><div class="eyebrow">CONVERSACIÓN</div><h1 id="dialogTitle">Genesy ♡</h1><p class="dialogbody" id="dialogBody"></p><div class="grid" id="dialogChoices"></div><div class="row"><button class="primary" id="dialogContinue">CONTINUAR</button></div></div></div>
 <div class="overlay" id="death"><div class="modal hero"><div class="heroart">💫</div><div class="eyebrow">NO ES EL FINAL</div><h1>Te has quedado sin fuerzas</h1><p>La aventura merece otra oportunidad. Revive para continuar.</p><div class="row"><button class="primary" id="revive">REVIVIR · 20 ✦</button><button class="secondary" id="restart">VOLVER AL INICIO</button></div></div></div>
@@ -1832,6 +1832,68 @@ document.getElementById('play').addEventListener('click',()=>{if(!musicOn)startA
 /* Persist on tab backgrounding and reduce costly visual effects on phones. */
 document.addEventListener('visibilitychange',()=>{if(document.hidden){try{save()}catch(e){}}});
 window.addEventListener('pagehide',()=>{try{save()}catch(e){}});
+
+
+/* Large grounded landmarks: houses, abandoned vehicles, streetlights, water and survivors. */
+function addPostApocWorld(){
+ if(!world||!state)return;
+ const lv=Number(state.level)||1;
+ const mat=(c,r=0.92)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:.04});
+ const wood=mat(lv===1?0x584638:0x403a39),wall=mat(lv===1?0x9b9480:0x56545a),roof=mat(0x373b43),glass=mat(0x243c48,.32),metal=mat(0x343c43,.55),rust=mat(0x754b3b,.8),green=mat(0x355b38);
+ function house(x,z,scale=1,broken=false){
+  const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);world.add(g);
+  addMesh(g,new THREE.BoxGeometry(5.4,3.3,4.5),wall,[0,1.7,0]);
+  const r=addMesh(g,new THREE.ConeGeometry(4.1,1.8,4),roof,[0,4.05,0],[1,.65,.8]);r.rotation.y=Math.PI/4;
+  addMesh(g,new THREE.BoxGeometry(.95,1.8,.15),wood,[0,.9,2.31]);
+  for(const wx of [-1.65,1.65]){addMesh(g,new THREE.BoxGeometry(.95,.85,.12),glass,[wx,2,2.31]);addMesh(g,new THREE.BoxGeometry(1.08,.1,.18),wood,[wx,2,2.3]);}
+  if(broken){const plank=addMesh(g,new THREE.BoxGeometry(2.2,.16,.22),wood,[1.5,2.7,2.25]);plank.rotation.z=-.45;addMesh(g,new THREE.BoxGeometry(1.4,.18,.25),roof,[-1.6,3.3,.5]).rotation.z=.25;}
+ }
+ function car(x,z,rot=0){const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;world.add(g);
+  addMesh(g,new THREE.BoxGeometry(3.3,.85,1.65),rust,[0,.72,0]);addMesh(g,new THREE.BoxGeometry(1.75,.68,1.35),metal,[-.15,1.38,0]);
+  addMesh(g,new THREE.BoxGeometry(.7,.38,1.38),glass,[-.15,1.42,0]);
+  for(const wx of [-1,1])for(const wz of [-.72,.72]){const w=addMesh(g,new THREE.CylinderGeometry(.34,.34,.18,10),mat(0x17191d,.7),[wx,.38,wz]);w.rotation.z=Math.PI/2;}
+  addMesh(g,new THREE.BoxGeometry(.22,.18,.12),mat(0xffc56d,.4),[1.68,.8,-.48]);addMesh(g,new THREE.BoxGeometry(.22,.18,.12),mat(0xb73535,.4),[1.68,.8,.48]);
+ }
+ function survivor(x,z,shirt=0x5b8178,injured=false){const g=new THREE.Group();g.position.set(x,0,z);world.add(g);
+  const skin=mat(0xc99c7b),cloth=mat(shirt),dark=mat(0x262b32),hair=mat(0x302a28);
+  addMesh(g,new THREE.CapsuleGeometry(.22,.62,3,6),cloth,[0,.98,0]);addMesh(g,new THREE.SphereGeometry(.23,9,7),skin,[0,1.62,0]);addMesh(g,new THREE.SphereGeometry(.24,8,6),hair,[0,1.75,.015],[1,.55,1]);
+  addMesh(g,new THREE.CapsuleGeometry(.075,.48,2,5),cloth,[-.31,1.03,0]).rotation.z=-.2;addMesh(g,new THREE.CapsuleGeometry(.075,.48,2,5),cloth,[.31,1.03,0]).rotation.z=.2;
+  addMesh(g,new THREE.CapsuleGeometry(.085,.45,2,5),dark,[-.13,.36,0]);addMesh(g,new THREE.CapsuleGeometry(.085,.45,2,5),dark,[.13,.36,0]);
+  if(injured){const blood=mat(0x702b32);addMesh(g,new THREE.SphereGeometry(.09,7,6),blood,[.2,1.2,.2]);g.rotation.z=.17;g.userData.injured=true;}
+  g.userData.kind='survivor';g.userData.name=injured?'Superviviente herido':'Superviviente';g.userData.dialogue=injured?'No me dejes aquí... los infectados entraron por la carretera. Busca vendas y no hagas ruido.':'La radio dice que hay un refugio al norte. No confíes en los que caminan sin respirar.';
+  npcs.push(g);
+ }
+ // Keep the central play area clear; settlements and roads are visible as distant landmarks.
+ if([1,2,3,5,8].includes(lv)){
+  house(-27,-20,1.15,true);house(28,-29,.95,lv!==1);house(-32,16,.85,true);house(31,18,1.05,true);
+  car(-17,-9,.3);car(20,8,-.7);car(3,-36,.08);
+  // Broken fence posts and street lights around the ruined settlement.
+  for(let i=0;i<12;i++){const x=-35+i*6.2;addMesh(world,new THREE.BoxGeometry(.16,1.2,.16),wood,[x,.6,25]);if(i<11)addMesh(world,new THREE.BoxGeometry(5.9,.12,.12),wood,[x+3,.85,25]);}
+  for(const [x,z] of [[-12,-25],[15,-23],[34,0]]){const pole=addMesh(world,new THREE.CylinderGeometry(.09,.13,5,6),metal,[x,2.5,z]);addMesh(world,new THREE.BoxGeometry(.7,.2,.35),mat(0xffd58b,.35),[x,5,z]);}
+  survivor(-8,-15,0x526b76,true);survivor(12,-31,0x77625b,false);survivor(34,11,0x4d6a52,true);
+ }
+ // A broad reflective lake in the forest chapter; rocks form a natural shoreline.
+ if(lv===1||lv===3){const water=addMesh(world,new THREE.CircleGeometry(lv===1?10:14,40),new THREE.MeshStandardMaterial({color:0x276f83,roughness:.2,metalness:.25,transparent:true,opacity:.86}),[24,-.015,-4]);water.rotation.x=-Math.PI/2;for(let i=0;i<16;i++){const a=i*Math.PI/8,r=lv===1?10.7:14.8;addMesh(world,new THREE.DodecahedronGeometry(.45+(i%3)*.18),mat(0x5e6b65),[24+Math.cos(a)*r,.08,-4+Math.sin(a)*r]);}}
+ // Sun disk in the sky, intentionally simple for mobile performance.
+ const sun=addMesh(world,new THREE.SphereGeometry(2.2,12,8),new THREE.MeshBasicMaterial({color:lv===6?0xff633a:0xffd69a}),[-38,25,-55]);sun.userData.landmark=true;
+}
+const makeWorldBeforePostApoc=makeWorld;
+makeWorld=function(){makeWorldBeforePostApoc();addPostApocWorld();};
+
+// Player-selected identity is saved and woven into the opening scene.
+const playerNameInput=document.getElementById('playerName');
+try{const savedName=localStorage.getItem('portal-survivor-name');if(savedName&&playerNameInput)playerNameInput.value=savedName;}catch(e){}
+const originalPlayButton=document.getElementById('play');
+originalPlayButton.addEventListener('click',()=>{
+ const chosen=(playerNameInput?.value||'Superviviente').trim().replace(/[<>]/g,'').slice(0,18)||'Superviviente';
+ try{localStorage.setItem('portal-survivor-name',chosen)}catch(e){}
+ state.playerName=chosen;
+ setTimeout(()=>{const title=chosen.toUpperCase();const brand=document.querySelector('.brand');if(brand)brand.setAttribute('aria-label','Superviviente: '+title);showDialogue('PRÓLOGO · '+title,'La ciudad ha caído. Las carreteras están bloqueadas, hay personas heridas en las casas y los infectados reaccionan al ruido. No estás a salvo ni siquiera cuando no los ves. Busca herramientas en los cofres, consigue vendas y antídotos, escucha a los supervivientes y decide en quién confiar. Tu acompañante te cubrirá, pero no puede luchar por ti para siempre.');},80);
+},{once:true});
+// More forgiving mobile controls: prevent browser gestures and add touch feedback.
+document.querySelectorAll('#mobile button,#attackMobile,#powerBar button').forEach(b=>{b.style.webkitTapHighlightColor='transparent';b.addEventListener('contextmenu',e=>e.preventDefault());b.addEventListener('touchstart',()=>b.classList.add('pressed'),{passive:true});['touchend','touchcancel','pointerup','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>b.classList.remove('pressed'),{passive:true}));});
+
+
 </script>
 <style id="mobile-clean-layout">
 /* HUD spacing pass: avoid overlapping panels on small screens */
@@ -1862,5 +1924,46 @@ window.addEventListener('pagehide',()=>{try{save()}catch(e){}});
  #infectionBox,#infectionPanel{right:7px!important;top:calc(155px + env(safe-area-inset-top,0px))!important;max-width:34vw!important}
 }
 @media(max-width:420px){.left{max-width:52vw!important}.quest p{font-size:10px!important}.stats .stat{font-size:8px!important;padding:4px 5px!important}}
+</style>
+<style id="apocalypse-mobile-upgrade">
+/* === EXPANSIÓN 2026: CONTROLES MÓVILES, IDENTIDAD Y MUNDO POSTAPOCALÍPTICO === */
+.player-name-wrap{display:grid;gap:7px;width:min(360px,100%);margin:18px auto 4px;text-align:left}
+.player-name-wrap label{font-size:10px;letter-spacing:1.5px;color:#9cecff;font-weight:900}
+.player-name-wrap input{width:100%;min-width:0;padding:13px 15px;border-radius:12px;border:1px solid #82e9ff65;background:#07111fe8;color:#fff;font:inherit;font-size:15px;outline:none}
+.player-name-wrap input:focus{border-color:#9cecff;box-shadow:0 0 0 3px #67dfff20}
+@media(max-width:760px){
+ #mobile{left:10px!important;right:10px!important;bottom:calc(12px + env(safe-area-inset-bottom,0px))!important;align-items:end!important;gap:clamp(12px,5vw,26px)!important}
+ .dpad{grid-template-columns:clamp(39px,11vw,49px) clamp(39px,11vw,49px) clamp(39px,11vw,49px)!important;grid-template-rows:clamp(39px,11vw,49px) clamp(39px,11vw,49px)!important;gap:6px!important}
+ .dpad button{font-size:18px!important;border-radius:14px!important;background:#101a2de8!important;border:1px solid #b2eaff55!important;box-shadow:0 5px 14px #0005!important;touch-action:none;user-select:none;-webkit-user-select:none}
+ .mobact{grid-template-columns:repeat(2,minmax(48px,clamp(48px,13vw,60px)))!important;gap:7px!important}
+ .mobact button{height:clamp(43px,12vw,54px)!important;padding:4px!important;border-radius:13px!important;font-size:clamp(8px,2.3vw,10px)!important;line-height:1.15!important;box-shadow:0 5px 14px #0005!important;white-space:normal!important;touch-action:manipulation}
+ #petOrder{position:static!important}#fullScreen{position:static!important}
+ #attackMobile{right:12px!important;bottom:calc(132px + env(safe-area-inset-bottom,0px))!important;width:clamp(55px,15vw,68px)!important;height:clamp(55px,15vw,68px)!important}
+ #survivalHud{bottom:calc(151px + env(safe-area-inset-bottom,0px))!important;left:10px!important;width:min(180px,43vw)!important;padding:9px!important}
+ #miniMap{right:10px!important;bottom:calc(10px + env(safe-area-inset-bottom,0px))!important;width:68px!important;height:68px!important}
+ #powerBar{bottom:calc(205px + env(safe-area-inset-bottom,0px))!important;right:10px!important;max-width:45vw!important;flex-wrap:wrap!important;justify-content:flex-end!important}
+ #prompt{bottom:calc(112px + env(safe-area-inset-bottom,0px))!important;left:50%!important;max-width:78vw!important}
+ .top{min-height:0!important;display:flex!important;flex-wrap:nowrap!important;align-items:center!important;padding:7px 8px!important;gap:6px!important}
+ .brand{flex:1 1 auto!important;font-size:10px!important;max-width:42%!important;line-height:1.2!important}
+ .brand small{font-size:6px!important;letter-spacing:.08em!important}
+ .stats{flex:1 1 auto!important;max-width:calc(58% - 32px)!important;flex-wrap:wrap!important;gap:3px!important;justify-content:flex-end!important}
+ .stat{font-size:8px!important;padding:4px 5px!important}
+ .left{top:calc(65px + env(safe-area-inset-top,0px))!important;left:8px!important;max-width:min(190px,47vw)!important;width:min(190px,47vw)!important}
+ .quest{padding:9px!important}.quest h3{font-size:11px!important}.quest p{font-size:9px!important;line-height:1.35!important}
+ #worldLabel{top:calc(68px + env(safe-area-inset-top,0px))!important;max-width:38vw!important;font-size:7px!important;padding:5px 8px!important}
+ .overlay{padding:12px!important}.modal{width:100%!important;max-height:86dvh!important;padding:20px 15px!important;border-radius:18px!important}
+ .hero{padding:22px 15px!important}.hero .logo{font-size:clamp(29px,9vw,43px)!important}.heroart{font-size:28px!important}
+ .player-name-wrap{margin-top:14px}.player-name-wrap input{padding:12px;font-size:16px}
+}
+@media(max-width:390px){
+ #mobile{gap:8px!important}.dpad{grid-template-columns:36px 36px 36px!important;grid-template-rows:36px 36px!important;gap:4px!important}
+ .mobact{grid-template-columns:repeat(2,46px)!important;gap:5px!important}.mobact button{height:40px!important;font-size:7px!important}
+ #survivalHud{width:138px!important;bottom:calc(137px + env(safe-area-inset-bottom,0px))!important}
+ #attackMobile{bottom:calc(118px + env(safe-area-inset-bottom,0px))!important}
+ #powerBar{bottom:calc(188px + env(safe-area-inset-bottom,0px))!important}
+ .left{max-width:44vw!important;width:44vw!important}.quest p{font-size:8px!important}
+}
+@media(orientation:landscape) and (max-width:950px){#mobile{bottom:5px!important}#survivalHud{bottom:64px!important}#attackMobile{bottom:62px!important}#powerBar{bottom:5px!important;right:120px!important}#miniMap{bottom:5px!important}#prompt{bottom:58px!important}.left{top:58px!important}}
+
 </style>
 </body></html>
